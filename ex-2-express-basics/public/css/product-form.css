@@ -1,0 +1,36 @@
+.product-form {
+	display: flex;
+	flex-flow: column nowrap;
+	font-size: 1.8rem;
+	padding: 0 4rem;
+	max-width: 65rem;
+	width: 100%;
+}
+
+.product-form .button {
+	align-self: flex-end;
+}
+
+.product-form__title {
+	font-size: 3.2rem;
+	margin-bottom: 3rem;
+}
+
+.product-form-group {
+	align-items: baseline;
+	display: flex;
+	margin-bottom: 2.5rem;
+}
+
+.product-form-group__input {
+	background: none;
+	border: none;
+	border-bottom: 1px solid var(--main-dark);
+	flex: 1;
+	font: inherit;
+	min-width: 20rem;
+}
+
+.product-form-group__label {
+	margin-right: 2rem;
+}
