@@ -8,6 +8,8 @@ const { notFound, reqLogger } = require('./middlewares');
 
 const app = express();
 
+app.set('view engine', 'pug');
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(reqLogger);

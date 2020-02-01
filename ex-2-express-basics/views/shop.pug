@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title Products
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Poppins&display=swap")
+    link(rel="stylesheet", href="/css/main.css")
+  body
+    nav.main-nav
+      ul.main-nav__list
+        li.main-nav__list-item
+          a.active(href="/") Shop
+        li.main-nav__list-item
+          a(href="/admin/add-product") Add Product
+    main
+      div
+        if products.length > 0
+          h1 Products
+          ul
+            each product in products
+              li= product.name
+        else
+          h1 No products yet!
+          

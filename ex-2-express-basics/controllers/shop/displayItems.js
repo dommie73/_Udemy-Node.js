@@ -1,9 +1,7 @@
-const path = require('path');
-
-const rootDir = require('../../utils/path');
+const products = require('../../utils/products');
 
 const displayItems = (req, res) => {
-	res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+	res.render('shop', { products });
 };
 
 module.exports = displayItems;
