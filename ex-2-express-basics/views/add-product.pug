@@ -1,24 +1,12 @@
-<!DOCTYPE html>
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    title Add Product
-    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Poppins&display=swap")
-    link(rel="stylesheet", href="/css/main.css")
-    link(rel="stylesheet", href="/css/product-form.css")
-  body
-    nav.main-nav
-      ul.main-nav__list
-        li.main-nav__list-item
-          a(href="/") Shop
-        li.main-nav__list-item
-          a.active(href="/admin/add-product") Add Product
-    main
-      form.product-form(action="/admin/add-product", method="POST")
-        h1.product-form__title Add Product
-        .product-form-group
-          label.product-form-group__label(for="name") Name
-          input.product-form-group__input#name(name="name", placeholder="Type name here...", type="text")
-        button.button(type="submit") Add Product
+extends layouts/default
+
+block styles
+  link(rel="stylesheet", href="/css/product-form.css")
+
+block content
+  form.product-form(action="/admin/add-product", method="POST")
+    h1.product-form__title Add Product
+    .product-form-group
+      label.product-form-group__label(for="name") Name
+      input.product-form-group__input#name(name="name", placeholder="Type name here...", type="text")
+    button.button(type="submit") Add Product
