@@ -1,0 +1,14 @@
+<nav class="main-nav">
+	<ul class="main-nav__list">
+		<% pages.forEach(page => { %>
+		<li class="main-nav__list-item">
+			<a
+				class="<%= (page.url === currentUrl) ? 'active' : '' %>"
+				href="<%= page.url %>"
+			>
+				<%= page.title %>
+			</a>
+		</li>
+		<% }); %>
+	</ul>
+</nav>

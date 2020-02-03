@@ -1,5 +1,8 @@
+const products = require('../../utils/products');
+
 const saveProduct = (req, res) => {
-	console.log(req.body.name);
+	products.push({ name: req.body.name });
+	console.log(products);
 	res.redirect('/');
 };
 
