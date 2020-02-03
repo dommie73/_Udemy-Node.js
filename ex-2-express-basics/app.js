@@ -12,7 +12,6 @@ const app = express();
 app.locals.pages = pages;
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views', 'ejs'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
