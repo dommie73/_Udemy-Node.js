@@ -1,8 +1,5 @@
 const addProduct = (req, res) => {
-	res.render('add-product', {
-		pageTitle: 'Add Product',
-		css: ['product-form.css']
-	});
+	res.render('add-product', { pageTitle: 'Add Product' });
 };
 
 module.exports = addProduct;

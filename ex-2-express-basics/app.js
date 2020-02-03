@@ -1,25 +1,18 @@
 const path = require('path');
 
 const express = require('express');
-const expressHbs = require('express-handlebars');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const { currentUrl, notFound, reqLogger } = require('./middlewares');
-const hbsHelpers = require('./utils/handlebarsHelpers');
 const pages = require('./utils/pages');
 
 const app = express();
 
 app.locals.pages = pages;
 
-app.engine(
-	'hbs',
-	expressHbs({ defaultLayout: 'default', extname: 'hbs', helpers: hbsHelpers })
-);
-
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'views', 'handlebars'));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views', 'ejs'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));

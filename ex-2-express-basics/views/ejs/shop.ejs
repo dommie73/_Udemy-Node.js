@@ -1,0 +1,16 @@
+<%- include('./partials/head'); -%>
+
+<div>
+	<% if (products.length > 0) { %>
+	<h1>Products</h1>
+	<ul>
+		<% for (const product of products) { %>
+		<li><%= product.name %></li>
+		<% } %>
+	</ul>
+	<% } else { %>
+	<h1>No products yet!</h1>
+	<% } %>
+</div>
+
+<%- include('./partials/end'); -%>
