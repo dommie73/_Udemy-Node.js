@@ -1,5 +1,5 @@
-const notFound = (req, res) => {
+const get404 = (req, res) => {
 	res.status(404).render('not-found', { pageTitle: '404' });
 };
 
-module.exports = notFound;
+module.exports = get404;

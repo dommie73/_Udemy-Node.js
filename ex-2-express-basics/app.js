@@ -2,9 +2,10 @@ const path = require('path');
 
 const express = require('express');
 
+const errorController = require('./controllers/error');
+const { currentUrl, reqLogger } = require('./middlewares');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-const { currentUrl, notFound, reqLogger } = require('./middlewares');
 const pages = require('./utils/pages');
 
 const app = express();
@@ -19,6 +20,6 @@ app.use(currentUrl);
 app.use(reqLogger);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-app.use(notFound);
+app.use(errorController.get404);
 
 app.listen(3000);

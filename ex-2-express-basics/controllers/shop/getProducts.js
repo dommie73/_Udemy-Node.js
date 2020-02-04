@@ -1,7 +1,7 @@
 const products = require('../../utils/products');
 
-const displayItems = (req, res) => {
+const getProducts = (req, res) => {
 	res.render('shop', { pageTitle: 'Products', products });
 };
 
-module.exports = displayItems;
+module.exports = getProducts;
