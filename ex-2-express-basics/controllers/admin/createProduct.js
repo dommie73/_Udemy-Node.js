@@ -1,8 +1,9 @@
-const products = require('../../utils/products');
+const Product = require('../../models/Product');
 
 const createProduct = (req, res) => {
-	products.push({ name: req.body.name });
-	console.log(products);
+	const { name } = req.body;
+	const product = new Product(name);
+	product.save();
 	res.redirect('/');
 };
 
