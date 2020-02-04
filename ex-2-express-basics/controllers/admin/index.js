@@ -1,7 +1,7 @@
-const addProduct = require('./addProduct');
-const saveProduct = require('./saveProduct.js');
+const createProduct = require('./createProduct');
+const getProductForm = require('./getProductForm');
 
 module.exports = {
-	addProduct,
-	saveProduct
+	createProduct,
+	getProductForm
 };
