@@ -1,7 +1,7 @@
 const Product = require('../../models/Product');
 
-const getProducts = (req, res) => {
-	const products = Product.fetchAll();
+const getProducts = async (req, res) => {
+	const products = await Product.fetchAll();
 	res.render('shop', { pageTitle: 'Products', products });
 };
 

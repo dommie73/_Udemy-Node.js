@@ -1,9 +1,9 @@
 const Product = require('../../models/Product');
 
-const createProduct = (req, res) => {
+const createProduct = async (req, res) => {
 	const { name } = req.body;
 	const product = new Product(name);
-	product.save();
+	await product.save();
 	res.redirect('/');
 };
 
