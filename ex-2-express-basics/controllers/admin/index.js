@@ -1,7 +1,11 @@
 const createProduct = require('./createProduct');
-const getProductForm = require('./getProductForm');
+const getAddProductForm = require('./getAddProductForm');
+const getEditProductForm = require('./getEditProductForm');
+const getProducts = require('./getProducts');
 
 module.exports = {
 	createProduct,
-	getProductForm
+	getAddProductForm,
+	getEditProductForm,
+	getProducts
 };
