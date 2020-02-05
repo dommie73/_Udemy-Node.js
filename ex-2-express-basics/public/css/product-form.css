@@ -22,13 +22,24 @@
 	margin-bottom: 2.5rem;
 }
 
-.product-form-group__input {
+.product-form-group--vertical {
+	align-items: stretch;
+	flex-flow: column nowrap;
+}
+
+.product-form-group__input,
+.product-form-group__textarea {
 	background: none;
 	border: none;
 	border-bottom: 1px solid var(--main-dark);
 	flex: 1;
 	font: inherit;
 	min-width: 20rem;
+}
+
+.product-form-group__textarea {
+	border-right: 1px solid var(--main-dark);
+	resize: vertical;
 }
 
 .product-form-group__label {

@@ -2,8 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 class Product {
-	constructor(name) {
+	constructor(name, imageUrl, price, description) {
 		this.name = name;
+		this.imageUrl = imageUrl;
+		this.price = price;
+		this.description = description;
 	}
 
 	static _pathToJson = path.join(
