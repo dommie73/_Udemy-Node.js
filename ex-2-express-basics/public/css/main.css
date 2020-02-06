@@ -75,8 +75,10 @@ main {
 	border: none;
 	color: var(--main-light);
 	cursor: pointer;
+	display: inline-block;
 	font: inherit;
 	padding: 0.8rem 1.5rem;
+	text-decoration: none;
 }
 
 .button--danger {

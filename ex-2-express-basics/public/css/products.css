@@ -42,3 +42,7 @@
 .product__actions {
 	align-self: flex-end;
 }
+
+.product__action-form {
+	display: inline-block;
+}

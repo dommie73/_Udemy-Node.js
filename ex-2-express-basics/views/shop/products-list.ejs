@@ -25,10 +25,18 @@
 			</div>
 			<div class="product__actions">
 				<% if (currentUrl.startsWith('/admin')) { %>
-				<button class="button">Edit</button>
-				<button class="button button--danger">Delete</button>
+				<a href="/admin/edit-product" class="button">Edit</a>
+				<form
+					class="product__action-form"
+					action="/admin/delete-product"
+					method="POST"
+				>
+					<button class="button button--danger">Delete</button>
+				</form>
 				<% } else { %>
-				<button class="button">Add to Cart</button>
+				<form class="product__action-form" action="/add-to-cart" method="POST">
+					<button class="button">Add to Cart</button>
+				</form>
 				<% } %>
 			</div>
 		</article>
