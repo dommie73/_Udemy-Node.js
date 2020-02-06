@@ -1,6 +1,7 @@
 :root {
 	--main-dark: rgb(179, 136, 19);
 	--main-light: rgb(253, 242, 213);
+	--danger: rgb(179, 38, 19);
 }
 
 *,
@@ -76,4 +77,8 @@ main {
 	cursor: pointer;
 	font: inherit;
 	padding: 0.8rem 1.5rem;
+}
+
+.button--danger {
+	background-color: var(--danger);
 }

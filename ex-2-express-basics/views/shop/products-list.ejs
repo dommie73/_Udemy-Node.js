@@ -2,7 +2,9 @@
 
 <section>
 	<% if (products && products.length > 0) { %>
-	<h1 class="main-heading">Products</h1>
+	<h1 class="main-heading">
+		<%= `${(currentUrl.startsWith('/admin')) ? 'Admin' : ''} Products`%>
+	</h1>
 	<div class="products-list">
 		<% for (const product of products) { %>
 		<article class="product">
@@ -22,7 +24,12 @@
 				<p><%= product.description %></p>
 			</div>
 			<div class="product__actions">
+				<% if (currentUrl.startsWith('/admin')) { %>
+				<button class="button">Edit</button>
+				<button class="button button--danger">Delete</button>
+				<% } else { %>
 				<button class="button">Add to Cart</button>
+				<% } %>
 			</div>
 		</article>
 		<% } %>
