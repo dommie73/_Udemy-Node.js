@@ -2,7 +2,6 @@
 	display: flex;
 	flex-flow: column nowrap;
 	font-size: 1.8rem;
-	padding: 0 4rem;
 	max-width: 65rem;
 	width: 100%;
 }
