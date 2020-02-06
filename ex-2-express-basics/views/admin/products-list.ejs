@@ -1,5 +1,35 @@
-<%- include('../partials/head') -%>
+<%- include('../partials/head', { styles: ['products'] }); -%>
 
-<h1>Admin Products</h1>
+<section>
+	<% if (products && products.length > 0) { %>
+	<h1 class="main-heading">Admin Products</h1>
+	<div class="products-list">
+		<% for (const product of products) { %>
+		<article class="product">
+			<header class="product__header">
+				<h2><%= product.name %></h2>
+				<p class="product__price">
+					<span class="currency">$</span>
+					<span><%= product.price %></span>
+				</p>
+			</header>
+			<div class="product__content">
+				<img
+					class="product__image"
+					alt="<%= product.name %>"
+					src="<%= product.imageUrl %>"
+				/>
+				<p><%= product.description %></p>
+			</div>
+			<div class="product__actions">
+				<button class="button">Add to Cart</button>
+			</div>
+		</article>
+		<% } %>
+	</div>
+	<% } else { %>
+	<h1>No products yet!</h1>
+	<% } %>
+</section>
 
-<%- include('../partials/end') -%>
+<%- include('../partials/end'); -%>
