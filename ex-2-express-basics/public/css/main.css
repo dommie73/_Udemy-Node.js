@@ -1,6 +1,7 @@
 :root {
 	--main-dark: rgb(179, 136, 19);
 	--main-light: rgb(253, 242, 213);
+	--danger: rgb(179, 38, 19);
 }
 
 *,
@@ -30,6 +31,12 @@ main {
 	justify-content: center;
 	margin: 4rem auto;
 	max-width: 160rem;
+	padding: 0 4rem;
+}
+
+.main-heading {
+	font-size: 3.2rem;
+	margin: 3rem 0;
 }
 
 .main-nav {
@@ -40,6 +47,7 @@ main {
 }
 
 .main-nav__list {
+	align-items: center;
 	display: flex;
 	list-style: none;
 	margin: 0;
@@ -67,6 +75,12 @@ main {
 	border: none;
 	color: var(--main-light);
 	cursor: pointer;
+	display: inline-block;
 	font: inherit;
 	padding: 0.8rem 1.5rem;
+	text-decoration: none;
+}
+
+.button--danger {
+	background-color: var(--danger);
 }

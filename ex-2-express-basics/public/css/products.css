@@ -1,0 +1,48 @@
+.products-list {
+	align-items: center;
+	display: grid;
+	grid-gap: 4rem;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.product {
+	border: 1px solid var(--main-dark);
+	display: flex;
+	flex-flow: column nowrap;
+	height: 100%;
+	padding: 3rem;
+}
+
+.product__header {
+	margin: 0;
+	text-align: center;
+}
+
+.product__header h2 {
+	margin: 0;
+	font-size: 2.4rem;
+}
+
+.product__price {
+	color: var(--main-dark);
+	font-size: 4rem;
+	font-weight: 600;
+	margin: 1.5rem 0;
+}
+
+.product__price .currency {
+	font-size: 2.4rem;
+	vertical-align: middle;
+}
+
+.product__image {
+	width: 100%;
+}
+
+.product__actions {
+	align-self: flex-end;
+}
+
+.product__action-form {
+	display: inline-block;
+}
