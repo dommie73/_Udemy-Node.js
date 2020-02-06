@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/', shopControllers.getIndex);
 router.get('/cart', shopControllers.getCart);
+router.get('/orders', shopControllers.getOrders);
 router.get('/checkout', shopControllers.getCheckout);
 router.get('/products', shopControllers.getProducts);
 router.get('/products/:id', shopControllers.getProductDetails);
