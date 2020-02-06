@@ -4,7 +4,7 @@ const createProduct = async (req, res) => {
 	const { name, imageurl, price, desc } = req.body;
 	const product = new Product(name, imageurl, price, desc);
 	await product.save();
-	res.redirect('/');
+	res.redirect('/admin/products');
 };
 
 module.exports = createProduct;
