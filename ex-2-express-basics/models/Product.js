@@ -63,6 +63,7 @@ class Product {
 	}
 
 	async save() {
+		this.id = Math.floor(Math.random() * 10 ** 8).toString();
 		const products = await Product._readFile();
 		await Product._writeFile(products.concat(this));
 	}

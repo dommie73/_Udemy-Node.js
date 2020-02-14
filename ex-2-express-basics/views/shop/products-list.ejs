@@ -25,7 +25,7 @@
 			</div>
 			<div class="product__actions">
 				<% if (currentUrl.startsWith('/admin')) { %>
-				<a href="/admin/edit-product" class="button">Edit</a>
+				<a href="/admin/edit-product/<%= product.id %>" class="button">Edit</a>
 				<form
 					class="product__action-form"
 					action="/admin/delete-product"
@@ -34,6 +34,7 @@
 					<button class="button button--danger">Delete</button>
 				</form>
 				<% } else { %>
+				<a class="button" href="/products/<%= product.id %>">Details</a>
 				<form class="product__action-form" action="/add-to-cart" method="POST">
 					<button class="button">Add to Cart</button>
 				</form>
