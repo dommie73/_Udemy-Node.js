@@ -62,6 +62,11 @@ class Product {
 		return await Product._readFile();
 	}
 
+	static async fetchById(id) {
+		const products = await Product._readFile();
+		return products.find(product => product.id === id);
+	}
+
 	async save() {
 		this.id = Math.floor(Math.random() * 10 ** 8).toString();
 		const products = await Product._readFile();
