@@ -1,5 +1,36 @@
-<%- include('../partials/head') -%>
+<%- include('../partials/head', { styles: ['products'] }); -%>
 
-<h1>Product Details: <%= product.id %></h1>
+<div>
+	<% if (product) { %>
+	<article class="product product--detailed">
+		<h1 class="product__name main-heading"><%= product.name %></h1>
+		<div class="product__price">
+			<span class="currency">$</span>
+			<span><%= product.price %></span>
+		</div>
+		<img
+			class="product__image"
+			alt="<%= product.name %>"
+			src="<%= product.imageUrl %>"
+		/>
+		<p class="product__description"><%= product.description %></p>
+		<div class="product__actions">
+			<form class="product__action-form" action="/add-to-cart" method="POST">
+				<button class="button">Add to Cart</button>
+			</form>
+		</div>
+	</article>
+	<% } else { %>
+	<h1 class="main-heading">Ooops!</h1>
+	<p>
+		We couldn't process your request :c The link you followed is broken or the
+		product has been removed.
+	</p>
+	<p>
+		How about checking other products in our shop?
+	</p>
+	<a href="/products" class="button">Go to Products</a>
+	<% } %>
+</div>
 
-<%- include('../partials/end') -%>
+<%- include('../partials/end'); -%>
