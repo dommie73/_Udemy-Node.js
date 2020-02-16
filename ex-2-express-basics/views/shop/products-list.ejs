@@ -30,9 +30,7 @@
 				</form>
 				<% } else { %>
 				<a class="button" href="/products/<%= product.id %>">Details</a>
-				<form class="product__action-form" action="/add-to-cart" method="POST">
-					<button class="button">Add to Cart</button>
-				</form>
+				<%- include('../partials/add-to-cart', { product }); -%> 
 				<% } %>
 			</div>
 		</article>
