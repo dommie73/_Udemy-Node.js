@@ -1,6 +1,9 @@
-const addToCart = (req, res) => {
+const { Cart, Product } = require('../../models');
+
+const addToCart = async (req, res) => {
 	const { productId } = req.body;
-	console.log(productId);
+	const { price } = await Product.fetchById(productId);
+	await Cart.addProduct(productId, price);
 	res.redirect('/cart');
 };
 
