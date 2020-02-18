@@ -3,10 +3,12 @@
 <form
 	autocomplete="off"
 	class="product-form"
-	action="/admin/add-product"
+	action="/admin/<%= editing ? 'edit': 'add' %>-product"
 	method="POST"
 >
-	<h1 class="main-heading">Add Product</h1>
+	<h1 class="main-heading">
+		<%= editing ? `Edit Product: ${product.name}` : 'Add Product' %>
+	</h1>
 	<div class="product-form-group">
 		<label class="product-form-group__label" for="name">Name</label>
 		<input
@@ -14,6 +16,7 @@
 			id="name"
 			name="name"
 			type="text"
+			value="<%= editing ? product.name : '' %>"
 		/>
 	</div>
 	<div class="product-form-group">
@@ -23,6 +26,7 @@
 			id="imageurl"
 			name="imageurl"
 			type="text"
+			value="<%= editing ? product.imageUrl : '' %>"
 		/>
 	</div>
 	<div class="product-form-group">
@@ -34,6 +38,7 @@
 			name="price"
 			step="0.01"
 			type="number"
+			value="<%= editing ? product.price : '' %>"
 		/>
 	</div>
 	<div class="product-form-group product-form-group--vertical">
@@ -43,9 +48,11 @@
 			id="desc"
 			name="desc"
 			rows="7"
-		></textarea>
+		><%= editing ? product.description : '' %></textarea>
 	</div>
-	<button class="button" type="submit">Add Product</button>
+	<button class="button" type="submit">
+		<%= editing ? 'Update' : 'Add' %> Product
+	</button>
 </form>
 
 <%- include('../partials/end'); -%>
