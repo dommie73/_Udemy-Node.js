@@ -20,7 +20,12 @@
 			/>
 			<div class="product__actions">
 				<% if (currentUrl.startsWith('/admin')) { %>
-				<a href="/admin/edit-product/<%= product.id %>" class="button">Edit</a>
+				<a
+					href="/admin/edit-product/<%= product.id %>?edit=true"
+					class="button"
+				>
+					Edit
+				</a>
 				<form
 					class="product__action-form"
 					action="/admin/delete-product"
@@ -30,8 +35,7 @@
 				</form>
 				<% } else { %>
 				<a class="button" href="/products/<%= product.id %>">Details</a>
-				<%- include('../partials/add-to-cart', { product }); -%> 
-				<% } %>
+				<%- include('../partials/add-to-cart', { product }); -%> <% } %>
 			</div>
 		</article>
 		<% } %>
