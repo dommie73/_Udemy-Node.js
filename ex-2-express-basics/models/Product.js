@@ -33,9 +33,20 @@ class Product extends JSONFileManager {
 		return products.find(product => product.id === id);
 	}
 
-	async save() {
+	async save(data = {}) {
+		const products = await Product.fetchAll();
+
+		if (this.hasOwnProperty('id')) {
+			for (const [key, value] of Object.entries(data)) {
+				this[key] = value;
+			}
+			const updatedProducts = products.map(product =>
+				product.id === this.id ? this : product
+			);
+			return await Product.writeFile(updatedProducts);
+		}
+
 		this.id = Math.floor(Math.random() * 10 ** 8).toString();
-		const products = await Product.readFile();
 		await Product.writeFile(products.concat({ ...this, price: +this.price }));
 	}
 }
