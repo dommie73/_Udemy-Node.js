@@ -14,6 +14,7 @@
 		'price'
 		'image'
 		'actions';
+	grid-template-rows: 1fr repeat(3, max-content);
 	height: 100%;
 	justify-items: center;
 	padding: 3rem;
@@ -39,6 +40,7 @@
 .product:not(.product--detailed) .product__name {
 	margin: 0;
 	font-size: 2.4rem;
+	text-align: center;
 }
 
 .product__price {
@@ -56,17 +58,36 @@
 
 .product__description {
 	grid-area: description;
+	white-space: pre-wrap;
 }
 
-.product__image {
+.product__image-wrapper {
 	grid-area: image;
-	margin-bottom: 1.5rem;
 	width: 100%;
 }
 
+.product:not(.product--detailed) .product__image-wrapper {
+	padding-top: 75%;
+	position: relative;
+}
+
+.product__image {
+	width: 100%;
+}
+
+.product:not(.product--detailed) .product__image {
+	height: 100%;
+	left: 0;
+	object-fit: cover;
+	position: absolute;
+	top: 0;
+}
+
 .product__actions {
+	align-self: end;
 	grid-area: actions;
 	justify-self: end;
+	margin-top: 1.5rem;
 }
 
 .product__actions > :not(:last-child) {

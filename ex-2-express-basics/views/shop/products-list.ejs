@@ -13,11 +13,13 @@
 				<span class="currency">$</span>
 				<span><%= product.price.toFixed(2) %></span>
 			</div>
-			<img
-				class="product__image"
-				alt="<%= product.name %>"
-				src="<%= product.imageUrl %>"
-			/>
+			<div class="product__image-wrapper">
+				<img
+					class="product__image"
+					alt="<%= product.name %>"
+					src="<%= product.imageUrl %>"
+				/>
+			</div>
 			<div class="product__actions">
 				<% if (currentUrl.startsWith('/admin')) { %>
 				<a

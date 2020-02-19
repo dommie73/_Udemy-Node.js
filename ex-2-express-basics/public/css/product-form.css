@@ -31,9 +31,12 @@
 	background: none;
 	border: none;
 	border-bottom: 1px solid var(--main-dark);
-	flex: 1;
 	font: inherit;
 	min-width: 20rem;
+}
+
+.product-form-group__input {
+	flex: 1;
 }
 
 .product-form-group__textarea {
