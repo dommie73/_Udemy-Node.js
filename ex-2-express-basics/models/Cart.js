@@ -29,6 +29,21 @@ class Cart extends JSONFileManager {
 		});
 	}
 
+	static async deleteProduct(id, price) {
+		const { products, totalPrice } = await this.fetch();
+		const productQty = products[id] || 0;
+		const updatedTotalPrice = this._updateTotalPrice(
+			totalPrice,
+			-1 * productQty * price
+		);
+
+		delete products[id];
+		await this.writeFile({
+			products,
+			totalPrice: updatedTotalPrice
+		});
+	}
+
 	static async fetch() {
 		return await this.readFile();
 	}

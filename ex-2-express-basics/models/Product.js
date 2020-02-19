@@ -1,5 +1,6 @@
 const path = require('path');
 
+const Cart = require('./Cart');
 const JSONFileManager = require('./JSONFileManager');
 
 class Product extends JSONFileManager {
@@ -26,7 +27,9 @@ class Product extends JSONFileManager {
 
 	static async deleteById(id) {
 		const products = await Product.fetchAll();
+		const productToDelete = products.find(product => product.id === id);
 		const updatedProducts = products.filter(product => product.id !== id);
+		await Cart.deleteProduct(id, productToDelete.price);
 		await Product.writeFile(updatedProducts);
 	}
 
