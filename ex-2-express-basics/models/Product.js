@@ -24,6 +24,12 @@ class Product extends JSONFileManager {
 		});
 	}
 
+	static async deleteById(id) {
+		const products = await Product.fetchAll();
+		const updatedProducts = products.filter(product => product.id !== id);
+		await Product.writeFile(updatedProducts);
+	}
+
 	static async fetchAll() {
 		return await this.readFile();
 	}

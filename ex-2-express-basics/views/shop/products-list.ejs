@@ -33,6 +33,7 @@
 					action="/admin/delete-product"
 					method="POST"
 				>
+					<input name="id" type="hidden" value="<%= product.id %>" />
 					<button class="button button--danger">Delete</button>
 				</form>
 				<% } else { %>
