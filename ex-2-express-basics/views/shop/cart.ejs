@@ -1,35 +1,38 @@
-<%- include('../partials/head') -%>
+<%- include('../partials/head', { styles: ['cart'] }); -%>
 
 <div>
 	<% if (cart) { %>
 	<h1 class="main-heading">Cart</h1>
-	<table>
-		<thead>
+	<table class="cart">
+		<thead class="cart__thead">
 			<tr>
-				<th>Product name</th>
-				<th>Price</th>
-				<th>Amount</th>
-				<th>Actions</th>
+				<th class="cart__th cart__th--product">Product</th>
+				<th class="cart__th cart__th--price">Price</th>
+				<th class="cart__th cart__th--amount">Amount</th>
+				<th class="cart__th cart__th--actions">Actions</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="cart__tbody">
 			<% for (const [id, product] of Object.entries(cart.products)) {%>
 			<tr>
-				<td><a href="/products/<%= id %>"><%= product.name %></a></td>
-				<td>$ <%= product.price %></td>
-				<td><%= product.amount %></td>
-				<td>
+				<td class="cart__td cart__td--product">
+					<a href="/products/<%= id %>"><%= product.name %></a>
+				</td>
+				<td class="cart__td cart__td--price">$ <%= product.price %></td>
+				<td class="cart__td cart__td--amount"><%= product.amount %></td>
+				<td class="cart__td cart__td--actions">
 					<form action="/cart/delete-product" method="POST">
 						<input name="id" value="<%= id %>" type="hidden" />
-						<button class="button button--danger">Delete</button>
+						<button class="button button--danger button--small">Delete</button>
 					</form>
 				</td>
 			</tr>
 			<% } %>
 		</tbody>
 	</table>
-	<div>
-		Total price: $ <%= cart.totalPrice.toFixed(2) %>
+	<div class="summary">
+		Total price:
+		<span class="summary__price">$ <%= cart.totalPrice.toFixed(2) %></span>
 	</div>
 	<% } else { %>
 	<h1 class="main-heading">Ooops!</h1>
@@ -40,4 +43,4 @@
 	<% } %>
 </div>
 
-<%- include('../partials/end') -%>
+<%- include('../partials/end'); -%>
