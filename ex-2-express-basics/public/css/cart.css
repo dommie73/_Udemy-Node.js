@@ -1,0 +1,38 @@
+.cart {
+	border-bottom: 1px solid var(--main-dark);
+	border-right: 1px solid var(--main-dark);
+	padding: 0 0 2rem 0;
+}
+
+.cart__thead {
+	font-size: 2.4rem;
+	text-align: left;
+}
+
+.cart__th {
+	padding-right: 6rem;
+	padding-bottom: 1.5rem;
+}
+
+.cart__tbody {
+	font-size: 1.8rem;
+}
+
+.cart__td {
+	padding-right: 2rem;
+	padding-bottom: 0.5rem;
+}
+
+.cart__td.cart__td--actions {
+	font-size: 1.5rem;
+}
+
+.summary {
+	font-size: 2rem;
+	margin-top: 2rem;
+	text-align: right;
+}
+
+.summary__price {
+	font-weight: 600;
+}

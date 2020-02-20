@@ -1,5 +1,46 @@
-<%- include('../partials/head') -%>
+<%- include('../partials/head', { styles: ['cart'] }); -%>
 
-<h1>Cart</h1>
+<div>
+	<% if (cart) { %>
+	<h1 class="main-heading">Cart</h1>
+	<table class="cart">
+		<thead class="cart__thead">
+			<tr>
+				<th class="cart__th cart__th--product">Product</th>
+				<th class="cart__th cart__th--price">Price</th>
+				<th class="cart__th cart__th--amount">Amount</th>
+				<th class="cart__th cart__th--actions">Actions</th>
+			</tr>
+		</thead>
+		<tbody class="cart__tbody">
+			<% for (const [id, product] of Object.entries(cart.products)) {%>
+			<tr>
+				<td class="cart__td cart__td--product">
+					<a href="/products/<%= id %>"><%= product.name %></a>
+				</td>
+				<td class="cart__td cart__td--price">$ <%= product.price %></td>
+				<td class="cart__td cart__td--amount"><%= product.amount %></td>
+				<td class="cart__td cart__td--actions">
+					<form action="/cart/delete-product" method="POST">
+						<input name="id" value="<%= id %>" type="hidden" />
+						<button class="button button--danger button--small">Delete</button>
+					</form>
+				</td>
+			</tr>
+			<% } %>
+		</tbody>
+	</table>
+	<div class="summary">
+		Total price:
+		<span class="summary__price">$ <%= cart.totalPrice.toFixed(2) %></span>
+	</div>
+	<% } else { %>
+	<h1 class="main-heading">Ooops!</h1>
+	<p>
+		We couldn't find your cart :c
+	</p>
+	<a href="/" class="button">Go to Home Page</a>
+	<% } %>
+</div>
 
-<%- include('../partials/end') -%>
+<%- include('../partials/end'); -%>

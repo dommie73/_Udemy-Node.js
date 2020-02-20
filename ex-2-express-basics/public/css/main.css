@@ -34,6 +34,15 @@ main {
 	padding: 0 4rem;
 }
 
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.w-100 {
+	width: 100%;
+}
+
 .main-heading {
 	font-size: 3.2rem;
 	margin: 3rem 0;
@@ -59,8 +68,6 @@ main {
 }
 
 .main-nav__list-item a {
-	color: inherit;
-	text-decoration: none;
 	transition: 0.05s color linear;
 }
 
@@ -83,4 +90,8 @@ main {
 
 .button--danger {
 	background-color: var(--danger);
+}
+
+.button--small {
+	padding: 0.4rem 0.8rem;
 }

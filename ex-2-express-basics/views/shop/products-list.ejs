@@ -1,6 +1,6 @@
 <%- include('../partials/head', { styles: ['products'] }); -%>
 
-<section>
+<section class="w-100">
 	<% if (products && products.length > 0) { %>
 	<h1 class="main-heading">
 		<%= `${(currentUrl.startsWith('/admin')) ? 'Admin' : ''} Products`%>
@@ -8,36 +8,37 @@
 	<div class="products-list">
 		<% for (const product of products) { %>
 		<article class="product">
-			<header class="product__header">
-				<h2><%= product.name %></h2>
-				<p class="product__price">
-					<span class="currency">$</span>
-					<span><%= product.price %></span>
-				</p>
-			</header>
-			<div class="product__content">
+			<h2 class="product__name subheading"><%= product.name %></h2>
+			<div class="product__price">
+				<span class="currency">$</span>
+				<span><%= product.price.toFixed(2) %></span>
+			</div>
+			<div class="product__image-wrapper">
 				<img
 					class="product__image"
 					alt="<%= product.name %>"
 					src="<%= product.imageUrl %>"
 				/>
-				<p><%= product.description %></p>
 			</div>
 			<div class="product__actions">
 				<% if (currentUrl.startsWith('/admin')) { %>
-				<a href="/admin/edit-product" class="button">Edit</a>
+				<a
+					href="/admin/edit-product/<%= product.id %>?edit=true"
+					class="button"
+				>
+					Edit
+				</a>
 				<form
 					class="product__action-form"
 					action="/admin/delete-product"
 					method="POST"
 				>
+					<input name="id" type="hidden" value="<%= product.id %>" />
 					<button class="button button--danger">Delete</button>
 				</form>
 				<% } else { %>
-				<form class="product__action-form" action="/add-to-cart" method="POST">
-					<button class="button">Add to Cart</button>
-				</form>
-				<% } %>
+				<a class="button" href="/products/<%= product.id %>">Details</a>
+				<%- include('../partials/add-to-cart', { product }); -%> <% } %>
 			</div>
 		</article>
 		<% } %>
