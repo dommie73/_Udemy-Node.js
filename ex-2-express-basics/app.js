@@ -7,6 +7,7 @@ const { currentUrl, reqLogger } = require('./middlewares');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
+const db = require('./database');
 
 const app = express();
 
@@ -21,5 +22,9 @@ app.use(reqLogger);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
+
+db.execute('SELECT * from `products`')
+	.then(([rows]) => console.log(rows))
+	.catch(error => console.log(error));
 
 app.listen(process.env.PORT);
