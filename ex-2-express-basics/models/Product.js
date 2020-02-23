@@ -1,62 +1,80 @@
-const path = require('path');
+const db = require('../database');
+const { logError } = require('../utils/helpers');
 
-const Cart = require('./Cart');
-const JSONFileManager = require('./JSONFileManager');
-
-class Product extends JSONFileManager {
-	static _pathToJson = path.join('data', 'products.json');
-
+class Product {
 	constructor(name, imageUrl, price, description) {
-		super();
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.price = price;
 		this.description = description;
 	}
 
-	static parseJSONData(data) {
-		return JSON.parse(data, (key, value) => {
-			if (Array.isArray(value)) {
-				value.forEach(product => {
-					Object.setPrototypeOf(product, this.prototype);
-				});
-			}
-			return value;
+	static _mapDataFromDB(data) {
+		return data.map(({ id, name, description, price, image_url }) => {
+			const mappedObject = {
+				id,
+				name,
+				description,
+				price: +price,
+				imageUrl: image_url
+			};
+			Object.setPrototypeOf(mappedObject, Product.prototype);
+			return mappedObject;
 		});
 	}
 
 	static async deleteById(id) {
-		const products = await Product.fetchAll();
-		const productToDelete = products.find(product => product.id === id);
-		const updatedProducts = products.filter(product => product.id !== id);
-		await Cart.deleteProduct(id, productToDelete.price);
-		await Product.writeFile(updatedProducts);
+		try {
+			await db.execute('DELETE FROM `products` WHERE `id` = ?', [id]);
+		} catch (error) {
+			logError(error);
+		}
 	}
 
 	static async fetchAll() {
-		return await this.readFile();
+		try {
+			const [rows] = await db.execute('SELECT * from `products`');
+			return this._mapDataFromDB(rows);
+		} catch (error) {
+			logError(error);
+			return null;
+		}
 	}
 
 	static async fetchById(id) {
-		const products = await this.readFile();
-		return products.find(product => product.id === id);
+		try {
+			const [
+				rows
+			] = await db.execute('SELECT * from `products` WHERE `id` = ? LIMIT 1', [
+				id
+			]);
+			const [row] = this._mapDataFromDB(rows);
+			return row;
+		} catch (error) {
+			logError(error);
+			return null;
+		}
 	}
 
 	async save(data = {}) {
-		const products = await Product.fetchAll();
+		const hasId = this.hasOwnProperty('id');
+		const { name, price, description, imageUrl } = hasId ? data : this;
 
-		if (this.hasOwnProperty('id')) {
-			for (const [key, value] of Object.entries(data)) {
-				this[key] = value;
+		try {
+			if (hasId) {
+				return await db.execute(
+					'UPDATE `products` SET `name` = ?, `price` = ?, `description` = ?, `image_url` = ? WHERE `id` = ?',
+					[name, price, description, imageUrl, this.id]
+				);
 			}
-			const updatedProducts = products.map(product =>
-				product.id === this.id ? this : product
-			);
-			return await Product.writeFile(updatedProducts);
-		}
 
-		this.id = Math.floor(Math.random() * 10 ** 8).toString();
-		await Product.writeFile(products.concat({ ...this, price: +this.price }));
+			await db.execute(
+				'INSERT INTO `products` (`name`,  `price`, `description`, `image_url`) VALUES (?, ?, ?, ?)',
+				[name, price, description, imageUrl]
+			);
+		} catch (error) {
+			logError(error);
+		}
 	}
 }
 
