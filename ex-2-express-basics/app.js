@@ -7,6 +7,8 @@ const { currentUrl, reqLogger } = require('./middlewares');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
+const { logError } = require('./utils/helpers');
+const sequelize = require('./database');
 
 const app = express();
 
@@ -22,4 +24,7 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
-app.listen(process.env.PORT);
+sequelize
+	.sync()
+	.then(() => app.listen(process.env.PORT))
+	.catch(error => logError(error));
