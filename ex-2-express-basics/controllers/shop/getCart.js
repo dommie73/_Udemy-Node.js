@@ -1,13 +1,12 @@
-const { Cart, Product } = require('../../models');
-
 const getCart = async (req, res) => {
-	const cart = await Cart.fetch();
-	for (const id of Object.keys(cart.products)) {
-		const amount = cart.products[id];
-		const { name, price } = await Product.fetchById(id);
-		cart.products[id] = Object.assign({}, { amount, name, price });
-	}
-	res.render('shop/cart', { pageTitle: 'Cart', cart });
+	const { user } = req;
+	const cart = await user.getCart();
+	const products = await cart.getProducts();
+	const totalPrice = products.reduce(
+		(acc, value) => acc + value.price * value.CartProduct.quantity,
+		0
+	);
+	res.render('shop/cart', { pageTitle: 'Cart', products, totalPrice });
 };
 
 module.exports = getCart;
