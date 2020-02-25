@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 
 const sequelize = require('../database');
+const Cart = require('./Cart');
 const Product = require('./Product');
 
 class User extends Model {}
@@ -25,5 +26,12 @@ User.hasMany(Product, {
 });
 
 Product.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasOne(Cart, {
+	foreignKey: {
+		name: 'userId',
+		unique: true
+	}
+});
 
 module.exports = User;
