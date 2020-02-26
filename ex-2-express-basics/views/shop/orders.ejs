@@ -1,5 +1,45 @@
-<%- include('../partials/head') -%>
+<%- include('../partials/head'); -%>
 
-<h1>Orders</h1>
+<section>
+	<% if (orders && orders.length) { %>
+	<h1 class="main-heading">Orders</h1>
+	<div class="orders-list">
+		<% for (const order of orders) { %>
+		<article class="order">
+			<header class="order__title">
+				<h2 class="subheading">
+					Order #<%= order.id %>
+				</h2>
+				<p>
+					from
+					<time datetime="<%= order.createdAt %>">
+						<%= order.createdAt.toLocaleString() %>
+					</time>
+				</p>
+			</header>
+			<div>
+				Products:
+				<ul>
+					<% for (const product of order.Products) { %>
+					<li>
+						<%= product.OrderProduct.quantity %> x <%= product.name %>
+					</li>
+					<% } %>
+				</ul>
+			</div>
+			<div class="summary">
+				Total price:
+				<span class="summary__price">
+					$ <%= order.Products.reduce((acc, value) => acc + value.price *
+					value.OrderProduct.quantity, 0); %>
+				</span>
+			</div>
+		</article>
+		<% } %>
+	</div>
+	<% } else { %>
+	<h1 class="main-heading">No orders yet!</h1>
+	<% } %>
+</section>
 
-<%- include('../partials/end') -%>
+<%- include('../partials/end'); -%>
