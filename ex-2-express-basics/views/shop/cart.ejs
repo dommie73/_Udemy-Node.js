@@ -35,6 +35,11 @@
 	<div class="summary">
 		Total price:
 		<span class="summary__price">$ <%= totalPrice %></span>
+		<div class="summary__actions">
+			<form action="/order" method="POST">
+				<button class="button">Order Now</button>
+			</form>
+		</div>
 	</div>
 	<% } else { %>
 	<h1 class="main-heading">Cart is empty</h1>
