@@ -1,0 +1,56 @@
+.orders-list-wrapper {
+	max-width: 75rem;
+}
+
+.order {
+	border: 1px solid var(--main-dark);
+	display: grid;
+	gap: 1.5rem;
+	grid-template-areas:
+		'header'
+		'products';
+	padding: 3rem;
+}
+
+.order:not(:last-child) {
+	margin-bottom: 4rem;
+}
+
+.order__header {
+	align-items: center;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+}
+
+.order__title {
+	align-items: baseline;
+	display: flex;
+	flex: 1 1 24rem;
+	flex-flow: row wrap;
+	margin-right: 2rem;
+}
+
+.order__title > h2 {
+	margin: 0 1rem 0 0;
+}
+
+.order__title p {
+	margin: 1rem 0;
+}
+
+.order__products {
+	color: var(--main-dark);
+	grid-area: products;
+}
+
+.order__products-list {
+	font-size: 1.4rem;
+	list-style-type: square;
+	margin: 0;
+	padding-left: 3rem;
+}
+
+.order__price {
+	grid-area: price;
+}

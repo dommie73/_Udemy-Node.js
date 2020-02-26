@@ -1,38 +1,40 @@
-<%- include('../partials/head'); -%>
+<%- include('../partials/head', { styles: ['orders', 'products'] }); -%>
 
-<section>
+<section class="orders-list-wrapper w-100">
 	<% if (orders && orders.length) { %>
 	<h1 class="main-heading">Orders</h1>
 	<div class="orders-list">
 		<% for (const order of orders) { %>
 		<article class="order">
-			<header class="order__title">
-				<h2 class="subheading">
-					Order #<%= order.id %>
-				</h2>
-				<p>
-					from
-					<time datetime="<%= order.createdAt %>">
-						<%= order.createdAt.toLocaleString() %>
-					</time>
-				</p>
+			<header class="order__header">
+				<div class="order__title">
+					<h2>
+						Order #<%= order.id %>
+					</h2>
+					<p>
+						from
+						<time datetime="<%= order.createdAt %>">
+							<%= order.createdAt.toLocaleString() %>
+						</time>
+					</p>
+				</div>
+				<div class="order__price product__price">
+					<span class="currency">$</span>
+					<span>
+						<%= order.Products.reduce((acc, value) => acc + value.price *
+						value.OrderProduct.quantity, 0); %>
+					</span>
+				</div>
 			</header>
-			<div>
+			<div class="order__products">
 				Products:
-				<ul>
+				<ul class="order__products-list">
 					<% for (const product of order.Products) { %>
 					<li>
 						<%= product.OrderProduct.quantity %> x <%= product.name %>
 					</li>
 					<% } %>
 				</ul>
-			</div>
-			<div class="summary">
-				Total price:
-				<span class="summary__price">
-					$ <%= order.Products.reduce((acc, value) => acc + value.price *
-					value.OrderProduct.quantity, 0); %>
-				</span>
 			</div>
 		</article>
 		<% } %>
