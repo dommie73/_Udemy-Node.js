@@ -2,6 +2,7 @@ const { DataTypes, Model } = require('sequelize');
 
 const sequelize = require('../database');
 const Cart = require('./Cart');
+const Order = require('./Order');
 const Product = require('./Product');
 
 class User extends Model {}
@@ -19,6 +20,12 @@ User.init(
 	},
 	{ sequelize }
 );
+
+User.hasMany(Order, {
+	foreignKey: 'userId'
+});
+
+Order.belongsTo(User, { foreignKey: 'userId' });
 
 User.hasMany(Product, {
 	foreignKey: 'userId',
