@@ -1,11 +1,10 @@
-const { Product } = require('../../models');
-
 const getEditProductForm = async (req, res) => {
+	const { user } = req;
 	const { id } = req.params;
 	const { edit } = req.query;
 
 	if (edit === 'true') {
-		const product = await Product.fetchById(id);
+		const [product] = await user.getProducts({ where: { id } });
 		res.render('admin/edit-product', {
 			pageTitle: 'Edit Product',
 			editing: true,

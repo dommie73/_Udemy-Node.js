@@ -1,28 +1,30 @@
 <%- include('../partials/head', { styles: ['cart'] }); -%>
 
 <div>
-	<% if (cart) { %>
+	<% if (products && products.length) { %>
 	<h1 class="main-heading">Cart</h1>
 	<table class="cart">
 		<thead class="cart__thead">
 			<tr>
 				<th class="cart__th cart__th--product">Product</th>
 				<th class="cart__th cart__th--price">Price</th>
-				<th class="cart__th cart__th--amount">Amount</th>
+				<th class="cart__th cart__th--quantity">Quantity</th>
 				<th class="cart__th cart__th--actions">Actions</th>
 			</tr>
 		</thead>
 		<tbody class="cart__tbody">
-			<% for (const [id, product] of Object.entries(cart.products)) {%>
+			<% for (const product of products) {%>
 			<tr>
 				<td class="cart__td cart__td--product">
-					<a href="/products/<%= id %>"><%= product.name %></a>
+					<a href="/products/<%= product.id %>"><%= product.name %></a>
 				</td>
 				<td class="cart__td cart__td--price">$ <%= product.price %></td>
-				<td class="cart__td cart__td--amount"><%= product.amount %></td>
+				<td class="cart__td cart__td--quantity">
+					<%= product.CartProduct.quantity %>
+				</td>
 				<td class="cart__td cart__td--actions">
 					<form action="/cart/delete-product" method="POST">
-						<input name="id" value="<%= id %>" type="hidden" />
+						<input name="id" value="<%= product.id %>" type="hidden" />
 						<button class="button button--danger button--small">Delete</button>
 					</form>
 				</td>
@@ -32,14 +34,19 @@
 	</table>
 	<div class="summary">
 		Total price:
-		<span class="summary__price">$ <%= cart.totalPrice.toFixed(2) %></span>
+		<span class="summary__price">$ <%= totalPrice %></span>
+		<div class="summary__actions">
+			<form action="/order" method="POST">
+				<button class="button">Order Now</button>
+			</form>
+		</div>
 	</div>
 	<% } else { %>
-	<h1 class="main-heading">Ooops!</h1>
+	<h1 class="main-heading">Cart is empty</h1>
 	<p>
-		We couldn't find your cart :c
+		You haven't added any products to your cart yet.
 	</p>
-	<a href="/" class="button">Go to Home Page</a>
+	<a href="/products" class="button">Go to Shop</a>
 	<% } %>
 </div>
 

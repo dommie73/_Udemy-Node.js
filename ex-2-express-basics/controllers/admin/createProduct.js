@@ -1,9 +1,7 @@
-const Product = require('../../models/Product');
-
 const createProduct = async (req, res) => {
+	const { user } = req;
 	const { name, imageUrl, price, description } = req.body;
-	const product = new Product(name, imageUrl, price, description);
-	await product.save();
+	await user.createProduct({ name, imageUrl, price, description });
 	res.redirect('/admin/products');
 };
 

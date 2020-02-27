@@ -1,52 +1,21 @@
-const path = require('path');
+const { Model } = require('sequelize');
 
-const JSONFileManager = require('./JSONFileManager');
+const sequelize = require('../database');
+const CartProduct = require('./CartProduct');
+const Product = require('./Product');
 
-class Cart extends JSONFileManager {
-	static _pathToJson = path.join('data', 'cart.json');
+class Cart extends Model {}
 
-	static _updateProductsQty(products, id) {
-		const productQty = products[id] || 0;
+Cart.init({}, { sequelize });
 
-		return {
-			...products,
-			[id]: productQty + 1
-		};
-	}
+Cart.belongsToMany(Product, {
+	foreignKey: 'cartId',
+	through: CartProduct
+});
 
-	static _updateTotalPrice(totalPrice, price) {
-		return +(totalPrice + price).toFixed(2);
-	}
-
-	static async addProduct(id, price) {
-		const { products, totalPrice } = await this.fetch();
-		const updatedProducts = this._updateProductsQty(products, id);
-		const updatedTotalPrice = this._updateTotalPrice(totalPrice, price);
-
-		await this.writeFile({
-			products: updatedProducts,
-			totalPrice: updatedTotalPrice
-		});
-	}
-
-	static async deleteProduct(id, price) {
-		const { products, totalPrice } = await this.fetch();
-		const productQty = products[id] || 0;
-		const updatedTotalPrice = this._updateTotalPrice(
-			totalPrice,
-			-1 * productQty * price
-		);
-
-		delete products[id];
-		await this.writeFile({
-			products,
-			totalPrice: updatedTotalPrice
-		});
-	}
-
-	static async fetch() {
-		return await this.readFile();
-	}
-}
+Product.belongsToMany(Cart, {
+	foreignKey: 'productId',
+	through: CartProduct
+});
 
 module.exports = Cart;

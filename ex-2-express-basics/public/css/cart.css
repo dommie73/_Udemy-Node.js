@@ -36,3 +36,8 @@
 .summary__price {
 	font-weight: 600;
 }
+
+.summary__actions {
+	font-size: 1.8rem;
+	margin-top: 2rem;
+}
