@@ -1,14 +1,23 @@
-const { Sequelize } = require('sequelize');
+const { MongoClient } = require('mongodb');
 
-const config = {
-	database: process.env.MYSQL_DBNAME,
-	dialect: 'mysql',
-	host: process.env.MYSQL_HOST,
-	password: process.env.MYSQL_PASS,
-	port: process.env.MYSQL_PORT,
-	username: process.env.MYSQL_USER
+const { logError, logSuccess } = require('../utils/helpers');
+
+const establishMongoConnection = async callback => {
+	try {
+		await MongoClient.connect(process.env.MONGODB_CONNSTRING, {
+			useUnifiedTopology: true
+		});
+
+		logSuccess(
+			`[mongodb] Connected to ${process.env.MONGODB_CLUSTERNAME} cluster`
+		);
+
+		if (callback instanceof Function) {
+			callback();
+		}
+	} catch (error) {
+		logError(`[mongodb] ${error}`);
+	}
 };
 
-const sequelize = new Sequelize(config);
-
-module.exports = sequelize;
+module.exports = establishMongoConnection;
