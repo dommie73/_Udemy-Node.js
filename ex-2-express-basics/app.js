@@ -7,7 +7,7 @@ const { currentUrl, reqLogger } = require('./middlewares');
 // const adminRoutes = require('./routes/admin');
 // const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
-const establishMongoConnection = require('./database');
+const mongo = require('./database');
 
 const app = express();
 
@@ -23,4 +23,4 @@ app.use(reqLogger);
 // app.use(shopRoutes);
 app.use(errorController.get404);
 
-establishMongoConnection(() => app.listen(process.env.PORT));
+mongo.connect(() => app.listen(process.env.PORT));
