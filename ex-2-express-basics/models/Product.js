@@ -1,28 +1,17 @@
-const { DataTypes, Model } = require('sequelize');
+const mongo = require('../database');
 
-const sequelize = require('../database');
+class Product {
+	constructor(name, imageUrl, price, description) {
+		this.name = name;
+		this.imageUrl = imageUrl;
+		this.price = +price;
+		this.description = description;
+	}
 
-class Product extends Model {}
-
-Product.init(
-	{
-		name: {
-			allowNull: false,
-			type: DataTypes.STRING
-		},
-		imageUrl: {
-			allowNull: false,
-			type: DataTypes.STRING
-		},
-		price: {
-			allowNull: false,
-			type: DataTypes.DECIMAL(10, 2).UNSIGNED
-		},
-		description: {
-			type: DataTypes.TEXT
-		}
-	},
-	{ sequelize }
-);
+	save() {
+		const { db } = mongo;
+		return db.collection('products').insertOne(this);
+	}
+}
 
 module.exports = Product;
