@@ -2,6 +2,7 @@ const { Router } = require('express');
 
 const getIndex = require('../controllers/shop/getIndex');
 const getProducts = require('../controllers/shop/getProducts');
+const getProductDetails = require('../controllers/shop/getProductDetails');
 
 const router = Router();
 
@@ -13,6 +14,6 @@ router.get('/', getIndex);
 // router.post('/order', shopControllers.createOrder);
 // router.get('/checkout', shopControllers.getCheckout);
 router.get('/products', getProducts);
-// router.get('/products/:id', shopControllers.getProductDetails);
+router.get('/products/:id', getProductDetails);
 
 module.exports = router;

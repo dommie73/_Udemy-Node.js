@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongodb');
+
 const mongo = require('../database');
 
 class Product {
@@ -9,16 +11,18 @@ class Product {
 	}
 
 	static fetchAll() {
-		const { db } = mongo;
-		return db
+		return mongo.db
 			.collection('products')
 			.find()
 			.toArray();
 	}
 
+	static fetchById(id) {
+		return mongo.db.collection('products').findOne({ _id: ObjectId(id) });
+	}
+
 	save() {
-		const { db } = mongo;
-		return db.collection('products').insertOne(this);
+		return mongo.db.collection('products').insertOne(this);
 	}
 }
 
