@@ -8,6 +8,14 @@ class Product {
 		this.description = description;
 	}
 
+	static fetchAll() {
+		const { db } = mongo;
+		return db
+			.collection('products')
+			.find()
+			.toArray();
+	}
+
 	save() {
 		const { db } = mongo;
 		return db.collection('products').insertOne(this);

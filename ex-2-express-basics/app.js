@@ -5,7 +5,7 @@ const express = require('express');
 const errorController = require('./controllers/error');
 const { currentUrl, reqLogger } = require('./middlewares');
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
 const mongo = require('./database');
 
@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(currentUrl);
 app.use(reqLogger);
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 app.use(errorController.get404);
 
 mongo.connect(() => app.listen(process.env.PORT));
