@@ -11,6 +11,10 @@ class Product {
 		this._id = id ? ObjectId(id) : null;
 	}
 
+	static deleteById(id) {
+		return mongo.db.collection('products').deleteOne({ _id: ObjectId(id) });
+	}
+
 	static fetchAll() {
 		return mongo.db
 			.collection('products')
