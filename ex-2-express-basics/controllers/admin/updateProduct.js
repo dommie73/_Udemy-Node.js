@@ -1,11 +1,10 @@
-const { Product } = require('../../models');
+const Product = require('../../models/Product');
 
 const updateProduct = async (req, res) => {
 	const { id, name, imageUrl, price, description } = req.body;
-	await Product.update(
-		{ name, imageUrl, price, description },
-		{ where: { id } }
-	);
+	const product = new Product(name, imageUrl, price, description, id);
+
+	await product.save();
 	res.redirect(`/products/${id}`);
 };
 
