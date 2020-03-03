@@ -1,44 +1,21 @@
-const { DataTypes, Model } = require('sequelize');
+const { ObjectId } = require('mongodb');
 
-const sequelize = require('../database');
-const Cart = require('./Cart');
-const Order = require('./Order');
-const Product = require('./Product');
+const mongo = require('../database');
 
-class User extends Model {}
-
-User.init(
-	{
-		name: {
-			allowNull: false,
-			type: DataTypes.STRING
-		},
-		email: {
-			allowNull: false,
-			type: DataTypes.STRING
-		}
-	},
-	{ sequelize }
-);
-
-User.hasMany(Order, {
-	foreignKey: 'userId'
-});
-
-Order.belongsTo(User, { foreignKey: 'userId' });
-
-User.hasMany(Product, {
-	foreignKey: 'userId',
-	onDelete: 'CASCADE'
-});
-
-Product.belongsTo(User, { foreignKey: 'userId' });
-
-User.hasOne(Cart, {
-	foreignKey: {
-		name: 'userId',
-		unique: true
+class User {
+	constructor(name, email, id) {
+		this.name = name;
+		this.email = email;
+		this._id = id ? ObjectId(id) : null;
 	}
-});
+
+	static fetchById(id) {
+		return mongo.db.collection('users').findOne({ _id: ObjectId(id) });
+	}
+
+	save() {
+		return mongo.db.collection('users').insertOne(this);
+	}
+}
 
 module.exports = User;
