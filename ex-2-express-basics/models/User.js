@@ -34,6 +34,26 @@ class User {
 			.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
 	}
 
+	getCart() {
+		const productIds = Object.keys(this.cart.products);
+		return mongo.db
+			.collection('products')
+			.find({ _id: { $in: productIds.map(ObjectId) } })
+			.toArray()
+			.then(products =>
+				products.map(product => ({
+					...product,
+					quantity: this.cart.products[product._id].quantity
+				}))
+			)
+			.then(products => ({
+				products,
+				totalPrice: products
+					.reduce((sum, product) => sum + product.price * product.quantity, 0)
+					.toFixed(2)
+			}));
+	}
+
 	save() {
 		return mongo.db.collection('users').insertOne(this);
 	}
