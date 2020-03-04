@@ -16,6 +16,12 @@ class User {
 		return mongo.db.collection('users').findOne({ _id: ObjectId(id) });
 	}
 
+	_updateCart() {
+		return mongo.db
+			.collection('users')
+			.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
+	}
+
 	addToCart(product) {
 		const { products } = this.cart;
 		if (products.hasOwnProperty(product._id)) {
@@ -29,9 +35,14 @@ class User {
 			return this.save();
 		}
 
-		return mongo.db
-			.collection('users')
-			.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
+		return this._updateCart();
+	}
+
+	deleteFromCart(productId) {
+		const { products } = this.cart;
+
+		delete products[productId];
+		return this._updateCart();
 	}
 
 	getCart() {
