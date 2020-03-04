@@ -1,8 +1,9 @@
 const Product = require('../../models/Product');
 
 const updateProduct = async (req, res) => {
+	const { user } = req;
 	const { id, name, imageUrl, price, description } = req.body;
-	const product = new Product(name, imageUrl, price, description, id);
+	const product = new Product(name, imageUrl, price, description, id, user._id);
 
 	await product.save();
 	res.redirect(`/products/${id}`);

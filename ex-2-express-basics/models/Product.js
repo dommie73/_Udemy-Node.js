@@ -3,22 +3,23 @@ const { ObjectId } = require('mongodb');
 const mongo = require('../database');
 
 class Product {
-	constructor(name, imageUrl, price, description, id) {
+	constructor(name, imageUrl, price, description, id, userId) {
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.price = +price;
 		this.description = description;
 		this._id = id ? ObjectId(id) : null;
+		this.userId = userId ? ObjectId(userId) : null;
 	}
 
 	static deleteById(id) {
 		return mongo.db.collection('products').deleteOne({ _id: ObjectId(id) });
 	}
 
-	static fetchAll() {
+	static fetchAll(query = {}) {
 		return mongo.db
 			.collection('products')
-			.find()
+			.find(query)
 			.toArray();
 	}
 
