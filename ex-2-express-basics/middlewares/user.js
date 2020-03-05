@@ -1,7 +1,8 @@
 const { User } = require('../models');
 
 const user = async (req, res, next) => {
-	req.user = await User.findByPk(1);
+	req.user = await User.fetchById(User.defaultId);
+	Object.setPrototypeOf(req.user, User.prototype);
 	next();
 };
 

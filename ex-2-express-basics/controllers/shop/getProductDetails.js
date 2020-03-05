@@ -1,8 +1,8 @@
-const Product = require('../../models/Product');
+const { Product } = require('../../models');
 
 const getProductDetails = async (req, res) => {
 	const { id } = req.params;
-	const product = await Product.findByPk(id);
+	const product = await Product.fetchById(id);
 
 	res.render('shop/product-details', {
 		pageTitle: 'Product Details',

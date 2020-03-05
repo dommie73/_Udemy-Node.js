@@ -8,7 +8,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
 const { logError } = require('./utils/helpers');
-const sequelize = require('./database');
+const mongo = require('./database');
 const { User } = require('./models');
 
 const app = express();
@@ -26,9 +26,14 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
-sequelize
-	.sync()
-	.then(() => User.findByPk(1))
-	.then(user => user || User.create({ name: 'Dummy', email: 'dummy@us.er' }))
-	.then(() => app.listen(process.env.PORT))
-	.catch(error => logError(error));
+mongo.connect(async () => {
+	try {
+		const user = await User.fetchById(User.defaultId);
+		if (!user) {
+			await new User('Dummy', 'dummy@us.er', User.defaultId).save();
+		}
+		app.listen(process.env.PORT);
+	} catch (error) {
+		logError(error);
+	}
+});

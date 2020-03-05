@@ -23,7 +23,7 @@
 			<div class="product__actions">
 				<% if (currentUrl.startsWith('/admin')) { %>
 				<a
-					href="/admin/edit-product/<%= product.id %>?edit=true"
+					href="/admin/edit-product/<%= product._id %>?edit=true"
 					class="button"
 				>
 					Edit
@@ -33,11 +33,11 @@
 					action="/admin/delete-product"
 					method="POST"
 				>
-					<input name="id" type="hidden" value="<%= product.id %>" />
+					<input name="id" type="hidden" value="<%= product._id %>" />
 					<button class="button button--danger">Delete</button>
 				</form>
 				<% } else { %>
-				<a class="button" href="/products/<%= product.id %>">Details</a>
+				<a class="button" href="/products/<%= product._id %>">Details</a>
 				<%- include('../partials/add-to-cart', { product }); -%> <% } %>
 			</div>
 		</article>

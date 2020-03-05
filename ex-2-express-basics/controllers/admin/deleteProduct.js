@@ -1,9 +1,8 @@
 const { Product } = require('../../models');
 
 const deleteProduct = async (req, res) => {
-	const { user } = req;
 	const { id } = req.body;
-	await Product.destroy({ where: { id, userId: user.id } });
+	await Product.deleteById(id);
 	res.redirect('/admin/products');
 };
 
