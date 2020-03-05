@@ -16,6 +16,10 @@ class User {
 		return mongo.db.collection('users').findOne({ _id: ObjectId(id) });
 	}
 
+	_emptyCart() {
+		this.cart.products = {};
+	}
+
 	_updateCart() {
 		return mongo.db
 			.collection('users')
@@ -36,6 +40,18 @@ class User {
 		}
 
 		return this._updateCart();
+	}
+
+	createOrder() {
+		return this.getCart().then(cart =>
+			mongo.db
+				.collection('orders')
+				.insertOne({ ...cart, userId: this._id })
+				.then(() => {
+					this._emptyCart();
+					this._updateCart();
+				})
+		);
 	}
 
 	deleteFromCart(productId) {
@@ -59,7 +75,7 @@ class User {
 			)
 			.then(products => ({
 				products,
-				totalPrice: products
+				totalPrice: +products
 					.reduce((sum, product) => sum + product.price * product.quantity, 0)
 					.toFixed(2)
 			}));
