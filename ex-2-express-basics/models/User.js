@@ -67,6 +67,21 @@ class User {
 			.collection('products')
 			.find({ _id: { $in: productIds.map(ObjectId) } })
 			.toArray()
+			.then(products => {
+				if (Object.keys(this.cart.products).length !== products.length) {
+					const foundProductIds = products.map(product =>
+						product._id.toString()
+					);
+
+					for (const productId in this.cart.products) {
+						if (!foundProductIds.includes(productId)) {
+							this.deleteFromCart(productId);
+						}
+					}
+				}
+
+				return products;
+			})
 			.then(products =>
 				products.map(product => ({
 					...product,
