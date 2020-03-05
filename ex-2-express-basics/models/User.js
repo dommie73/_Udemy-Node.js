@@ -81,6 +81,13 @@ class User {
 			}));
 	}
 
+	getOrders() {
+		return mongo.db
+			.collection('orders')
+			.find({ userId: this._id })
+			.toArray();
+	}
+
 	save() {
 		return mongo.db.collection('users').insertOne(this);
 	}
