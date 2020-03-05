@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const { User } = require('../models');
 
 const user = async (req, res, next) => {
 	req.user = await User.fetchById(User.defaultId);

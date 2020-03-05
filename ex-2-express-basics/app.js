@@ -9,7 +9,7 @@ const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
 const { logError } = require('./utils/helpers');
 const mongo = require('./database');
-const User = require('./models/User');
+const { User } = require('./models');
 
 const app = express();
 
