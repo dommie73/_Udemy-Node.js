@@ -3,13 +3,12 @@ const path = require('path');
 const express = require('express');
 
 const errorController = require('./controllers/error');
-const { currentUrl, reqLogger, user } = require('./middlewares');
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+const { currentUrl, reqLogger } = require('./middlewares');
+// const adminRoutes = require('./routes/admin');
+// const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
-const { logError } = require('./utils/helpers');
-const mongo = require('./database');
-const { User } = require('./models');
+const { logError, logSuccess } = require('./utils/helpers');
+const connectToDb = require('./database');
 
 const app = express();
 
@@ -21,19 +20,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(currentUrl);
 app.use(reqLogger);
-app.use(user);
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+// app.use(user);
+// app.use('/admin', adminRoutes);
+// app.use(shopRoutes);
 app.use(errorController.get404);
 
-mongo.connect(async () => {
-	try {
-		const user = await User.fetchById(User.defaultId);
-		if (!user) {
-			await new User('Dummy', 'dummy@us.er', User.defaultId).save();
-		}
+connectToDb()
+	.then(() => {
 		app.listen(process.env.PORT);
-	} catch (error) {
-		logError(error);
-	}
-});
+		logSuccess(`[app] listening on port ${process.env.PORT}`);
+	})
+	.catch(error => logError(`[mongoose] ${error.message}`));
