@@ -5,7 +5,7 @@ const express = require('express');
 const errorController = require('./controllers/error');
 const { currentUrl, reqLogger } = require('./middlewares');
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
 const { logError, logSuccess } = require('./utils/helpers');
 const connectToDb = require('./database');
@@ -22,7 +22,7 @@ app.use(currentUrl);
 app.use(reqLogger);
 // app.use(user);
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 app.use(errorController.get404);
 
 connectToDb()
