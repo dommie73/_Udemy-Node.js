@@ -5,7 +5,8 @@ const getEditProductForm = async (req, res) => {
 	const { edit } = req.query;
 
 	if (edit === 'true') {
-		const product = await Product.fetchById(id);
+		const product = await Product.findById(id);
+
 		res.render('admin/edit-product', {
 			pageTitle: 'Edit Product',
 			editing: true,
