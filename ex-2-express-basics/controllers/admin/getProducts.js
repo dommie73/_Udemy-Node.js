@@ -1,8 +1,8 @@
 const { Product } = require('../../models');
 
 const getProducts = async (req, res) => {
-	const { user } = req;
-	const products = await Product.fetchAll({ userId: user._id });
+	const products = await Product.find();
+
 	res.render('shop/products-list', { pageTitle: 'Admin Products', products });
 };
 
