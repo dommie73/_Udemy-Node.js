@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema, Types } = require('mongoose');
 
 const productSchema = new Schema({
 	name: {
@@ -10,7 +10,12 @@ const productSchema = new Schema({
 		type: Number,
 		required: true
 	},
-	description: String
+	description: String,
+	userId: {
+		type: Types.ObjectId,
+		ref: 'User',
+		required: true
+	}
 });
 
 const Product = model('Product', productSchema);
