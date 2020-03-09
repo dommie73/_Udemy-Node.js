@@ -100,6 +100,18 @@ userSchema.method('getCart', function() {
 		}));
 });
 
+userSchema.method('getOrders', function() {
+	return this.populate('orders')
+		.execPopulate()
+		.then(user => user.orders);
+});
+
+userSchema.virtual('orders', {
+	ref: 'Order',
+	localField: '_id',
+	foreignField: 'userId'
+});
+
 const User = model('User', userSchema);
 
 module.exports = User;
