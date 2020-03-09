@@ -64,6 +64,23 @@ userSchema.method('findProductIndex', function(productId) {
 	);
 });
 
+userSchema.method('getCart', function() {
+	return this.populate('cart.products._id')
+		.execPopulate()
+		.then(user =>
+			user.cart.products
+				.toObject()
+				.filter(({ _id }) => _id !== null)
+				.map(product => ({ ...product._id, quantity: product.quantity }))
+		)
+		.then(products => ({
+			products,
+			totalPrice: products
+				.reduce((sum, product) => sum + product.price * product.quantity, 0)
+				.toFixed(2)
+		}));
+});
+
 const User = model('User', userSchema);
 
 module.exports = User;
