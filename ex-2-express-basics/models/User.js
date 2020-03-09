@@ -66,6 +66,18 @@ userSchema.method('deleteFromCart', function(productId) {
 	return this.save();
 });
 
+userSchema.method('deleteNonExistentProducts', function() {
+	return this.populate('cart.products._id')
+		.execPopulate()
+		.then(() => {
+			this.cart.products = this.cart.products.filter(
+				cartProduct => cartProduct._id !== null
+			);
+
+			return this.save();
+		});
+});
+
 userSchema.method('findProductIndex', function(productId) {
 	return this.cart.products.findIndex(
 		cartProduct => cartProduct._id.toString() === productId
@@ -73,8 +85,7 @@ userSchema.method('findProductIndex', function(productId) {
 });
 
 userSchema.method('getCart', function() {
-	return this.populate('cart.products._id')
-		.execPopulate()
+	return this.deleteNonExistentProducts()
 		.then(user =>
 			user.cart.products
 				.toObject()
