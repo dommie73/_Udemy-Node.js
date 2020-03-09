@@ -58,6 +58,14 @@ userSchema.method('addToCart', function(productId) {
 	return this.save();
 });
 
+userSchema.method('deleteFromCart', function(productId) {
+	this.cart.products = this.cart.products.filter(
+		cartProduct => cartProduct._id.toString() !== productId
+	);
+
+	return this.save();
+});
+
 userSchema.method('findProductIndex', function(productId) {
 	return this.cart.products.findIndex(
 		cartProduct => cartProduct._id.toString() === productId
