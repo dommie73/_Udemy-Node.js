@@ -1,5 +1,7 @@
 const { model, Schema, Types } = require('mongoose');
 
+const Order = require('./Order');
+
 const _defaultId = '5e5edf4325e1d120d896d4c8';
 
 const userSchema = new Schema({
@@ -58,6 +60,12 @@ userSchema.method('addToCart', function(productId) {
 	return this.save();
 });
 
+userSchema.method('createOrder', function() {
+	return this.getCart()
+		.then(cart => Order.create({ ...cart, userId: this._id }))
+		.then(() => this.emptyCart());
+});
+
 userSchema.method('deleteFromCart', function(productId) {
 	this.cart.products = this.cart.products.filter(
 		cartProduct => cartProduct._id.toString() !== productId
@@ -76,6 +84,12 @@ userSchema.method('deleteNonExistentProducts', function() {
 
 			return this.save();
 		});
+});
+
+userSchema.method('emptyCart', function() {
+	this.cart.products = [];
+
+	return this.save();
 });
 
 userSchema.method('findProductIndex', function(productId) {
