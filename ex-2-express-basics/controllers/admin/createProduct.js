@@ -3,15 +3,14 @@ const { Product } = require('../../models');
 const createProduct = async (req, res) => {
 	const { user } = req;
 	const { name, imageUrl, price, description } = req.body;
-	const product = new Product(
+
+	await Product.create({
 		name,
 		imageUrl,
 		price,
 		description,
-		null,
-		user._id
-	);
-	await product.save();
+		userId: user
+	});
 	res.redirect('/admin/products');
 };
 

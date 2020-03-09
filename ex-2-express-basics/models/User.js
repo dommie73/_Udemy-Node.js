@@ -1,111 +1,131 @@
-const { ObjectId } = require('mongodb');
+const { model, Schema, Types } = require('mongoose');
 
-const mongo = require('../database');
+const Order = require('./Order');
 
-class User {
-	constructor(name, email, id, cart = { products: {} }) {
-		this.name = name;
-		this.email = email;
-		this._id = id ? ObjectId(id) : null;
-		this.cart = cart;
-	}
+const _defaultId = '5e5edf4325e1d120d896d4c8';
 
-	static defaultId = '5e5edf4325e1d120d896d4c8';
-
-	static fetchById(id) {
-		return mongo.db.collection('users').findOne({ _id: ObjectId(id) });
-	}
-
-	_emptyCart() {
-		this.cart.products = {};
-	}
-
-	_updateCart() {
-		return mongo.db
-			.collection('users')
-			.updateOne({ _id: this._id }, { $set: { cart: this.cart } });
-	}
-
-	addToCart(product) {
-		const { products } = this.cart;
-		if (products.hasOwnProperty(product._id)) {
-			const { quantity } = products[product._id];
-			products[product._id] = { quantity: quantity + 1 };
-		} else {
-			products[product._id] = { quantity: 1 };
-		}
-
-		if (!this._id) {
-			return this.save();
-		}
-
-		return this._updateCart();
-	}
-
-	createOrder() {
-		return this.getCart().then(cart =>
-			mongo.db
-				.collection('orders')
-				.insertOne({ ...cart, userId: this._id })
-				.then(() => {
-					this._emptyCart();
-					this._updateCart();
-				})
-		);
-	}
-
-	deleteFromCart(productId) {
-		const { products } = this.cart;
-
-		delete products[productId];
-		return this._updateCart();
-	}
-
-	getCart() {
-		const productIds = Object.keys(this.cart.products);
-		return mongo.db
-			.collection('products')
-			.find({ _id: { $in: productIds.map(ObjectId) } })
-			.toArray()
-			.then(products => {
-				if (Object.keys(this.cart.products).length !== products.length) {
-					const foundProductIds = products.map(product =>
-						product._id.toString()
-					);
-
-					for (const productId in this.cart.products) {
-						if (!foundProductIds.includes(productId)) {
-							this.deleteFromCart(productId);
-						}
-					}
+const userSchema = new Schema({
+	name: {
+		type: String,
+		required: true
+	},
+	email: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	cart: {
+		products: [
+			{
+				_id: {
+					type: Types.ObjectId,
+					ref: 'Product',
+					required: true
+				},
+				quantity: {
+					type: Number,
+					required: true
 				}
+			}
+		]
+	}
+});
 
-				return products;
-			})
-			.then(products =>
-				products.map(product => ({
-					...product,
-					quantity: this.cart.products[product._id].quantity
-				}))
-			)
-			.then(products => ({
-				products,
-				totalPrice: +products
-					.reduce((sum, product) => sum + product.price * product.quantity, 0)
-					.toFixed(2)
-			}));
+userSchema.static('createDefault', function() {
+	return this.create({
+		_id: _defaultId,
+		name: 'Dummy',
+		email: 'dummy@us.er'
+	});
+});
+
+userSchema.static('findDefault', function() {
+	return this.findById(_defaultId);
+});
+
+userSchema.method('addToCart', function(productId) {
+	const { products } = this.cart;
+	const productIndex = this.findProductIndex(productId);
+
+	if (~productIndex) {
+		const { quantity } = products[productIndex];
+		products[productIndex].quantity = quantity + 1;
+	} else {
+		products.push({
+			_id: productId,
+			quantity: 1
+		});
 	}
 
-	getOrders() {
-		return mongo.db
-			.collection('orders')
-			.find({ userId: this._id })
-			.toArray();
-	}
+	return this.save();
+});
 
-	save() {
-		return mongo.db.collection('users').insertOne(this);
-	}
-}
+userSchema.method('createOrder', function() {
+	return this.getCart()
+		.then(cart => Order.create({ ...cart, userId: this._id }))
+		.then(() => this.emptyCart());
+});
+
+userSchema.method('deleteFromCart', function(productId) {
+	this.cart.products = this.cart.products.filter(
+		cartProduct => cartProduct._id.toString() !== productId
+	);
+
+	return this.save();
+});
+
+userSchema.method('deleteNonExistentProducts', function() {
+	return this.populate('cart.products._id')
+		.execPopulate()
+		.then(() => {
+			this.cart.products = this.cart.products.filter(
+				cartProduct => cartProduct._id !== null
+			);
+
+			return this.save();
+		});
+});
+
+userSchema.method('emptyCart', function() {
+	this.cart.products = [];
+
+	return this.save();
+});
+
+userSchema.method('findProductIndex', function(productId) {
+	return this.cart.products.findIndex(
+		cartProduct => cartProduct._id.toString() === productId
+	);
+});
+
+userSchema.method('getCart', function() {
+	return this.deleteNonExistentProducts()
+		.then(user =>
+			user.cart.products
+				.toObject()
+				.filter(({ _id }) => _id !== null)
+				.map(product => ({ ...product._id, quantity: product.quantity }))
+		)
+		.then(products => ({
+			products,
+			totalPrice: products
+				.reduce((sum, product) => sum + product.price * product.quantity, 0)
+				.toFixed(2)
+		}));
+});
+
+userSchema.method('getOrders', function() {
+	return this.populate('orders')
+		.execPopulate()
+		.then(user => user.orders);
+});
+
+userSchema.virtual('orders', {
+	ref: 'Order',
+	localField: '_id',
+	foreignField: 'userId'
+});
+
+const User = model('User', userSchema);
 
 module.exports = User;

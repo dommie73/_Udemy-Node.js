@@ -7,8 +7,8 @@ const { currentUrl, reqLogger, user } = require('./middlewares');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const pages = require('./utils/pages');
-const { logError } = require('./utils/helpers');
-const mongo = require('./database');
+const { logError, logSuccess } = require('./utils/helpers');
+const connectToDb = require('./database');
 const { User } = require('./models');
 
 const app = express();
@@ -26,14 +26,13 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.get404);
 
-mongo.connect(async () => {
-	try {
-		const user = await User.fetchById(User.defaultId);
+connectToDb()
+	.then(async () => {
+		const user = await User.findDefault();
 		if (!user) {
-			await new User('Dummy', 'dummy@us.er', User.defaultId).save();
+			await User.createDefault();
 		}
 		app.listen(process.env.PORT);
-	} catch (error) {
-		logError(error);
-	}
-});
+		logSuccess(`[app] listening on port ${process.env.PORT}`);
+	})
+	.catch(error => logError(`[mongoose] ${error.message}`));
