@@ -1,14 +1,18 @@
 <nav class="main-nav">
 	<ul class="main-nav__list">
-		<% pages.forEach(page => { %>
-		<li class="main-nav__list-item">
-			<a
-				class="<%= (page.url === currentUrl) ? 'active' : '' %>"
-				href="<%= page.url %>"
-			>
-				<%= page.title %>
-			</a>
-		</li>
-		<% }); %>
+		<% if (pages.left) { %>
+			<div class="main-nav__list-items main-nav__list-items--left">
+				<% pages.left.forEach(page => { %> 
+					<%- include('./nav-item', { page }); -%> 
+				<% }); %>
+			</div>
+		<% } %> 
+		<% if (pages.right) { %>
+			<div class="main-nav__list-items main-nav__list-items--right">
+				<% pages.right.forEach(page => { %> 
+					<%- include('./nav-item', { page }); -%> 
+				<% }); %>
+			</div>
+		<% } %>
 	</ul>
 </nav>

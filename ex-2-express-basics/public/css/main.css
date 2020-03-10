@@ -58,9 +58,26 @@ a {
 .main-nav__list {
 	align-items: center;
 	display: flex;
+	justify-content: space-between;
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+.main-nav__list-items {
+	align-items: center;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.main-nav__list-items--left {
+	order: 1;
+	margin-right: 3rem;
+}
+
+.main-nav__list-items--right {
+	order: 2;
+	margin-left: auto;
 }
 
 .main-nav__list-item:not(:last-child) {

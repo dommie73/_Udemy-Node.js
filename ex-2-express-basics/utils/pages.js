@@ -1,10 +1,11 @@
-const pages = [
-	{ title: 'Home', url: '/' },
-	{ title: 'Products', url: '/products' },
-	{ title: 'Cart', url: '/cart' },
-	{ title: 'Orders', url: '/orders' },
-	{ title: 'Add Product', url: '/admin/add-product' },
-	{ title: 'Admin Products', url: '/admin/products' }
-];
+const pages = {
+	left: [
+		{ title: 'Home', url: '/' },
+		{ title: 'Products', url: '/products' },
+		{ title: 'Cart', url: '/cart' },
+		{ title: 'Orders', url: '/orders' }
+	],
+	right: [{ title: 'Login', url: '/login' }]
+};
 
 module.exports = pages;
