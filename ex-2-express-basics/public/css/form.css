@@ -1,33 +1,40 @@
-.product-form {
+form {
 	display: flex;
 	flex-flow: column nowrap;
 	font-size: 1.8rem;
-	max-width: 65rem;
 	width: 100%;
 }
 
-.product-form .button {
+.login-form {
+	max-width: 45rem;
+}
+
+.product-form {
+	max-width: 65rem;
+}
+
+.form .button {
 	align-self: flex-end;
 }
 
-.product-form__title {
+.form__title {
 	font-size: 3.2rem;
 	margin-bottom: 3rem;
 }
 
-.product-form-group {
+.form-group {
 	align-items: baseline;
 	display: flex;
 	margin-bottom: 2.5rem;
 }
 
-.product-form-group--vertical {
+.form-group--vertical {
 	align-items: stretch;
 	flex-flow: column nowrap;
 }
 
-.product-form-group__input,
-.product-form-group__textarea {
+.form-group__input,
+.form-group__textarea {
 	background: none;
 	border: none;
 	border-bottom: 1px solid var(--main-dark);
@@ -35,15 +42,15 @@
 	min-width: 20rem;
 }
 
-.product-form-group__input {
+.form-group__input {
 	flex: 1;
 }
 
-.product-form-group__textarea {
+.form-group__textarea {
 	border-right: 1px solid var(--main-dark);
 	resize: vertical;
 }
 
-.product-form-group__label {
+.form-group__label {
 	margin-right: 2rem;
 }

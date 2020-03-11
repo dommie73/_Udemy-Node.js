@@ -1,24 +1,27 @@
-<%- include('../partials/head'); -%>
+<%- include('../partials/head', { styles: ['form'] }); -%>
 
 <form
 	autocomplete="off"
+	class="form login-form"
 	action="/login"
 	method="POST"
 >
-	<h1>
+	<h1 class="main-heading">
 		Login
 	</h1>
-	<div>
-		<label for="email">Email</label>
+	<div class="form-group">
+		<label class="form-group__label" for="email">Email</label>
 		<input
+			class="form-group__input"
 			id="email"
 			name="email"
 			type="text"
 		/>
 	</div>
-	<div>
-		<label for="password">Password</label>
+	<div class="form-group">
+		<label class="form-group__label" for="password">Password</label>
 		<input
+			class="form-group__input"
 			id="password"
 			name="password"
 			type="password"
