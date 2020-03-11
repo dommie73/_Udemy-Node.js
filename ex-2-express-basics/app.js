@@ -1,6 +1,7 @@
 const path = require('path');
 
 const express = require('express');
+const session = require('express-session');
 
 const errorController = require('./controllers/error');
 const { currentUrl, reqLogger, user } = require('./middlewares');
@@ -18,6 +19,14 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+	session({
+		name: 'sessionId',
+		resave: false,
+		saveUninitialized: false,
+		secret: process.env.SESSION_SECRET
+	})
+);
 app.use(currentUrl);
 app.use(reqLogger);
 app.use(user);
