@@ -4,8 +4,7 @@ const express = require('express');
 
 const errorController = require('./controllers/error');
 const { currentUrl, reqLogger, user } = require('./middlewares');
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+const routes = require('./routes');
 const pages = require('./utils/pages');
 const { logError, logSuccess } = require('./utils/helpers');
 const connectToDb = require('./database');
@@ -22,8 +21,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(currentUrl);
 app.use(reqLogger);
 app.use(user);
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+app.use('/admin', routes.admin);
+app.use(routes.shop);
+app.use(routes.auth);
 app.use(errorController.get404);
 
 connectToDb()
