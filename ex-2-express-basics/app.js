@@ -4,7 +4,7 @@ const express = require('express');
 const session = require('express-session');
 
 const errorController = require('./controllers/error');
-const { currentUrl, reqLogger, user } = require('./middlewares');
+const middlewares = require('./middlewares');
 const routes = require('./routes');
 const pages = require('./utils/pages');
 const { logError, logSuccess } = require('./utils/helpers');
@@ -27,9 +27,10 @@ app.use(
 		secret: process.env.SESSION_SECRET
 	})
 );
-app.use(currentUrl);
-app.use(reqLogger);
-app.use(user);
+app.use(middlewares.isAuthenticated);
+app.use(middlewares.currentUrl);
+app.use(middlewares.reqLogger);
+app.use(middlewares.user);
 app.use('/admin', routes.admin);
 app.use(routes.shop);
 app.use(routes.auth);
