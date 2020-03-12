@@ -9,8 +9,8 @@ const pages = {
 	left: [
 		{ title: 'Home', url: '/' },
 		{ title: 'Products', url: '/products' },
-		{ title: 'Cart', url: '/cart' },
-		{ title: 'Orders', url: '/orders' },
+		{ title: 'Cart', url: '/cart', requiresAuth: true },
+		{ title: 'Orders', url: '/orders', requiresAuth: true },
 		{ title: 'Add Product', url: '/admin/add-product', requiresAuth: true },
 		{ title: 'Admin Products', url: '/admin/products', requiresAuth: true }
 	],
