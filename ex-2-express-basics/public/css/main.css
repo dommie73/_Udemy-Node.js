@@ -39,6 +39,16 @@ a {
 	text-decoration: none;
 }
 
+button {
+	background-color: transparent;
+	border: none;
+	color: inherit;
+	cursor: pointer;
+	font: inherit;
+	padding: 0;
+	text-decoration: none;
+}
+
 .w-100 {
 	width: 100%;
 }
@@ -80,29 +90,25 @@ a {
 	margin-left: auto;
 }
 
+.main-nav__list-item {
+	transition: 0.05s color linear;
+}
+
+.main-nav__list-item:hover,
+.main-nav__list-item:active,
+.main-nav__list-item.active {
+	color: rgb(70, 53, 7);
+}
+
 .main-nav__list-item:not(:last-child) {
 	margin-right: 3rem;
 }
 
-.main-nav__list-item a {
-	transition: 0.05s color linear;
-}
-
-.main-nav__list-item a:hover,
-.main-nav__list-item a:active,
-.main-nav__list-item a.active {
-	color: rgb(70, 53, 7);
-}
-
 .button {
 	background-color: var(--main-dark);
-	border: none;
 	color: var(--main-light);
-	cursor: pointer;
 	display: inline-block;
-	font: inherit;
 	padding: 0.8rem 1.5rem;
-	text-decoration: none;
 }
 
 .button--danger {
