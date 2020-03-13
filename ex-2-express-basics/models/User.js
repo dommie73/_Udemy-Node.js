@@ -129,3 +129,4 @@ userSchema.virtual('orders', {
 const User = model('User', userSchema);
 
 module.exports = User;
+module.exports.defaultId = _defaultId;

@@ -1,0 +1,10 @@
+<% if (
+	(isAuthenticated && !page.nonAuthOnly) || 
+	(!isAuthenticated && !page.requiresAuth)
+) { %>
+	<li class="main-nav__list-item <%= (page.url === currentUrl) ? 'active' : '' %>">
+		<a href="<%= page.url %>">
+			<%= page.title %>
+		</a>
+	</li>
+<% } %>
