@@ -3,8 +3,6 @@ const { compare, hash } = require('bcryptjs');
 
 const Order = require('./Order');
 
-const _defaultId = '5e5edf4325e1d120d896d4c8';
-
 const userSchema = new Schema({
 	email: {
 		type: String,
@@ -30,18 +28,6 @@ const userSchema = new Schema({
 			}
 		]
 	}
-});
-
-userSchema.static('createDefault', function() {
-	return this.create({
-		_id: _defaultId,
-		name: 'Dummy',
-		email: 'dummy@us.er'
-	});
-});
-
-userSchema.static('findDefault', function() {
-	return this.findById(_defaultId);
 });
 
 userSchema.pre('save', async function(next) {
@@ -141,4 +127,3 @@ userSchema.virtual('orders', {
 const User = model('User', userSchema);
 
 module.exports = User;
-module.exports.defaultId = _defaultId;

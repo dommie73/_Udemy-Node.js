@@ -8,7 +8,6 @@ const routes = require('./routes');
 const pages = require('./utils/pages');
 const { logError, logSuccess } = require('./utils/helpers');
 const connectToDb = require('./database');
-const { User } = require('./models');
 
 const app = express();
 
@@ -30,10 +29,6 @@ app.use(errorController.get404);
 
 connectToDb()
 	.then(async () => {
-		const user = await User.findDefault();
-		if (!user) {
-			await User.createDefault();
-		}
 		app.listen(process.env.PORT);
 		logSuccess(`[app] listening on port ${process.env.PORT}`);
 	})
