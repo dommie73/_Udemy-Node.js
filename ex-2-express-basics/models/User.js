@@ -1,5 +1,5 @@
 const { model, Schema, Types } = require('mongoose');
-const { hash } = require('bcryptjs');
+const { compare, hash } = require('bcryptjs');
 
 const Order = require('./Order');
 
@@ -126,6 +126,10 @@ userSchema.method('getOrders', function() {
 	return this.populate('orders')
 		.execPopulate()
 		.then(user => user.orders);
+});
+
+userSchema.method('isMatchingPassword', async function(password) {
+	return await compare(password, this.password);
 });
 
 userSchema.virtual('orders', {
