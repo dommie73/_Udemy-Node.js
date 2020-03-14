@@ -5,14 +5,14 @@ const Order = require('./Order');
 const _defaultId = '5e5edf4325e1d120d896d4c8';
 
 const userSchema = new Schema({
-	name: {
-		type: String,
-		required: true
-	},
 	email: {
 		type: String,
 		required: true,
 		unique: true
+	},
+	password: {
+		type: String,
+		required: true
 	},
 	cart: {
 		products: [
