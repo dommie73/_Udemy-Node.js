@@ -1,4 +1,5 @@
 const { model, Schema, Types } = require('mongoose');
+const { hash } = require('bcryptjs');
 
 const Order = require('./Order');
 
@@ -41,6 +42,13 @@ userSchema.static('createDefault', function() {
 
 userSchema.static('findDefault', function() {
 	return this.findById(_defaultId);
+});
+
+userSchema.pre('save', async function(next) {
+	if (this.isModified('password')) {
+		this.password = await hash(this.password, 12);
+	}
+	next();
 });
 
 userSchema.method('addToCart', function(productId) {
