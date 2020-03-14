@@ -14,7 +14,10 @@ const pages = {
 		{ title: 'Add Product', url: '/admin/add-product', requiresAuth: true },
 		{ title: 'Admin Products', url: '/admin/products', requiresAuth: true }
 	],
-	right: [{ title: 'Login', url: '/login', nonAuthOnly: true }]
+	right: [
+		{ title: 'Login', url: '/login', nonAuthOnly: true },
+		{ title: 'Signup', url: '/signup', nonAuthOnly: true }
+	]
 };
 
 module.exports = pages;
