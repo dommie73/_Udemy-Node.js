@@ -1,13 +1,15 @@
 const currentUrl = require('./currentUrl');
 const isAuthenticated = require('./isAuthenticated');
-const reqLogger = require('./reqLogger');
 const mongoSession = require('./mongoSession');
+const protected = require('./protected');
+const reqLogger = require('./reqLogger');
 const user = require('./user');
 
 module.exports = {
 	currentUrl,
 	isAuthenticated,
-	reqLogger,
 	mongoSession,
+	protected,
+	reqLogger,
 	user
 };
