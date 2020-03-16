@@ -1,3 +1,4 @@
+const csrfToken = require('./csrfToken');
 const currentUrl = require('./currentUrl');
 const isAuthenticated = require('./isAuthenticated');
 const mongoSession = require('./mongoSession');
@@ -6,6 +7,7 @@ const reqLogger = require('./reqLogger');
 const user = require('./user');
 
 module.exports = {
+	csrfToken,
 	currentUrl,
 	isAuthenticated,
 	mongoSession,

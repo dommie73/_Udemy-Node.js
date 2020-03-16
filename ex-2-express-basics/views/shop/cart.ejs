@@ -24,6 +24,7 @@
 				</td>
 				<td class="cart__td cart__td--actions">
 					<form action="/cart/delete-product" method="POST">
+						<%- include('../partials/csrf'); -%>
 						<input name="id" value="<%= product._id %>" type="hidden" />
 						<button class="button button--danger button--small">Delete</button>
 					</form>
@@ -37,6 +38,7 @@
 		<span class="summary__price">$ <%= cart.totalPrice %></span>
 		<div class="summary__actions">
 			<form action="/order" method="POST">
+				<%- include('../partials/csrf'); -%>
 				<button class="button">Order Now</button>
 			</form>
 		</div>

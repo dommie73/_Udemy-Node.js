@@ -1,6 +1,7 @@
 const path = require('path');
 
 const express = require('express');
+const csrf = require('csurf');
 
 const errorController = require('./controllers/error');
 const middlewares = require('./middlewares');
@@ -18,6 +19,8 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(middlewares.mongoSession);
+app.use(csrf());
+app.use(middlewares.csrfToken);
 app.use(middlewares.user);
 app.use(middlewares.isAuthenticated);
 app.use(middlewares.currentUrl);
