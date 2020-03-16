@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 const errorController = require('./controllers/error');
 const middlewares = require('./middlewares');
@@ -23,6 +24,8 @@ app.use(csrf());
 app.use(middlewares.csrfToken);
 app.use(middlewares.user);
 app.use(middlewares.isAuthenticated);
+app.use(flash());
+app.use(middlewares.flashMessages);
 app.use(middlewares.currentUrl);
 app.use(middlewares.reqLogger);
 app.use('/admin', routes.admin);

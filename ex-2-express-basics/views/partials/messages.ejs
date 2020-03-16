@@ -1,0 +1,11 @@
+<div class="alerts w-100">
+  <% for (const [type, messages] of Object.entries(flashMessages)) { -%>
+    <% if (messages.length) { -%>
+      <% for (const message of messages) { -%>
+        <div class="alert alert--<%= type %>" role="alert">
+          <%= message %>
+        </div>
+      <% } -%>
+    <% } -%>
+  <% } -%> 
+</div>
