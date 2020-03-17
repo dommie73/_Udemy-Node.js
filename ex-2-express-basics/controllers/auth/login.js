@@ -9,11 +9,13 @@ const login = async (req, res) => {
 		if (isMatchingPassword) {
 			req.session.userId = user._id;
 			return req.session.save(() => {
+				req.flash('success', `Hello, ${email}!`);
 				res.redirect('/');
 			});
 		}
 	}
 
+	req.flash('error', 'Invalid username or password.');
 	res.redirect('/login');
 };
 

@@ -11,6 +11,8 @@ const createProduct = async (req, res) => {
 		description,
 		userId: user
 	});
+
+	req.flash('success', `Product ${name} has been created.`);
 	res.redirect('/admin/products');
 };
 

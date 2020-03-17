@@ -8,7 +8,9 @@ const updateProduct = async (req, res) => {
 		{ name, imageUrl, price, description },
 		{ runValidators: true }
 	);
-	res.redirect(`/products/${id}`);
+
+	req.flash('success', `Product ${name} has been updated.`);
+	res.redirect(`/admin/products`);
 };
 
 module.exports = updateProduct;
