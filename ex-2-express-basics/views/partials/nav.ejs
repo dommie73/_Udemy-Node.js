@@ -15,6 +15,7 @@
 				<% if (isAuthenticated) { %>
 					<li class="main-nav__list-item">
 						<form action="/logout" method="POST">
+							<%- include('../partials/csrf'); -%>
 							<button>Logout</button>
 						</form>
 					</li>

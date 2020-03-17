@@ -1,18 +1,17 @@
 const { model, Schema, Types } = require('mongoose');
+const { compare, hash } = require('bcryptjs');
 
 const Order = require('./Order');
 
-const _defaultId = '5e5edf4325e1d120d896d4c8';
-
 const userSchema = new Schema({
-	name: {
-		type: String,
-		required: true
-	},
 	email: {
 		type: String,
 		required: true,
 		unique: true
+	},
+	password: {
+		type: String,
+		required: true
 	},
 	cart: {
 		products: [
@@ -31,16 +30,11 @@ const userSchema = new Schema({
 	}
 });
 
-userSchema.static('createDefault', function() {
-	return this.create({
-		_id: _defaultId,
-		name: 'Dummy',
-		email: 'dummy@us.er'
-	});
-});
-
-userSchema.static('findDefault', function() {
-	return this.findById(_defaultId);
+userSchema.pre('save', async function(next) {
+	if (this.isModified('password')) {
+		this.password = await hash(this.password, 12);
+	}
+	next();
 });
 
 userSchema.method('addToCart', function(productId) {
@@ -120,6 +114,10 @@ userSchema.method('getOrders', function() {
 		.then(user => user.orders);
 });
 
+userSchema.method('isMatchingPassword', async function(password) {
+	return await compare(password, this.password);
+});
+
 userSchema.virtual('orders', {
 	ref: 'Order',
 	localField: '_id',
@@ -129,4 +127,3 @@ userSchema.virtual('orders', {
 const User = model('User', userSchema);
 
 module.exports = User;
-module.exports.defaultId = _defaultId;

@@ -1,16 +1,17 @@
 const { Router } = require('express');
 
 const shopControllers = require('../controllers/shop');
+const { protected } = require('../middlewares');
 
 const router = Router();
 
 router.get('/', shopControllers.getIndex);
-router.get('/cart', shopControllers.getCart);
-router.post('/cart', shopControllers.addToCart);
-router.post('/cart/delete-product', shopControllers.deleteFromCart);
-router.get('/orders', shopControllers.getOrders);
-router.post('/order', shopControllers.createOrder);
-router.get('/checkout', shopControllers.getCheckout);
+router.get('/cart', protected, shopControllers.getCart);
+router.post('/cart', protected, shopControllers.addToCart);
+router.post('/cart/delete-product', protected, shopControllers.deleteFromCart);
+router.get('/orders', protected, shopControllers.getOrders);
+router.post('/order', protected, shopControllers.createOrder);
+router.get('/checkout', protected, shopControllers.getCheckout);
 router.get('/products', shopControllers.getProducts);
 router.get('/products/:id', shopControllers.getProductDetails);
 

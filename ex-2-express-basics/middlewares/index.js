@@ -1,13 +1,19 @@
+const csrfToken = require('./csrfToken');
 const currentUrl = require('./currentUrl');
+const flashMessages = require('./flashMessages');
 const isAuthenticated = require('./isAuthenticated');
-const reqLogger = require('./reqLogger');
 const mongoSession = require('./mongoSession');
+const protected = require('./protected');
+const reqLogger = require('./reqLogger');
 const user = require('./user');
 
 module.exports = {
+	csrfToken,
 	currentUrl,
+	flashMessages,
 	isAuthenticated,
-	reqLogger,
 	mongoSession,
+	protected,
+	reqLogger,
 	user
 };

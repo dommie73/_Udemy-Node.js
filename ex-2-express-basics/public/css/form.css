@@ -1,4 +1,4 @@
-form {
+.form {
 	display: flex;
 	flex-flow: column nowrap;
 	font-size: 1.8rem;
