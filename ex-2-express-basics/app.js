@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
 
 const errorController = require('./controllers/error');
 const middlewares = require('./middlewares');
@@ -19,6 +20,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 app.use(middlewares.mongoSession);
 app.use(csrf());
 app.use(middlewares.csrfToken);
