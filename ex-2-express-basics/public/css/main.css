@@ -2,6 +2,9 @@
 	--main-dark: rgb(179, 136, 19);
 	--main-light: rgb(253, 242, 213);
 	--danger: rgb(179, 38, 19);
+	--danger-light: rgba(179, 38, 19, 0.2);
+	--success: rgb(31, 138, 75);
+	--success-light: rgba(31, 138, 75, 0.2);
 }
 
 *,
@@ -27,7 +30,9 @@ body {
 }
 
 main {
+	align-items: center;
 	display: flex;
+	flex-flow: column nowrap;
 	justify-content: center;
 	margin: 4rem auto;
 	max-width: 160rem;
@@ -117,4 +122,35 @@ button {
 
 .button--small {
 	padding: 0.4rem 0.8rem;
+}
+
+.alerts {
+	align-items: stretch;
+	color: var(--main-light);
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.alert {
+	border: 1px solid var(--main-dark);
+	margin-bottom: 2rem;
+	min-width: 25rem;
+	padding: 1rem 4rem;
+	text-align: center;
+}
+
+.alert:only-child {
+	align-self: center;
+}
+
+.alert--error {
+	background-color: var(--danger-light);
+	border-color: var(--danger);
+	color: var(--danger);
+}
+
+.alert--success {
+	background-color: var(--success-light);
+	border-color: var(--success);
+	color: var(--success);
 }
