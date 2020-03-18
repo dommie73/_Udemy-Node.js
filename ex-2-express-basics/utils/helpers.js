@@ -1,3 +1,5 @@
+const path = require('path');
+
 const chalk = require('chalk');
 
 exports.logError = error => {
@@ -7,3 +9,7 @@ exports.logError = error => {
 exports.logSuccess = message => {
 	console.log(chalk.green(message));
 };
+
+exports.rootDir = path.dirname(process.mainModule.filename);
+
+exports.truncateEmail = email => email.substring(0, email.lastIndexOf('@'));

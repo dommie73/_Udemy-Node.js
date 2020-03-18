@@ -36,7 +36,7 @@ app.use(routes.auth);
 app.use(errorController.get404);
 
 connectToDb()
-	.then(async () => {
+	.then(() => {
 		app.listen(process.env.PORT);
 		logSuccess(`[app] listening on port ${process.env.PORT}`);
 	})
