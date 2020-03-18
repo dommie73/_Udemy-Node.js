@@ -11,3 +11,5 @@ exports.logSuccess = message => {
 };
 
 exports.rootDir = path.dirname(process.mainModule.filename);
+
+exports.truncateEmail = email => email.substring(0, email.lastIndexOf('@'));

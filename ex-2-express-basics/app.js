@@ -11,7 +11,6 @@ const routes = require('./routes');
 const pages = require('./utils/pages');
 const { logError, logSuccess } = require('./utils/helpers');
 const connectToDb = require('./database');
-const email = require('./services/email');
 
 const app = express();
 
@@ -40,17 +39,5 @@ connectToDb()
 	.then(() => {
 		app.listen(process.env.PORT);
 		logSuccess(`[app] listening on port ${process.env.PORT}`);
-	})
-	.then(async () => {
-		await email.send(
-			{
-				to: 'test@example.com',
-				from: 'test@example.com',
-				subject: 'Sending with Twilio SendGrid is Fun',
-				text: 'and easy to do anywhere, even with Node.js'
-			},
-			'emails/welcome',
-			{ test: 'Node.js' }
-		);
 	})
 	.catch(error => logError(`[mongoose] ${error.message}`));
