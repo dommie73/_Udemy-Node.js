@@ -1,4 +1,5 @@
 const getLoginForm = require('./getLoginForm');
+const getNewPasswordForm = require('./getNewPasswordForm');
 const getPasswordResetForm = require('./getPasswordResetForm');
 const getSignupForm = require('./getSignupForm');
 const login = require('./login');
@@ -8,6 +9,7 @@ const signup = require('./signup');
 
 module.exports = {
 	getLoginForm,
+	getNewPasswordForm,
 	getPasswordResetForm,
 	getSignupForm,
 	login,
