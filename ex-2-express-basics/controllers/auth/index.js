@@ -6,6 +6,7 @@ const login = require('./login');
 const logout = require('./logout');
 const sendPasswordResetLink = require('./sendPasswordResetLink');
 const signup = require('./signup');
+const updatePassword = require('./updatePassword');
 
 module.exports = {
 	getLoginForm,
@@ -15,5 +16,6 @@ module.exports = {
 	login,
 	logout,
 	sendPasswordResetLink,
-	signup
+	signup,
+	updatePassword
 };

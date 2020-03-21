@@ -134,6 +134,13 @@ userSchema.method('isMatchingPassword', async function(password) {
 	return await compare(password, this.password);
 });
 
+userSchema.method('updatePassword', function(password) {
+	this.password = password;
+	this.passwordResetToken = undefined;
+
+	return this.save();
+});
+
 userSchema.virtual('orders', {
 	ref: 'Order',
 	localField: '_id',
