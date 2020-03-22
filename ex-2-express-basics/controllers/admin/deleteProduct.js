@@ -2,10 +2,19 @@ const { Product } = require('../../models');
 
 const deleteProduct = async (req, res) => {
 	const { id } = req.body;
+	const { user } = req;
 
-	await Product.findByIdAndRemove(id);
+	const deletedProduct = await Product.findOneAndRemove({
+		_id: id,
+		userId: user
+	});
 
-	req.flash('success', 'Product has been removed.');
+	if (!deletedProduct) {
+		req.flash('error', `You are not authorized to perform this action.`);
+	} else {
+		req.flash('success', `Product ${deletedProduct.name} has been removed.`);
+	}
+
 	res.redirect('/admin/products');
 };
 

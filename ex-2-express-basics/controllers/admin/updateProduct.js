@@ -2,14 +2,20 @@ const { Product } = require('../../models');
 
 const updateProduct = async (req, res) => {
 	const { id, name, imageUrl, price, description } = req.body;
+	const { user } = req;
 
-	await Product.findByIdAndUpdate(
-		id,
+	const updatedProduct = await Product.findOneAndUpdate(
+		{ _id: id, userId: user },
 		{ name, imageUrl, price, description },
-		{ runValidators: true }
+		{ new: true, runValidators: true }
 	);
 
-	req.flash('success', `Product ${name} has been updated.`);
+	if (!updatedProduct) {
+		req.flash('error', `You are not authorized to perform this action.`);
+	} else {
+		req.flash('success', `Product ${updatedProduct.name} has been updated.`);
+	}
+
 	res.redirect(`/admin/products`);
 };
 
