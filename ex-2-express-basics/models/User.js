@@ -1,6 +1,7 @@
 const { model, Schema, Types } = require('mongoose');
 const { compare, hash } = require('bcryptjs');
 
+const { addHoursToNow, generateToken } = require('../utils/helpers');
 const Order = require('./Order');
 
 const userSchema = new Schema({
@@ -12,6 +13,10 @@ const userSchema = new Schema({
 	password: {
 		type: String,
 		required: true
+	},
+	passwordResetToken: {
+		value: String,
+		expires: Date
 	},
 	cart: {
 		products: [
@@ -58,6 +63,17 @@ userSchema.method('createOrder', function() {
 	return this.getCart()
 		.then(cart => Order.create({ ...cart, userId: this._id }))
 		.then(() => this.emptyCart());
+});
+
+userSchema.method('createPasswordResetToken', async function() {
+	const token = await generateToken(32);
+
+	this.passwordResetToken = {
+		value: token,
+		expires: addHoursToNow(2)
+	};
+
+	return this.save();
 });
 
 userSchema.method('deleteFromCart', function(productId) {
@@ -116,6 +132,13 @@ userSchema.method('getOrders', function() {
 
 userSchema.method('isMatchingPassword', async function(password) {
 	return await compare(password, this.password);
+});
+
+userSchema.method('updatePassword', function(password) {
+	this.password = password;
+	this.passwordResetToken = undefined;
+
+	return this.save();
 });
 
 userSchema.virtual('orders', {

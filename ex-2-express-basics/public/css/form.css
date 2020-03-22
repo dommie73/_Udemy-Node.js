@@ -2,14 +2,11 @@
 	display: flex;
 	flex-flow: column nowrap;
 	font-size: 1.8rem;
+	max-width: 45rem;
 	width: 100%;
 }
 
-.login-form {
-	max-width: 45rem;
-}
-
-.product-form {
+.form--wide {
 	max-width: 65rem;
 }
 

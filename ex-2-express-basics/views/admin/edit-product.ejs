@@ -2,7 +2,7 @@
 
 <form
 	autocomplete="off"
-	class="form product-form"
+	class="form form--wide"
 	action="/admin/<%= editing ? 'edit': 'add' %>-product"
 	method="POST"
 >
@@ -48,9 +48,7 @@
 			id="description"
 			name="description"
 			rows="7"
-		>
-			<%= editing ? product.description : '' %>
-		</textarea>
+		><%= editing ? product.description : '' %></textarea>
 	</div>
 	<% if (editing) { %>
 		<input name="id" type="hidden" value="<%= product._id %>" />
