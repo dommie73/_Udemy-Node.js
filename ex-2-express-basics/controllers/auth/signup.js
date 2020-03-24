@@ -1,17 +1,22 @@
+const { validationResult } = require('express-validator');
+
 const { User } = require('../../models');
 const sgMail = require('../../services/email');
 const { truncateEmail } = require('../../utils/helpers');
 
 const signup = async (req, res) => {
-	const { email, password, confirmPassword } = req.body;
-	const user = await User.findOne({ email });
+	const errors = validationResult(req);
 
-	if (user) {
-		req.flash('error', 'This email is already associated with an account.');
+	if (!errors.isEmpty()) {
+		req.flash(
+			'error',
+			errors.array({ onlyFirstError: true }).map(error => error.msg)
+		);
 		return res.redirect('/signup');
 	}
 
 	try {
+		const { email, password } = req.body;
 		await User.create({ email, password });
 		sgMail.send(
 			{
@@ -28,10 +33,7 @@ const signup = async (req, res) => {
 		req.flash('success', 'Your account has been created. You can now log in.');
 		res.redirect('/login');
 	} catch (error) {
-		req.flash(
-			'error',
-			'Invalid data. Check your email and password and try again.'
-		);
+		req.flash('error', error);
 		res.redirect('/signup');
 	}
 };
