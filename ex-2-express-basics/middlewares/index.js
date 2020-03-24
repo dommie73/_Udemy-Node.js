@@ -6,6 +6,7 @@ const mongoSession = require('./mongoSession');
 const protected = require('./protected');
 const reqLogger = require('./reqLogger');
 const user = require('./user');
+const validationErrors = require('./validationErrors');
 
 module.exports = {
 	csrfToken,
@@ -15,5 +16,6 @@ module.exports = {
 	mongoSession,
 	protected,
 	reqLogger,
-	user
+	user,
+	validationErrors
 };
