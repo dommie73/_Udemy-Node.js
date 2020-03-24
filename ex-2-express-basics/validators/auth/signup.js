@@ -1,7 +1,6 @@
 const { body } = require('express-validator');
 
 const { isEmailInUse, isMatchingPassword } = require('../../utils/validators');
-const { validationErrors } = require('../../middlewares');
 
 const signup = [
 	body('email')
@@ -19,8 +18,7 @@ const signup = [
 		.withMessage('Password field is required.')
 		.isLength({ min: 8 })
 		.withMessage('The password must be at least 8 characters long.'),
-	body('confirmPassword').custom(isMatchingPassword),
-	validationErrors
+	body('confirmPassword').custom(isMatchingPassword)
 ];
 
 module.exports = signup;

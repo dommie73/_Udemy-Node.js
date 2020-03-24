@@ -1,3 +1,8 @@
+const { combineValidatorsWithMiddlewares } = require('../../utils/validators');
+const { validationErrors } = require('../../middlewares');
+
 const signup = require('./signup');
 
-module.exports = { signup };
+const validators = { signup };
+
+module.exports = combineValidatorsWithMiddlewares(validators, validationErrors);
