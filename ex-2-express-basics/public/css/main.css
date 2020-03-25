@@ -139,10 +139,6 @@ button {
 	text-align: center;
 }
 
-.alert:only-child {
-	align-self: center;
-}
-
 .alert--error {
 	background-color: var(--danger-light);
 	border-color: var(--danger);
