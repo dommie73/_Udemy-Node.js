@@ -6,7 +6,7 @@ const authValidators = require('../validators/auth');
 const router = Router();
 
 router.get('/login', authControllers.getLoginForm);
-router.post('/login', authControllers.login);
+router.post('/login', authValidators.login, authControllers.login);
 router.post('/logout', authControllers.logout);
 router.get('/reset', authControllers.getPasswordResetForm);
 router.get('/reset/:token', authControllers.getNewPasswordForm);
