@@ -1,6 +1,7 @@
 const csrfToken = require('./csrfToken');
 const currentUrl = require('./currentUrl');
 const flashMessages = require('./flashMessages');
+const inputSaver = require('./inputSaver');
 const isAuthenticated = require('./isAuthenticated');
 const mongoSession = require('./mongoSession');
 const protected = require('./protected');
@@ -12,6 +13,7 @@ module.exports = {
 	csrfToken,
 	currentUrl,
 	flashMessages,
+	inputSaver,
 	isAuthenticated,
 	mongoSession,
 	protected,

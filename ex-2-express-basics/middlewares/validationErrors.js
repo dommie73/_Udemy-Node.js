@@ -8,6 +8,7 @@ const validationErrors = (req, res, next) => {
 			'error',
 			errors.array({ onlyFirstError: true }).map(error => error.msg)
 		);
+		req.inputs.set();
 
 		return req.session.save(() => {
 			res.redirect('back');
