@@ -1,0 +1,24 @@
+<% for (const field of locals.fields) { %>
+  <div class="<%= 
+    'form-group' + 
+    (field.vertical ? ' form-group--vertical' : '') + 
+    (inputs.hasOwnProperty(field.name) && inputs[field.name].invalid ?
+    ' form-group--invalid' : '') +
+    (inputs.hasOwnProperty(field.name) && !inputs[field.name].invalid &&
+    inputs[field.name].value !== '' ? ' form-group--valid' : '') %>"
+  >
+    <label 
+      class="form-group__label" 
+      for="<%= field.id %>"
+    >
+      <%= field.label %>
+    </label>
+    <input
+      class="form-group__input"
+      id="<%= field.id %>"
+      name="<%= field.name %>"
+      type="<%= field.type %>"
+      value="<%= inputs.hasOwnProperty(field.name) ? inputs[field.name].value : '' %>"
+    />
+  </div>
+<% } %>
