@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator');
+
 /*** Helper functions ***/
 
 /* 
@@ -13,13 +15,29 @@ const _get = req => () => {
 /* 
   Returns a function which saves the input values from `req.body` in the current session.
   Options:
-    * exclude - an array of strings - keys to ignore
+		* exclude - an array of strings - keys to ignore; their values will be set to an empty string
+		  before saving
 */
 const _set = (req, options = {}) => () => {
-	const inputs = { ...req.body };
+	const invalidFields = validationResult(req)
+		.array({ onlyFirstError: true })
+		.map(error => error.param);
+
+	const inputs = Object.fromEntries(
+		Object.entries(req.body).map(([field, value]) => [
+			field,
+			{ value, invalid: invalidFields.includes(field) }
+		])
+	);
+
 	if (Array.isArray(options.exclude)) {
-		options.exclude.forEach(key => delete inputs[key]);
+		options.exclude.forEach(field => {
+			if (inputs.hasOwnProperty(field)) {
+				inputs[field].value = '';
+			}
+		});
 	}
+
 	req.session.inputs = inputs;
 };
 
