@@ -35,6 +35,7 @@ const inputSaver = (req, res, next) => {
 		get: _get(req),
 		set: _set(req, { exclude: ['password', 'confirmPassword', '_csrf'] })
 	};
+	res.locals.inputs = req.inputs.get();
 	next();
 };
 
