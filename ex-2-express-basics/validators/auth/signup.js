@@ -1,6 +1,7 @@
 const { body } = require('express-validator');
 
-const { isEmailInUse, isMatchingPassword } = require('../../utils/validators');
+const { isEmailInUse } = require('../../utils/validators');
+const updatePassword = require('./updatePassword');
 
 const signup = [
 	body('email')
@@ -13,13 +14,7 @@ const signup = [
 		.custom(isEmailInUse)
 		.withMessage('This email is already associated with an account.')
 		.normalizeEmail(),
-	body('password')
-		.not()
-		.isEmpty()
-		.withMessage('Password field is required.')
-		.isLength({ min: 8 })
-		.withMessage('The password must be at least 8 characters long.'),
-	body('confirmPassword').custom(isMatchingPassword)
+	...updatePassword
 ];
 
 module.exports = signup;

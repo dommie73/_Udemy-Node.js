@@ -13,6 +13,10 @@ router.get('/reset/:token', authControllers.getNewPasswordForm);
 router.post('/reset', authControllers.sendPasswordResetLink);
 router.get('/signup', authControllers.getSignupForm);
 router.post('/signup', authValidators.signup, authControllers.signup);
-router.post('/update-password', authControllers.updatePassword);
+router.post(
+	'/update-password',
+	authValidators.updatePassword,
+	authControllers.updatePassword
+);
 
 module.exports = router;
