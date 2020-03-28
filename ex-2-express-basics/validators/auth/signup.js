@@ -11,7 +11,8 @@ const signup = [
 		.withMessage('Email is not valid.')
 		.not()
 		.custom(isEmailInUse)
-		.withMessage('This email is already associated with an account.'),
+		.withMessage('This email is already associated with an account.')
+		.normalizeEmail(),
 	body('password')
 		.not()
 		.isEmpty()
