@@ -1,24 +1,36 @@
-<% for (const field of locals.fields) { %>
+<% for (const { id, label, name, type, value, vertical, ...attrs } of locals.fields) { %>
   <div class="<%= 
     'form-group' + 
-    (field.vertical ? ' form-group--vertical' : '') + 
-    (inputs.hasOwnProperty(field.name) && inputs[field.name].invalid ?
+    (vertical ? ' form-group--vertical' : '') + 
+    (inputs.hasOwnProperty(name) && inputs[name].invalid ?
     ' form-group--invalid' : '') +
-    (inputs.hasOwnProperty(field.name) && !inputs[field.name].invalid &&
-    inputs[field.name].value !== '' ? ' form-group--valid' : '') %>"
+    (inputs.hasOwnProperty(name) && !inputs[name].invalid &&
+    inputs[name].value !== '' ? ' form-group--valid' : '') %>"
   >
-    <label 
-      class="form-group__label" 
-      for="<%= field.id %>"
-    >
-      <%= field.label %>
+    <label class="form-group__label" for="<%= id %>">
+      <%= label %>
     </label>
-    <input
-      class="form-group__input"
-      id="<%= field.id %>"
-      name="<%= field.name %>"
-      type="<%= field.type %>"
-      value="<%= inputs.hasOwnProperty(field.name) ? inputs[field.name].value : '' %>"
-    />
+    <% if (type === 'textarea') { %>
+      <textarea
+        class="form-group__textarea"
+        id="<%= id %>"
+        name="<%= name %>"
+        <%= Object.entries(attrs).map(([name, value]) => [name, value].join('=')).join('\n') %>
+      ><%= inputs.hasOwnProperty(name) ? 
+        inputs[name].value : 
+        value ? value : '' 
+      %></textarea>
+    <% } else { %>
+      <input
+        class="form-group__input"
+        id="<%= id %>"
+        name="<%= name %>"
+        type="<%= type %>"
+        value="<%= inputs.hasOwnProperty(name) ? 
+          inputs[name].value : 
+          value ? value : '' %>"
+        <%= Object.entries(attrs).map(([name, value]) => [name, value].join('=')).join('\n') %>
+      />
+    <% } %>
   </div>
 <% } %>

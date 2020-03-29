@@ -30,7 +30,8 @@
 	font-weight: 600;
 }
 
-.form-group--invalid > .form-group__input {
+.form-group--invalid > .form-group__input,
+.form-group--invalid > .form-group__textarea {
 	border-color: var(--danger);
 }
 
@@ -39,7 +40,8 @@
 	font-weight: 600;
 }
 
-.form-group--valid > .form-group__input {
+.form-group--valid > .form-group__input,
+.form-group--valid > .form-group__textarea {
 	border-color: var(--success);
 }
 
