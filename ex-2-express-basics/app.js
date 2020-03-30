@@ -35,6 +35,7 @@ app.use('/admin', routes.admin);
 app.use(routes.shop);
 app.use(routes.auth);
 app.use(errorController.get404);
+app.use(middlewares.errorHandler);
 
 connectToDb()
 	.then(() => {
