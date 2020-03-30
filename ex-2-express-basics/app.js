@@ -5,7 +5,6 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 
-const errorController = require('./controllers/error');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
 const pages = require('./utils/pages');
@@ -34,7 +33,7 @@ app.use(middlewares.reqLogger);
 app.use('/admin', routes.admin);
 app.use(routes.shop);
 app.use(routes.auth);
-app.use(errorController.get404);
+app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
 connectToDb()

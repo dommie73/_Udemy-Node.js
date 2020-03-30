@@ -5,6 +5,7 @@ const flashMessages = require('./flashMessages');
 const inputSaver = require('./inputSaver');
 const isAuthenticated = require('./isAuthenticated');
 const mongoSession = require('./mongoSession');
+const notFound = require('./notFound');
 const protected = require('./protected');
 const reqLogger = require('./reqLogger');
 const user = require('./user');
@@ -18,6 +19,7 @@ module.exports = {
 	inputSaver,
 	isAuthenticated,
 	mongoSession,
+	notFound,
 	protected,
 	reqLogger,
 	user,
