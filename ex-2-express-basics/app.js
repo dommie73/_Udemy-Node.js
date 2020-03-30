@@ -28,6 +28,7 @@ app.use(middlewares.user);
 app.use(middlewares.isAuthenticated);
 app.use(flash());
 app.use(middlewares.flashMessages);
+app.use(middlewares.inputSaver);
 app.use(middlewares.currentUrl);
 app.use(middlewares.reqLogger);
 app.use('/admin', routes.admin);

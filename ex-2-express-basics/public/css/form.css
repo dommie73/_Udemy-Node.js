@@ -25,6 +25,26 @@
 	margin-bottom: 2.5rem;
 }
 
+.form-group--invalid > .form-group__label {
+	color: var(--danger);
+	font-weight: 600;
+}
+
+.form-group--invalid > .form-group__input,
+.form-group--invalid > .form-group__textarea {
+	border-color: var(--danger);
+}
+
+.form-group--valid > .form-group__label {
+	color: var(--success);
+	font-weight: 600;
+}
+
+.form-group--valid > .form-group__input,
+.form-group--valid > .form-group__textarea {
+	border-color: var(--success);
+}
+
 .form-group--vertical {
 	align-items: stretch;
 	flex-flow: column nowrap;
