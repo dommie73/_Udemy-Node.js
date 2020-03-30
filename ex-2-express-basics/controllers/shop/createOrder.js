@@ -1,10 +1,14 @@
-const createOrder = async (req, res) => {
-	const { user } = req;
+const createOrder = async (req, res, next) => {
+	try {
+		const { user } = req;
 
-	await user.createOrder();
+		await user.createOrder();
 
-	req.flash('success', 'Thank you for placing the order!');
-	res.redirect('/orders');
+		req.flash('success', 'Thank you for placing the order!');
+		req.saveSessionAndRedirect('/orders');
+	} catch (err) {
+		next(err);
+	}
 };
 
 module.exports = createOrder;
