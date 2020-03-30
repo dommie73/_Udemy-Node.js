@@ -8,6 +8,7 @@ const mongoSession = require('./mongoSession');
 const notFound = require('./notFound');
 const protected = require('./protected');
 const reqLogger = require('./reqLogger');
+const sessionSaver = require('./sessionSaver');
 const user = require('./user');
 const validationErrors = require('./validationErrors');
 
@@ -22,6 +23,7 @@ module.exports = {
 	notFound,
 	protected,
 	reqLogger,
+	sessionSaver,
 	user,
 	validationErrors
 };

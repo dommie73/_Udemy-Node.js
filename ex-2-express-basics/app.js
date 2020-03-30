@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(middlewares.mongoSession);
+app.use(middlewares.sessionSaver);
 app.use(csrf());
 app.use(middlewares.csrfToken);
 app.use(middlewares.user);
