@@ -5,7 +5,6 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 
-const errorController = require('./controllers/error');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
 const pages = require('./utils/pages');
@@ -22,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(middlewares.mongoSession);
+app.use(middlewares.sessionSaver);
 app.use(csrf());
 app.use(middlewares.csrfToken);
 app.use(middlewares.user);
@@ -34,7 +34,8 @@ app.use(middlewares.reqLogger);
 app.use('/admin', routes.admin);
 app.use(routes.shop);
 app.use(routes.auth);
-app.use(errorController.get404);
+app.use(middlewares.notFound);
+app.use(middlewares.errorHandler);
 
 connectToDb()
 	.then(() => {

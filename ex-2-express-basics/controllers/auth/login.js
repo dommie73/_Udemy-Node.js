@@ -1,22 +1,24 @@
 const { User } = require('../../models');
 
-const login = async (req, res) => {
-	const { email, password } = req.body;
-	const user = await User.findOne({ email });
+const login = async (req, res, next) => {
+	try {
+		const { email, password } = req.body;
+		const user = await User.findOne({ email });
 
-	if (user) {
-		const isMatchingPassword = await user.isMatchingPassword(password);
-		if (isMatchingPassword) {
-			req.session.userId = user._id;
-			return req.session.save(() => {
+		if (user) {
+			const isMatchingPassword = await user.isMatchingPassword(password);
+			if (isMatchingPassword) {
+				req.session.userId = user._id;
 				req.flash('success', `Hello, ${email}!`);
-				res.redirect('/');
-			});
+				return req.saveSessionAndRedirect('/');
+			}
 		}
-	}
 
-	req.flash('error', 'Invalid username or password.');
-	res.redirect('/login');
+		req.flash('error', 'Invalid username or password.');
+		req.saveSessionAndRedirect('/login');
+	} catch (err) {
+		next(err);
+	}
 };
 
 module.exports = login;

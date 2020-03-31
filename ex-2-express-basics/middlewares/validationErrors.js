@@ -10,9 +10,7 @@ const validationErrors = (req, res, next) => {
 		);
 		req.inputs.set();
 
-		return req.session.save(() => {
-			res.redirect('back');
-		});
+		return req.saveSessionAndRedirect('back');
 	}
 
 	next();

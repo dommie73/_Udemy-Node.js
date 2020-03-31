@@ -2,9 +2,10 @@ const { User } = require('../../models');
 const sgMail = require('../../services/email');
 const { truncateEmail } = require('../../utils/helpers');
 
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
+
 		await User.create({ email, password });
 		sgMail.send(
 			{
@@ -18,11 +19,11 @@ const signup = async (req, res) => {
 				shopHref: `http://localhost:${process.env.PORT}/products`
 			}
 		);
+
 		req.flash('success', 'Your account has been created. You can now log in.');
-		res.redirect('/login');
-	} catch (error) {
-		req.flash('error', error);
-		res.redirect('/signup');
+		req.saveSessionAndRedirect('/login');
+	} catch (err) {
+		next(err);
 	}
 };
 

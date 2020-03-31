@@ -1,10 +1,8 @@
 const { Product } = require('../../models');
 
-const getEditProductForm = async (req, res) => {
-	const { id } = req.params;
-	const { edit } = req.query;
-
-	if (edit === 'true') {
+const getEditProductForm = async (req, res, next) => {
+	try {
+		const { id } = req.params;
 		const product = await Product.findById(id);
 
 		res.render('admin/edit-product', {
@@ -12,8 +10,8 @@ const getEditProductForm = async (req, res) => {
 			editing: true,
 			product
 		});
-	} else {
-		res.redirect(`/products/${id}`);
+	} catch (err) {
+		next(err);
 	}
 };
 
