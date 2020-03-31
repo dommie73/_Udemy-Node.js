@@ -7,9 +7,6 @@
     (inputs.hasOwnProperty(name) && !inputs[name].invalid &&
     inputs[name].value !== '' ? ' form-group--valid' : '') %>"
   >
-    <label class="form-group__label" for="<%= id %>">
-      <%= label %>
-    </label>
     <% if (type === 'textarea') { %>
       <textarea
         class="form-group__textarea"
@@ -32,5 +29,6 @@
         <%= Object.entries(attrs).map(([name, value]) => [name, value].join('=')).join('\n') %>
       />
     <% } %>
+    <label class="form-group__label" for="<%= id %>"><%= label %></label>
   </div>
 <% } %>

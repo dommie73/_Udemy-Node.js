@@ -57,10 +57,49 @@
 	border-bottom: 1px solid var(--main-dark);
 	font: inherit;
 	min-width: 20rem;
+	order: 2;
 }
 
 .form-group__input {
 	flex: 1;
+}
+
+.form-group__input[type='file'] {
+	height: 1px;
+	min-width: auto;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+	z-index: -1;
+}
+
+.form-group__input[type='file'] + .form-group__label {
+	align-items: baseline;
+	display: flex;
+	flex-flow: row nowrap;
+	margin-right: 0;
+	order: 1;
+}
+
+.form-group__input[type='file'] + .form-group__label::before,
+.form-group__input[type='file'] + .form-group__label span {
+	margin-left: 2rem;
+}
+
+.form-group__input[type='file'] + .form-group__label::before {
+	background-color: var(--main-dark);
+	color: var(--main-light);
+	content: 'Choose File';
+	display: inline-block;
+	font-size: 0.9em;
+	order: 2;
+	padding: 0.3em 0.8em;
+	width: max-content;
+}
+
+.form-group__input[type='file'] + .form-group__label span {
+	order: 3;
 }
 
 .form-group__textarea {
@@ -70,4 +109,5 @@
 
 .form-group__label {
 	margin-right: 2rem;
+	order: 1;
 }
