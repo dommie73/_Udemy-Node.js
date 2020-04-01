@@ -8,6 +8,14 @@ const limits = {
 	fileSize: 1 * 1024 * 1024
 };
 
+const fileFilter = (req, file, cb) => {
+	if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
+		cb(null, false);
+	} else {
+		cb(null, true);
+	}
+};
+
 const storage = multer.diskStorage({
 	destination: path.join(rootDir, 'tmp', 'uploads'),
 	filename: (req, file, cb) => {
@@ -18,4 +26,4 @@ const storage = multer.diskStorage({
 	}
 });
 
-module.exports = multer({ limits, storage });
+module.exports = multer({ fileFilter, limits, storage });
