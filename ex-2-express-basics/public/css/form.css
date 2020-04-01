@@ -64,8 +64,24 @@
 	flex: 1;
 }
 
+.form-group__textarea {
+	border-right: 1px solid var(--main-dark);
+	resize: vertical;
+}
+
+.form-group__label {
+	margin-right: 2rem;
+	order: 1;
+}
+
 .no-js .form-group__input[type='file'] {
 	border-bottom: none;
+}
+
+.no-js .form-group__input[type='file']::-webkit-file-upload-button {
+	border: none;
+	font-family: inherit;
+	text-decoration: none;
 }
 
 .js .form-group__input[type='file'] {
@@ -83,16 +99,25 @@
 	display: flex;
 	flex-flow: row nowrap;
 	margin-right: 0;
-	order: 1;
+	width: 100%;
 }
 
-.js .form-group__input[type='file'] + .form-group__label::before,
 .js .form-group__input[type='file'] + .form-group__label span {
+	flex: 1;
 	margin-left: 2rem;
 }
 
+.js .form-group__input[type='file']:focus + .form-group__label span {
+	outline: 1px dotted #212121;
+	outline: 5px auto -webkit-focus-ring-color;
+}
+
+.js .form-group__input[type='file'] + .form-group__label span::before {
+	margin-right: 0.5rem;
+}
+
 .no-js .form-group__input[type='file']::-webkit-file-upload-button,
-.js .form-group__input[type='file'] + .form-group__label::before {
+.js .form-group__input[type='file'] + .form-group__label span::before {
 	background-color: var(--main-dark);
 	color: var(--main-light);
 	content: 'Choose File';
@@ -101,24 +126,4 @@
 	order: 2;
 	padding: 0.3em 0.8em;
 	width: max-content;
-}
-
-.no-js .form-group__input[type='file']::-webkit-file-upload-button {
-	border: none;
-	font-family: inherit;
-	text-decoration: none;
-}
-
-.js .form-group__input[type='file'] + .form-group__label span {
-	order: 3;
-}
-
-.form-group__textarea {
-	border-right: 1px solid var(--main-dark);
-	resize: vertical;
-}
-
-.form-group__label {
-	margin-right: 2rem;
-	order: 1;
 }
