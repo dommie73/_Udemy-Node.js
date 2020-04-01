@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const adminControllers = require('../controllers/admin');
 const adminValidators = require('../validators/admin');
-const { protected } = require('../middlewares');
+const { protected, upload } = require('../middlewares');
 
 const router = Router();
 
@@ -11,6 +11,7 @@ router.all('*', protected);
 router.get('/add-product', adminControllers.getAddProductForm);
 router.post(
 	'/add-product',
+	upload.single('image'),
 	adminValidators.updateProduct,
 	adminControllers.createProduct
 );

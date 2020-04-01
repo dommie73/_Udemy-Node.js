@@ -3,11 +3,10 @@ const { Product } = require('../../models');
 const createProduct = async (req, res, next) => {
 	try {
 		const { user } = req;
-		const { name, imageUrl, price, description } = req.body;
+		const { name, price, description } = req.body;
 
 		await Product.create({
 			name,
-			imageUrl,
 			price,
 			description,
 			userId: user
