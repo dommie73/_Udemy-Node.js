@@ -11,7 +11,7 @@ router.all('*', protected);
 router.get('/add-product', adminControllers.getAddProductForm);
 router.post(
 	'/add-product',
-	upload.single('image'),
+	upload('image'),
 	adminValidators.updateProduct,
 	adminControllers.createProduct
 );

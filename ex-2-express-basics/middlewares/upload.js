@@ -10,7 +10,10 @@ const limits = {
 
 const fileFilter = (req, file, cb) => {
 	if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
-		cb(null, false);
+		const error = new multer.MulterError('INVALID_FILE_TYPE', file.fieldname);
+		error.message =
+			'File is not a valid image. Only jpg/jpeg/png files are allowed.';
+		cb(error);
 	} else {
 		cb(null, true);
 	}
@@ -26,4 +29,16 @@ const storage = multer.diskStorage({
 	}
 });
 
-module.exports = multer({ fileFilter, limits, storage });
+const upload = field => {
+	const multerUpload = multer({ fileFilter, limits, storage }).single(field);
+	return function(req, res, next) {
+		multerUpload(req, res, function(err) {
+			if (err instanceof multer.MulterError) {
+				req.flash('error', err.message);
+			}
+			next();
+		});
+	};
+};
+
+module.exports = upload;
