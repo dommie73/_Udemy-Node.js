@@ -103,7 +103,9 @@
 }
 
 .js .form-group__input[type='file'] + .form-group__label span {
+	color: initial;
 	flex: 1;
+	font-weight: initial;
 	margin-left: 2rem;
 }
 
