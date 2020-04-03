@@ -1,14 +1,21 @@
 const { MulterError } = require('multer');
 
+const errorCodes = {
+	invalidFileType: 'INVALID_FILE_TYPE',
+	fileSizeExceeded: 'LIMIT_FILE_SIZE'
+};
+
+const FileTypeError = new MulterError(errorCodes.invalidFileType);
+
 const imageFilter = (req, file, cb) => {
 	if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
-		const error = new MulterError('INVALID_FILE_TYPE', file.fieldname);
-		error.message =
-			'File is not a valid image. Only jpg/jpeg/png files are allowed.';
-		cb(error);
+		cb(FileTypeError);
 	} else {
 		cb(null, true);
 	}
 };
 
-module.exports = { imageFilter };
+module.exports = {
+	errorCodes,
+	imageFilter
+};

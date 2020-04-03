@@ -19,7 +19,10 @@ const upload = (field, fileFilter, limits) => {
 	return function(req, res, next) {
 		multerUpload(req, res, function(err) {
 			if (err instanceof multer.MulterError) {
-				req.flash('error', err.message);
+				/*
+					Delegate error to the custom body validator.
+				*/
+				req.body[field] = err;
 			}
 			next();
 		});

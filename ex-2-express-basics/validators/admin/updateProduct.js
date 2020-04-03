@@ -1,5 +1,7 @@
 const { body } = require('express-validator');
 
+const { isImage } = require('../../utils/validators');
+
 const updateProduct = [
 	body('name')
 		.not()
@@ -8,11 +10,9 @@ const updateProduct = [
 		.trim()
 		.isLength({ max: 256 })
 		.withMessage('Product name is too long.'),
-	body('imageUrl')
+	body('image')
 		.optional({ checkFalsy: true })
-		.trim()
-		.isURL()
-		.withMessage('Invalid product image URL.'),
+		.custom(isImage),
 	body('price')
 		.not()
 		.isEmpty()
