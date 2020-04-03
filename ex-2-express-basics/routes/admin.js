@@ -3,6 +3,7 @@ const { Router } = require('express');
 const adminControllers = require('../controllers/admin');
 const adminValidators = require('../validators/admin');
 const { protected, upload } = require('../middlewares');
+const { imageFilter } = require('../utils/multer');
 
 const router = Router();
 
@@ -11,7 +12,9 @@ router.all('*', protected);
 router.get('/add-product', adminControllers.getAddProductForm);
 router.post(
 	'/add-product',
-	upload('image'),
+	upload('image', imageFilter, {
+		fileSize: 1 * 1024 * 1024
+	}),
 	adminValidators.updateProduct,
 	adminControllers.createProduct
 );
