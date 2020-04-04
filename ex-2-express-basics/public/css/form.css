@@ -107,6 +107,9 @@
 	flex: 1;
 	font-weight: initial;
 	margin-left: 2rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .js .form-group__input[type='file']:focus + .form-group__label span {
