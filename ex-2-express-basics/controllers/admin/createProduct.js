@@ -2,11 +2,12 @@ const { Product } = require('../../models');
 
 const createProduct = async (req, res, next) => {
 	try {
-		const { user } = req;
+		const { file, user } = req;
 		const { name, price, description } = req.body;
 
 		await Product.create({
 			name,
+			image: file && file.filename,
 			price,
 			description,
 			userId: user
