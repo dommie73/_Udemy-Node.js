@@ -1,7 +1,8 @@
-config
-data
-node_modules
-**/public/uploads
-tmp
+ex-1-pure-node-basics/users.txt
 
-users.txt
+ex-2-express-basics/data
+ex-2-express-basics/public/uploads
+
+**/config
+**/node_modules
+**/tmp
