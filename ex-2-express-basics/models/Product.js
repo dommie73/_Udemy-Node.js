@@ -1,4 +1,9 @@
+const path = require('path');
+
 const { model, Schema, Types } = require('mongoose');
+const { remove } = require('fs-extra');
+
+const { rootDir } = require('../utils/helpers');
 
 const productSchema = new Schema({
 	name: {
@@ -15,6 +20,33 @@ const productSchema = new Schema({
 		type: Types.ObjectId,
 		ref: 'User',
 		required: true
+	}
+});
+
+/*
+	In the following middlewares `this` refers to the `query` object so calling `isModified` 
+	method is not possible. As a workaround, the name of the old image is saved in `pre` hook 
+	and read in `post` hooks to determine which image to remove (if any).
+*/
+
+productSchema.pre(/^findOneAnd(?:Update|Remove)$/, async function(next) {
+	const oldDoc = await this.model.findOne(this.getQuery());
+
+	this.oldImage = oldDoc && oldDoc.image;
+	next();
+});
+
+productSchema.post('findOneAndUpdate', async function() {
+	const newImage = this.get('image');
+
+	if (this.oldImage && newImage && this.oldImage !== newImage) {
+		await remove(path.join(rootDir, 'public', 'uploads', this.oldImage));
+	}
+});
+
+productSchema.post('findOneAndRemove', async function() {
+	if (this.oldImage) {
+		await remove(path.join(rootDir, 'public', 'uploads', this.oldImage));
 	}
 });
 
