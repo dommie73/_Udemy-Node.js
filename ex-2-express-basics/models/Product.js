@@ -1,9 +1,6 @@
-const path = require('path');
-
 const { model, Schema, Types } = require('mongoose');
-const { remove } = require('fs-extra');
 
-const { rootDir } = require('../utils/helpers');
+const { removeUploadFromStatic } = require('../utils/files');
 
 const productSchema = new Schema({
 	name: {
@@ -40,13 +37,13 @@ productSchema.post('findOneAndUpdate', async function() {
 	const newImage = this.get('image');
 
 	if (this.oldImage && newImage && this.oldImage !== newImage) {
-		await remove(path.join(rootDir, 'public', 'uploads', this.oldImage));
+		await removeUploadFromStatic(this.oldImage);
 	}
 });
 
 productSchema.post('findOneAndRemove', async function() {
 	if (this.oldImage) {
-		await remove(path.join(rootDir, 'public', 'uploads', this.oldImage));
+		await removeUploadFromStatic(this.oldImage);
 	}
 });
 

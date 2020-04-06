@@ -1,14 +1,13 @@
-const path = require('path');
-
 const sgMail = require('@sendgrid/mail');
 const ejs = require('ejs');
 
-const { logError, logSuccess, rootDir } = require('../utils/helpers');
+const { getTemplatePath } = require('../utils/files');
+const { logError, logSuccess } = require('../utils/helpers');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendEjs = async (emailData, template, templateData) => {
-	const templatePath = path.join(rootDir, 'views', template + '.ejs');
+const sendEjs = async (emailData, templateName, templateData) => {
+	const templatePath = getTemplatePath(templateName);
 	const msg = {
 		...emailData,
 		html: await ejs.renderFile(templatePath, templateData)

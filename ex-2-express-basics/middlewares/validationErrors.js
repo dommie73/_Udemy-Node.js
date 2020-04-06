@@ -1,9 +1,8 @@
-const path = require('path');
-
 const { validationResult } = require('express-validator');
-const { move, remove } = require('fs-extra');
-
-const { rootDir } = require('../utils/helpers');
+const {
+	moveUploadFromTmpToStatic,
+	removeUploadFromTmp
+} = require('../utils/files');
 
 const validationErrors = async (req, res, next) => {
 	try {
@@ -12,7 +11,7 @@ const validationErrors = async (req, res, next) => {
 
 		if (!errors.isEmpty()) {
 			if (file) {
-				await remove(file.path);
+				await removeUploadFromTmp(file.filename);
 			}
 
 			req.flash(
@@ -25,10 +24,7 @@ const validationErrors = async (req, res, next) => {
 		}
 
 		if (file) {
-			await move(
-				file.path,
-				path.join(rootDir, 'public', 'uploads', file.filename)
-			);
+			await moveUploadFromTmpToStatic(file.filename);
 		}
 
 		next();

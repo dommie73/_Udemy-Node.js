@@ -1,5 +1,3 @@
-const path = require('path');
-
 const express = require('express');
 const csrf = require('csurf');
 const flash = require('connect-flash');
@@ -8,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
 const pages = require('./utils/pages');
+const { dest } = require('./utils/files');
 const { logError, logSuccess } = require('./utils/helpers');
 const connectToDb = require('./database');
 
@@ -16,9 +15,10 @@ const app = express();
 app.locals.pages = pages;
 
 app.set('view engine', 'ejs');
+app.set('views', dest.views);
 
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(dest.public));
 app.use(cookieParser());
 app.use(middlewares.mongoSession);
 app.use(middlewares.sessionSaver);

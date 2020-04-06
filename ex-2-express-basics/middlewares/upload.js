@@ -2,10 +2,11 @@ const path = require('path');
 
 const multer = require('multer');
 
-const { generateToken, rootDir } = require('../utils/helpers');
+const { dest } = require('../utils/files');
+const { generateToken } = require('../utils/helpers');
 
 const storage = multer.diskStorage({
-	destination: path.join(rootDir, 'tmp', 'uploads'),
+	destination: dest.uploads.tmp,
 	filename: (req, file, cb) => {
 		generateToken(16)
 			.then(token => Date.now() + token + path.extname(file.originalname))
