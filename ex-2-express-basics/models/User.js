@@ -118,9 +118,10 @@ userSchema.method('getCart', function() {
 		)
 		.then(products => ({
 			products,
-			totalPrice: products
-				.reduce((sum, product) => sum + product.price * product.quantity, 0)
-				.toFixed(2)
+			totalPrice: products.reduce(
+				(sum, product) => sum + product.price * product.quantity,
+				0
+			)
 		}));
 });
 

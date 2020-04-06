@@ -18,7 +18,7 @@
 				<td class="cart__td cart__td--product">
 					<a href="/products/<%= product._id %>"><%= product.name %></a>
 				</td>
-				<td class="cart__td cart__td--price">$ <%= product.price %></td>
+				<td class="cart__td cart__td--price">$ <%= product.price.toFixed(2) %></td>
 				<td class="cart__td cart__td--quantity">
 					<%= product.quantity %>
 				</td>
@@ -35,7 +35,7 @@
 	</table>
 	<div class="summary">
 		Total price:
-		<span class="summary__price">$ <%= cart.totalPrice %></span>
+		<span class="summary__price">$ <%= cart.totalPrice.toFixed(2) %></span>
 		<div class="summary__actions">
 			<form action="/order" method="POST">
 				<%- include('../partials/csrf'); -%>

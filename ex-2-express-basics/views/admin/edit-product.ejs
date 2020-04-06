@@ -33,7 +33,7 @@
 				name: 'price',
 				step: 0.01,
 				type: 'number',
-				value: editing ? product.price : ''
+				value: editing ? product.price.toFixed(2) : ''
 			},
 			{
 				id: 'description',
