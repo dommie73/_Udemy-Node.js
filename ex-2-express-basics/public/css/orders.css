@@ -8,7 +8,8 @@
 	gap: 1.5rem;
 	grid-template-areas:
 		'header'
-		'products';
+		'products'
+		'actions';
 	padding: 3rem;
 }
 
@@ -53,4 +54,9 @@
 
 .order__price {
 	grid-area: price;
+}
+
+.order__actions {
+	grid-area: actions;
+	justify-self: end;
 }
