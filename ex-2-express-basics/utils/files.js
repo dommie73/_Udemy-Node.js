@@ -5,6 +5,7 @@ const { move, remove } = require('fs-extra');
 /*** Destinations ***/
 const root = path.dirname(process.mainModule.filename);
 const public = path.join(root, 'public');
+const fonts = path.join(public, 'fonts');
 const tmp = path.join(root, 'tmp');
 const uploads = {
 	static: path.join(public, 'uploads'),
@@ -15,10 +16,13 @@ const views = path.join(root, 'views');
 exports.dest = {
 	root,
 	public,
+	fonts,
 	tmp,
 	uploads,
 	views
 };
+
+exports.getFont = font => path.join(fonts, font);
 
 exports.getTemplatePath = templateName =>
 	path.join(views, templateName + '.ejs');

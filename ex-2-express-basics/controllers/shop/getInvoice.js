@@ -1,4 +1,5 @@
 const { Order } = require('../../models');
+const generateInvoice = require('../../utils/invoice');
 
 const getInvoice = async (req, res, next) => {
 	try {
@@ -7,7 +8,7 @@ const getInvoice = async (req, res, next) => {
 		const order = await Order.findOne({ _id: orderId, userId: user._id });
 
 		if (order) {
-			return res.send(`invoice-${orderId}.pdf`);
+			return generateInvoice(res, order, user);
 		}
 
 		req.flash('error', 'You are not authorized to view this invoice.');
