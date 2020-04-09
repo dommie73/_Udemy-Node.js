@@ -5,6 +5,10 @@
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
+.products-list + .pagination {
+	margin: 4rem 0;
+}
+
 .product {
 	border: 1px solid var(--main-medium);
 	display: grid;

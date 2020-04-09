@@ -1,10 +1,10 @@
 <% if (page === currentPage) { %>
-  <span class="button">
+  <span class="pagination__item button button--active">
     <%= page %>
   </span>
 <% } else { %>
   <a 
-    class="button" 
+    class="pagination__item button" 
     href="<%= `?page=${page}` %>"
   >
     <%= page %>
