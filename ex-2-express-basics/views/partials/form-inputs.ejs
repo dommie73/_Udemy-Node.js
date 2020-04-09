@@ -7,16 +7,13 @@
     (inputs.hasOwnProperty(name) && !inputs[name].invalid &&
     inputs[name].value !== '' ? ' form-group--valid' : '') %>"
   >
-    <label class="form-group__label" for="<%= id %>">
-      <%= label %>
-    </label>
     <% if (type === 'textarea') { %>
       <textarea
         class="form-group__textarea"
         id="<%= id %>"
         name="<%= name %>"
         <%= Object.entries(attrs).map(([name, value]) => [name, value].join('=')).join('\n') %>
-      ><%= inputs.hasOwnProperty(name) ? 
+      ><%= inputs.hasOwnProperty(name) && inputs[name].value ? 
         inputs[name].value : 
         value ? value : '' 
       %></textarea>
@@ -26,11 +23,12 @@
         id="<%= id %>"
         name="<%= name %>"
         type="<%= type %>"
-        value="<%= inputs.hasOwnProperty(name) ? 
+        value="<%= inputs.hasOwnProperty(name) && inputs[name].value ? 
           inputs[name].value : 
           value ? value : '' %>"
         <%= Object.entries(attrs).map(([name, value]) => [name, value].join('=')).join('\n') %>
       />
     <% } %>
+    <label class="form-group__label" for="<%= id %>"><%= label %></label>
   </div>
 <% } %>

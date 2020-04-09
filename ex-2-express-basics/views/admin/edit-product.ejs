@@ -3,8 +3,9 @@
 <form
 	autocomplete="off"
 	class="form form--wide"
-	action="/admin/<%= editing ? 'edit': 'add' %>-product"
+	action="/admin/<%= editing ? 'edit': 'add' %>-product?_csrf=<%= csrfToken %>"
 	method="POST"
+	enctype="multipart/form-data"
 >
 	<h1 class="main-heading">
 		<%= editing ? `Edit Product: ${product.name}` : 'Add Product' %>
@@ -19,11 +20,11 @@
 				value: editing ? product.name : ''
 			},
 			{
-				id: 'imageUrl',
-				label: 'Image URL',
-				name: 'imageUrl',
-				type: 'text',
-				value: editing ? product.imageUrl : ''
+				id: 'image',
+				label: 'Image',
+				name: 'image',
+				type: 'file',
+				accept: ['image/jpeg', 'image/png']
 			},
 			{
 				id: 'price',
@@ -32,7 +33,7 @@
 				name: 'price',
 				step: 0.01,
 				type: 'number',
-				value: editing ? product.price : ''
+				value: editing ? product.price.toFixed(2) : ''
 			},
 			{
 				id: 'description',
@@ -48,10 +49,9 @@
 	<% if (editing) { %>
 		<input name="id" type="hidden" value="<%= product._id %>" />
 	<% } %>
-	<%- include('../partials/csrf'); -%>
 	<button class="button" type="submit">
 		<%= editing ? 'Update' : 'Add' %> Product
 	</button>
 </form>
 
-<%- include('../partials/end'); -%>
+<%- include('../partials/end', { scripts: ['filename'] }); -%>

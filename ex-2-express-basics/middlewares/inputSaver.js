@@ -51,7 +51,9 @@ const _set = (req, options = {}) => () => {
 const inputSaver = (req, res, next) => {
 	req.inputs = {
 		get: _get(req),
-		set: _set(req, { exclude: ['password', 'confirmPassword', '_csrf'] })
+		set: _set(req, {
+			exclude: ['image', 'password', 'confirmPassword', '_csrf']
+		})
 	};
 	res.locals.inputs = req.inputs.get();
 	next();

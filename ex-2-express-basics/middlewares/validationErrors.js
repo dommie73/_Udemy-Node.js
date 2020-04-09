@@ -1,19 +1,36 @@
 const { validationResult } = require('express-validator');
+const {
+	moveUploadFromTmpToStatic,
+	removeUploadFromTmp
+} = require('../utils/files');
 
-const validationErrors = (req, res, next) => {
-	const errors = validationResult(req);
+const validationErrors = async (req, res, next) => {
+	try {
+		const errors = validationResult(req);
+		const { file } = req;
 
-	if (!errors.isEmpty()) {
-		req.flash(
-			'error',
-			errors.array({ onlyFirstError: true }).map(error => error.msg)
-		);
-		req.inputs.set();
+		if (!errors.isEmpty()) {
+			if (file) {
+				await removeUploadFromTmp(file.filename);
+			}
 
-		return req.saveSessionAndRedirect('back');
+			req.flash(
+				'error',
+				errors.array({ onlyFirstError: true }).map(error => error.msg)
+			);
+			req.inputs.set();
+
+			return req.saveSessionAndRedirect('back');
+		}
+
+		if (file) {
+			await moveUploadFromTmpToStatic(file.filename);
+		}
+
+		next();
+	} catch (err) {
+		next(err);
 	}
-
-	next();
 };
 
 module.exports = validationErrors;

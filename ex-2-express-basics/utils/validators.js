@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { errorCodes } = require('./multer');
 
 /* 
   This function iterates through a given object's property values, which have to be arrays of validators,
@@ -27,5 +28,24 @@ exports.isEmailInUse = async email => {
 
 	if (!user) {
 		return Promise.reject('This email is not associated with any account.');
+	}
+};
+
+/* 
+	This validator leverages the error object provided by `upload` middleware.
+*/
+exports.isImage = imageError => {
+	if (!imageError) {
+		return true;
+	}
+	switch (imageError.code) {
+		case errorCodes.invalidFileType:
+			throw new Error(
+				'File is not a valid image. Only jpg/jpeg/png files are allowed.'
+			);
+		case errorCodes.fileSizeExceeded:
+			throw new Error('File is too large. Maximum size allowed: 1 MB.');
+		default:
+			throw new Error('An unknown error has occurred.');
 	}
 };

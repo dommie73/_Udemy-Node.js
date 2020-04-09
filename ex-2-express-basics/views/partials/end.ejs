@@ -1,3 +1,8 @@
 		</main>
+		<% if (locals.scripts) { %>
+			<% for (const script of scripts) { %>
+				<script src="<%= `/js/${script}.js` %>"></script>
+			<% } %>
+		<% } %>
 	</body>
 </html>

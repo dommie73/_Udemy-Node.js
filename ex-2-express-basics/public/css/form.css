@@ -57,6 +57,7 @@
 	border-bottom: 1px solid var(--main-dark);
 	font: inherit;
 	min-width: 20rem;
+	order: 2;
 }
 
 .form-group__input {
@@ -70,4 +71,64 @@
 
 .form-group__label {
 	margin-right: 2rem;
+	order: 1;
+}
+
+.no-js .form-group__input[type='file'] {
+	border-bottom: none;
+}
+
+.no-js .form-group__input[type='file']::-webkit-file-upload-button {
+	border: none;
+	font-family: inherit;
+	text-decoration: none;
+}
+
+.js .form-group__input[type='file'] {
+	height: 1px;
+	min-width: auto;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+	z-index: -1;
+}
+
+.js .form-group__input[type='file'] + .form-group__label {
+	align-items: baseline;
+	display: flex;
+	flex-flow: row nowrap;
+	margin-right: 0;
+	width: 100%;
+}
+
+.js .form-group__input[type='file'] + .form-group__label span {
+	color: initial;
+	flex: 1;
+	font-weight: initial;
+	margin-left: 2rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.js .form-group__input[type='file']:focus + .form-group__label span {
+	outline: 1px dotted #212121;
+	outline: 5px auto -webkit-focus-ring-color;
+}
+
+.js .form-group__input[type='file'] + .form-group__label span::before {
+	margin-right: 0.5rem;
+}
+
+.no-js .form-group__input[type='file']::-webkit-file-upload-button,
+.js .form-group__input[type='file'] + .form-group__label span::before {
+	background-color: var(--main-dark);
+	color: var(--main-light);
+	content: 'Choose File';
+	display: inline-block;
+	font-size: 0.9em;
+	order: 2;
+	padding: 0.3em 0.8em;
+	width: max-content;
 }

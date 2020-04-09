@@ -2,11 +2,16 @@ const { Product } = require('../../models');
 
 const updateProduct = async (req, res, next) => {
 	try {
-		const { user } = req;
-		const { id, name, imageUrl, price, description } = req.body;
+		const { file, user } = req;
+		const { id, name, price, description } = req.body;
 		const updatedProduct = await Product.findOneAndUpdate(
 			{ _id: id, userId: user },
-			{ name, imageUrl, price, description },
+			{
+				name,
+				price,
+				description,
+				...(file && { image: file.filename })
+			},
 			{ new: true, runValidators: true }
 		);
 

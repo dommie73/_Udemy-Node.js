@@ -6,13 +6,13 @@
 		<h1 class="product__name main-heading"><%= product.name %></h1>
 		<div class="product__price">
 			<span class="currency">$</span>
-			<span><%= product.price %></span>
+			<span><%= product.price.toFixed(2) %></span>
 		</div>
 		<div class="product__image-wrapper">
 			<img
 				class="product__image"
 				alt="<%= product.name %>"
-				src="<%= product.imageUrl %>"
+				src="/uploads/<%= product.image %>"
 			/>
 		</div>
 		<p class="product__description"><%= product.description %></p>

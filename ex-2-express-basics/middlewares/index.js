@@ -10,6 +10,7 @@ const protected = require('./protected');
 const reqLogger = require('./reqLogger');
 const sessionSaver = require('./sessionSaver');
 const user = require('./user');
+const upload = require('./upload');
 const validationErrors = require('./validationErrors');
 
 module.exports = {
@@ -24,6 +25,7 @@ module.exports = {
 	protected,
 	reqLogger,
 	sessionSaver,
+	upload,
 	user,
 	validationErrors
 };
