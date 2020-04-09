@@ -54,7 +54,7 @@
 .form-group__textarea {
 	background: none;
 	border: none;
-	border-bottom: 1px solid var(--main-dark);
+	border-bottom: 1px solid var(--main-medium);
 	font: inherit;
 	min-width: 20rem;
 	order: 2;
@@ -65,7 +65,7 @@
 }
 
 .form-group__textarea {
-	border-right: 1px solid var(--main-dark);
+	border-right: 1px solid var(--main-medium);
 	resize: vertical;
 }
 
@@ -123,7 +123,7 @@
 
 .no-js .form-group__input[type='file']::-webkit-file-upload-button,
 .js .form-group__input[type='file'] + .form-group__label span::before {
-	background-color: var(--main-dark);
+	background-color: var(--main-medium);
 	color: var(--main-light);
 	content: 'Choose File';
 	display: inline-block;

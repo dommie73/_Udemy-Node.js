@@ -1,6 +1,7 @@
 :root {
-	--main-dark: rgb(179, 136, 19);
+	--main-dark: rgb(70, 53, 7);
 	--main-light: rgb(253, 242, 213);
+	--main-medium: rgb(179, 136, 19);
 	--danger: rgb(179, 38, 19);
 	--danger-light: rgba(179, 38, 19, 0.2);
 	--success: rgb(31, 138, 75);
@@ -64,7 +65,7 @@ button {
 }
 
 .main-nav {
-	background-color: var(--main-dark);
+	background-color: var(--main-medium);
 	color: var(--main-light);
 	font-size: 2rem;
 	padding: 2rem 4rem;
@@ -102,7 +103,7 @@ button {
 .main-nav__list-item:hover,
 .main-nav__list-item:active,
 .main-nav__list-item.active {
-	color: rgb(70, 53, 7);
+	color: var(--main-dark);
 }
 
 .main-nav__list-item:not(:last-child) {
@@ -110,7 +111,7 @@ button {
 }
 
 .button {
-	background-color: var(--main-dark);
+	background-color: var(--main-medium);
 	color: var(--main-light);
 	display: inline-block;
 	padding: 0.8rem 1.5rem;
@@ -132,7 +133,7 @@ button {
 }
 
 .alert {
-	border: 1px solid var(--main-dark);
+	border: 1px solid var(--main-medium);
 	margin-bottom: 2rem;
 	min-width: 25rem;
 	padding: 1rem 4rem;
