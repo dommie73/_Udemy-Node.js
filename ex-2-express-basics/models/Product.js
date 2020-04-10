@@ -1,6 +1,7 @@
 const { model, Schema, Types } = require('mongoose');
 
 const { removeUploadFromStatic } = require('../utils/files');
+const { paginate } = require('../utils/mongoose');
 
 const productSchema = new Schema({
 	name: {
@@ -19,6 +20,8 @@ const productSchema = new Schema({
 		required: true
 	}
 });
+
+productSchema.plugin(paginate, 'products');
 
 /*
 	In the following middlewares `this` refers to the `query` object so calling `isModified` 
