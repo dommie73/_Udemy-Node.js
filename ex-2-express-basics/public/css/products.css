@@ -5,8 +5,12 @@
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
+.products-list + .pagination {
+	margin: 4rem 0;
+}
+
 .product {
-	border: 1px solid var(--main-dark);
+	border: 1px solid var(--main-medium);
 	display: grid;
 	gap: 1.5rem;
 	grid-template-areas:
@@ -45,7 +49,7 @@
 
 .product__price {
 	grid-area: price;
-	color: var(--main-dark);
+	color: var(--main-medium);
 	font-size: 4rem;
 	font-weight: 600;
 	margin: 0;

@@ -44,6 +44,7 @@
 		</article>
 		<% } %>
 	</div>
+	<%- include('../partials/pagination', { currentPage, totalPages, offset: 2 }); -%>
 	<% } else { %>
 	<h1>No products yet!</h1>
 	<% } %>

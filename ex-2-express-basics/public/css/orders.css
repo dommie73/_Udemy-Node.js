@@ -3,7 +3,7 @@
 }
 
 .order {
-	border: 1px solid var(--main-dark);
+	border: 1px solid var(--main-medium);
 	display: grid;
 	gap: 1.5rem;
 	grid-template-areas:
@@ -41,7 +41,7 @@
 }
 
 .order__products {
-	color: var(--main-dark);
+	color: var(--main-medium);
 	grid-area: products;
 }
 

@@ -1,6 +1,6 @@
 .cart {
-	border-bottom: 1px solid var(--main-dark);
-	border-right: 1px solid var(--main-dark);
+	border-bottom: 1px solid var(--main-medium);
+	border-right: 1px solid var(--main-medium);
 	padding: 0 0 2rem 0;
 }
 

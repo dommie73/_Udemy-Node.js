@@ -1,0 +1,19 @@
+<nav class="pagination">
+  <%- include('./pagination-item', { page: 1 }); -%>
+
+  <% if (currentPage - offset > 2) { %>
+    <span class="pagination__item dots">...</span>
+  <% } %>
+
+  <% for (let i = Math.max(currentPage - offset, 2); i <= Math.min(currentPage + offset, totalPages - 1); i++) { %>
+    <%- include('./pagination-item', { page: i }); -%>
+  <% } %>
+
+  <% if (currentPage + offset < totalPages - 1) { %>
+    <span class="pagination__item dots">...</span>
+  <% } %>
+  
+  <% if (totalPages !== 1) { %>
+    <%- include('./pagination-item', { page: totalPages }); -%>
+  <% } %>
+</nav>
