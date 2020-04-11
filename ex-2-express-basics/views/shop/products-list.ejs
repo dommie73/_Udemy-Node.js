@@ -7,7 +7,7 @@
 	</h1>
 	<div class="products-list">
 		<% for (const product of products) { %>
-		<article class="product">
+		<article class="product" id="<%= product._id %>">
 			<h2 class="product__name subheading"><%= product.name %></h2>
 			<div class="product__price">
 				<span class="currency">$</span>
@@ -17,7 +17,7 @@
 				<img
 					class="product__image"
 					alt="<%= product.name %>"
-					src="/uploads/<%= product.image %>"
+					src="<%= product.image ? `/uploads/${product.image}` : '' %>"
 				/>
 			</div>
 			<div class="product__actions">
@@ -29,7 +29,7 @@
 					Edit
 				</a>
 				<form
-					class="product__action-form"
+					class="product__action-form delete"
 					action="/admin/delete-product"
 					method="POST"
 				>
@@ -50,4 +50,4 @@
 	<% } %>
 </section>
 
-<%- include('../partials/end'); -%>
+<%- include('../partials/end', { scripts: ['deleteAsync'] }); -%>
