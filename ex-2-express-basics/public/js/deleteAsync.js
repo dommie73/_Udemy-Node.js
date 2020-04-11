@@ -25,6 +25,10 @@
 				const { message } = await response.json();
 
 				displayStatusMessage(response.status, message);
+
+				if (response.status === 200) {
+					removeElementFromDOM(hiddenInputs.id);
+				}
 			} catch (err) {
 				console.error(err);
 			}
@@ -53,5 +57,13 @@
 		);
 
 		alertsContainer.appendChild(alertElement);
+	}
+
+	function removeElementFromDOM(id) {
+		const element = document.getElementById(id);
+
+		if (element) {
+			element.remove();
+		}
 	}
 })();

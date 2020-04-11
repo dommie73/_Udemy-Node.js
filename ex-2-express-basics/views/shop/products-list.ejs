@@ -7,7 +7,7 @@
 	</h1>
 	<div class="products-list">
 		<% for (const product of products) { %>
-		<article class="product">
+		<article class="product" id="<%= product._id %>">
 			<h2 class="product__name subheading"><%= product.name %></h2>
 			<div class="product__price">
 				<span class="currency">$</span>
