@@ -17,7 +17,7 @@
 				<img
 					class="product__image"
 					alt="<%= product.name %>"
-					src="/uploads/<%= product.image %>"
+					src="<%= product.image ? `/uploads/${product.image}` : '' %>"
 				/>
 			</div>
 			<div class="product__actions">
