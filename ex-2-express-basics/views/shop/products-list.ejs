@@ -29,7 +29,7 @@
 					Edit
 				</a>
 				<form
-					class="product__action-form"
+					class="product__action-form delete"
 					action="/admin/delete-product"
 					method="POST"
 				>
@@ -50,4 +50,4 @@
 	<% } %>
 </section>
 
-<%- include('../partials/end'); -%>
+<%- include('../partials/end', { scripts: ['deleteAsync'] }); -%>
