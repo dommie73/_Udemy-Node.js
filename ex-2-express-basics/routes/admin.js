@@ -29,6 +29,5 @@ router.post(
 );
 router.get('/products', adminControllers.getProducts);
 router.post('/delete-product', adminControllers.deleteProduct);
-router.delete('/delete-product/:id', adminControllers.deleteProductAsync);
 
 module.exports = router;
