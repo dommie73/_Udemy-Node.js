@@ -22,6 +22,9 @@
 						method: 'DELETE'
 					}
 				);
+				const { message } = await response.json();
+
+				displayStatusMessage(response.status, message);
 			} catch (err) {
 				console.error(err);
 			}
@@ -36,5 +39,19 @@
 				)
 				.map(input => [input.name, input.value])
 		);
+	}
+
+	function displayStatusMessage(status, message) {
+		const alertsContainer = document.querySelector('.alerts');
+		const alertElement = document.createElement('div');
+
+		alertElement.setAttribute('role', 'alert');
+		alertElement.textContent = message;
+		alertElement.classList.add(
+			'alert',
+			`alert--${status === 200 ? 'success' : 'error'}`
+		);
+
+		alertsContainer.appendChild(alertElement);
 	}
 })();
