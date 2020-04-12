@@ -37,10 +37,7 @@
 		Total price:
 		<span class="summary__price">$ <%= cart.totalPrice.toFixed(2) %></span>
 		<div class="summary__actions">
-			<form action="/order" method="POST">
-				<%- include('../partials/csrf'); -%>
-				<button class="button">Order Now</button>
-			</form>
+			<a href="/checkout" class="button">Checkout</a>
 		</div>
 	</div>
 	<% } else { %>

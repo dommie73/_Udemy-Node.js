@@ -13,6 +13,18 @@
 	padding: 3rem;
 }
 
+.order--checkout {
+	grid-template-areas:
+		'header'
+		'products'
+		'price'
+		'actions';
+}
+
+.order--checkout .order__header {
+	margin-bottom: 1em;
+}
+
 .order:not(:last-child) {
 	margin-bottom: 4rem;
 }
@@ -53,10 +65,27 @@
 }
 
 .order__price {
+	font-size: 1.2em;
 	grid-area: price;
+	justify-self: end;
+}
+
+.order__price span {
+	font-weight: 600;
 }
 
 .order__actions {
 	grid-area: actions;
 	justify-self: end;
+}
+
+.order-product {
+	display: flex;
+	justify-content: space-between;
+}
+
+.order-product__subtotal {
+	align-self: center;
+	margin-left: 1em;
+	white-space: nowrap;
 }

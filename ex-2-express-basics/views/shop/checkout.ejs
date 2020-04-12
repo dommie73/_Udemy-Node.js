@@ -1,5 +1,45 @@
-<%- include('../partials/head') -%>
+<%- include('../partials/head', { styles: ['checkout', 'orders'] }); -%>
 
-<h1>Checkout</h1>
+<section class="w-100">
+  <h1 class="main-heading">Checkout</h1>
+  <div class="checkout">
+    <div class="checkout__payment">
+
+    </div>
+    <div class="checkout__order order order--checkout">
+      <header class="order__header">
+        <div class="order__title">
+          <h2>
+            Order Summary
+          </h2>
+        </div>
+      </header>
+      <div class="order__products">
+        Products:
+        <ul class="order__products-list">
+          <% for (const product of cart.products) { %>
+          <li>
+            <span class="order-product">
+              <span class="order-product__details">
+                <%= product.quantity %> x <%= product.name %>
+              </span>
+              <span class="order-product__subtotal">
+                $ <%= (product.price * product.quantity).toFixed(2) %>
+              </span>
+            </span>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="order__price">
+        Total price:
+        <span>$ <%= cart.totalPrice.toFixed(2) %></span>
+      </div>
+      <div class="order__actions">
+        <a class="button" href="/cart">Back to cart</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <%- include('../partials/end') -%>

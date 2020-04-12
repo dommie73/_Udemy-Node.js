@@ -1,0 +1,19 @@
+.checkout {
+	display: flex;
+	flex-flow: row wrap-reverse;
+	gap: 4rem;
+	margin: -2rem;
+}
+
+.checkout > * {
+	margin: 2rem;
+}
+
+.checkout__order {
+	flex: 1;
+}
+
+.checkout__payment {
+	border: 1px solid var(--main-medium);
+	flex: 2;
+}
