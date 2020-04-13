@@ -13,18 +13,6 @@
 	padding: 3rem;
 }
 
-.order--checkout {
-	grid-template-areas:
-		'header'
-		'products'
-		'price'
-		'actions';
-}
-
-.order--checkout .order__header {
-	margin-bottom: 1em;
-}
-
 .order:not(:last-child) {
 	margin-bottom: 4rem;
 }
@@ -75,6 +63,7 @@
 }
 
 .order__actions {
+	align-self: end;
 	grid-area: actions;
 	justify-self: end;
 }

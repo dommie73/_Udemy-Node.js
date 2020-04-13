@@ -1,6 +1,11 @@
+.checkout-wrapper {
+	max-width: 100rem;
+}
+
 .checkout {
 	display: flex;
 	flex-flow: row wrap-reverse;
+	font-size: 1.8rem;
 	gap: 4rem;
 	margin: -2rem;
 }
@@ -9,11 +14,29 @@
 	margin: 2rem;
 }
 
+.checkout__heading {
+	font-size: 2.4rem;
+	margin: 0;
+}
+
+.checkout__order,
+.checkout__payment {
+	border: 1px solid var(--main-medium);
+	padding: 3rem;
+}
+
 .checkout__order {
 	flex: 1;
 }
 
 .checkout__payment {
-	border: 1px solid var(--main-medium);
 	flex: 2;
+}
+
+.checkout__payment .form {
+	height: calc(100% + 2 * 1.25rem);
+}
+
+.checkout__price {
+	font-weight: 600;
 }
