@@ -40,3 +40,13 @@
 .checkout__price {
 	font-weight: 600;
 }
+
+.no-js .checkout__payment {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.no-js .checkout__payment .form {
+	display: none;
+}
