@@ -64,21 +64,25 @@
 	width: 100%;
 }
 
+.form-group__input.invalid + .form-group__label,
 .form-group--invalid > .form-group__label {
 	color: var(--danger);
 	font-weight: 600;
 }
 
+.form-group__input.invalid,
 .form-group--invalid > .form-group__input,
 .form-group--invalid > .form-group__textarea {
 	border-color: var(--danger);
 }
 
+.form-group__input.valid + .form-group__label,
 .form-group--valid > .form-group__label {
 	color: var(--success);
 	font-weight: 600;
 }
 
+.form-group__input.valid,
 .form-group--valid > .form-group__input,
 .form-group--valid > .form-group__textarea {
 	border-color: var(--success);
@@ -150,6 +154,7 @@
 	white-space: nowrap;
 }
 
+.form-group__input.focused,
 .js .form-group__input[type='file']:focus + .form-group__label span {
 	outline: 1px dotted #212121;
 	outline: 5px auto -webkit-focus-ring-color;
