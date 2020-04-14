@@ -170,3 +170,13 @@
 	padding: 0.3em 0.8em;
 	width: max-content;
 }
+
+.stripe .form-group__input {
+	align-self: start;
+	padding: 0.21em 0;
+}
+
+.stripe .form-group__label {
+	line-height: 1.2;
+	transform: translateY(0.21em);
+}
