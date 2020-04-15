@@ -24,6 +24,30 @@
 		}
 	};
 
+	const handlePayment = async (result, form) => {
+		if (result.error) {
+			return;
+		}
+
+		const response = await fetch('/payment', {
+			body: JSON.stringify({
+				paymentMethodId: result.paymentMethod.id
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				'csrf-token': form.elements._csrf.value
+			},
+			method: 'POST'
+		});
+		const paymentResponse = await response.json();
+
+		handleServerResponse(paymentResponse);
+	};
+
+	const handleServerResponse = response => {
+		console.log(response);
+	};
+
 	class StripeElement {
 		constructor(elementType, elementSelector) {
 			this.error = new ErrorElement();
@@ -46,4 +70,17 @@
 	const cardNumber = new StripeElement('cardNumber', '#card-number');
 	const cardExpiry = new StripeElement('cardExpiry', '#card-expiry');
 	const cardCvc = new StripeElement('cardCvc', '#card-cvc');
+
+	const form = document.querySelector('#payment');
+
+	form.addEventListener('submit', async event => {
+		event.preventDefault();
+
+		const paymentMethod = await stripe.createPaymentMethod({
+			type: 'card',
+			card: cardNumber.element
+		});
+
+		handlePayment(paymentMethod, form);
+	});
 })();

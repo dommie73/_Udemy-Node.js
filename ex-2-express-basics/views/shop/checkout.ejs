@@ -23,6 +23,7 @@
           Total price:
           <span class="checkout__price">$ <%= cart.totalPrice.toFixed(2) %></span>
         </div>
+        <%- include('../partials/csrf'); -%>
         <button class="button" type="submit">Submit payment</button>
       </form>
     </div>
