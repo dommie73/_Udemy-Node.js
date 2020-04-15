@@ -22,4 +22,6 @@ exports.logSuccess = message => {
 	console.log(chalk.green(message));
 };
 
+exports.roundPrice = price => +(Math.round(price + 'e2') + 'e-2');
+
 exports.truncateEmail = email => email.substring(0, email.lastIndexOf('@'));
