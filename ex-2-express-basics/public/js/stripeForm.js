@@ -24,28 +24,58 @@
 		}
 	};
 
-	const handlePayment = async (result, form) => {
-		if (result.error) {
-			return;
-		}
-
+	const finalizePayment = async body => {
 		const response = await fetch('/payment', {
-			body: JSON.stringify({
-				paymentMethodId: result.paymentMethod.id
-			}),
+			body: JSON.stringify(body),
 			headers: {
 				'Content-Type': 'application/json',
 				'csrf-token': form.elements._csrf.value
 			},
 			method: 'POST'
 		});
-		const paymentResponse = await response.json();
+
+		return response.json();
+	};
+
+	const handlePayment = async (result, form) => {
+		if (result.error) {
+			stripeClientError.show(result.error.message);
+			return;
+		}
+
+		const paymentResponse = await finalizePayment({
+			paymentMethodId: result.paymentMethod.id,
+			form
+		});
 
 		handleServerResponse(paymentResponse);
 	};
 
-	const handleServerResponse = response => {
-		console.log(response);
+	const handleServerResponse = async response => {
+		if (response.error) {
+			stripeClientError.show(response.error.message);
+			return;
+		}
+
+		if (response.requiresAction) {
+			const result = await stripe.handleCardAction(
+				response.paymentIntentClientSecret
+			);
+
+			if (result.error) {
+				stripeClientError.show(result.error.message);
+				return;
+			}
+
+			const paymentResponse = await finalizePayment({
+				paymentIntentId: result.paymentIntent.id,
+				form
+			});
+
+			handleServerResponse(paymentResponse);
+		} else {
+			location.replace('/orders');
+		}
 	};
 
 	class StripeElement {
@@ -72,9 +102,11 @@
 	const cardCvc = new StripeElement('cardCvc', '#card-cvc');
 
 	const form = document.querySelector('#payment');
+	const stripeClientError = new ErrorElement();
 
 	form.addEventListener('submit', async event => {
 		event.preventDefault();
+		stripeClientError.hide();
 
 		const paymentMethod = await stripe.createPaymentMethod({
 			type: 'card',

@@ -1,15 +1,20 @@
 const stripe = require('../../services/stripe');
 const { roundPrice } = require('../../utils/helpers');
-const { generatePaymentResponse } = require('../../utils/stripe');
+const {
+	generatePaymentResponse,
+	intentStatuses
+} = require('../../utils/stripe');
 
 const finalizePayment = async (req, res, next) => {
 	try {
 		const { user } = req;
 		const cart = await user.getCart();
-		const { paymentMethodId } = req.body;
+		const { paymentIntentId, paymentMethodId } = req.body;
 		let intent;
 
-		if (paymentMethodId) {
+		if (paymentIntentId) {
+			intent = await stripe.paymentIntents.confirm(paymentIntentId);
+		} else if (paymentMethodId) {
 			intent = await stripe.paymentIntents.create({
 				amount: roundPrice(cart.totalPrice) * 100,
 				confirm: true,
@@ -19,13 +24,17 @@ const finalizePayment = async (req, res, next) => {
 			});
 		}
 
+		if (intent && intent.status === intentStatuses.success) {
+			req.flash('success', 'Thank you for placing the order!');
+			await user.createOrder();
+		}
+
 		return generatePaymentResponse(res, intent);
 	} catch (err) {
 		if (err.type === 'StripeCardError') {
-			return res.status(200).send({ error: err.message });
+			return res.status(200).send({ error: err.raw });
 		}
-
-		res.status(500).send({ error: 'Internal server error.' });
+		res.status(500).send({ error: { message: 'Internal server error.' } });
 	}
 };
 
