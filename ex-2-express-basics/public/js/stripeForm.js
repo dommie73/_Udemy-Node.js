@@ -1,19 +1,23 @@
 (function() {
+	/* Stripe initialization */
 	const stripe = Stripe(publishableKey);
+
+	/* Stripe `Elements` instance */
 	const elements = stripe.elements({
 		fonts: [
 			{ cssSrc: 'https://fonts.googleapis.com/css?family=Poppins&display=swap' }
 		]
 	});
 
+	/* Styles for the Stripe elements */
+	const computedLabelStyle = window.getComputedStyle(
+		document.querySelector('.form-group__label')
+	);
 	const elementClasses = {
 		complete: 'valid',
 		focus: 'focused',
 		invalid: 'invalid'
 	};
-	const computedLabelStyle = window.getComputedStyle(
-		document.querySelector('.form-group__label')
-	);
 	const elementStyles = {
 		base: {
 			fontFamily: computedLabelStyle.getPropertyValue('font-family'),
@@ -24,7 +28,54 @@
 		}
 	};
 
-	const finalizePayment = async body => {
+	/* Stripe `Element` instances */
+	const cardNumber = createStripeElement('cardNumber', '#card-number');
+	const cardExpiry = createStripeElement('cardExpiry', '#card-expiry');
+	const cardCvc = createStripeElement('cardCvc', '#card-cvc');
+
+	/* Form containing the Stripe elements & CSRF token */
+	const form = document.querySelector('#payment');
+	const stripeClientError = new ErrorElement();
+
+	form.addEventListener('submit', handlePayment);
+
+	/* Helper functions */
+	function createStripeElement(type, selector) {
+		const error = new ErrorElement();
+		const element = elements.create(type, {
+			classes: elementClasses,
+			style: elementStyles
+		});
+
+		element.mount(selector);
+		element.on('change', event =>
+			event.error ? error.show(event.error.message) : error.hide()
+		);
+
+		return element;
+	}
+
+	async function handlePayment(event) {
+		event.preventDefault();
+		stripeClientError.hide();
+
+		const payment = await stripe.createPaymentMethod({
+			type: 'card',
+			card: cardNumber
+		});
+
+		if (payment.error) {
+			stripeClientError.show(payment.error.message);
+		} else {
+			const paymentResponse = await finalizePayment({
+				paymentMethodId: payment.paymentMethod.id
+			});
+
+			handleServerResponse(paymentResponse);
+		}
+	}
+
+	async function finalizePayment(body) {
 		const response = await fetch('/payment', {
 			body: JSON.stringify(body),
 			headers: {
@@ -35,84 +86,27 @@
 		});
 
 		return response.json();
-	};
+	}
 
-	const handlePayment = async (result, form) => {
-		if (result.error) {
-			stripeClientError.show(result.error.message);
-			return;
-		}
-
-		const paymentResponse = await finalizePayment({
-			paymentMethodId: result.paymentMethod.id,
-			form
-		});
-
-		handleServerResponse(paymentResponse);
-	};
-
-	const handleServerResponse = async response => {
+	async function handleServerResponse(response) {
 		if (response.error) {
 			stripeClientError.show(response.error.message);
-			return;
-		}
-
-		if (response.requiresAction) {
-			const result = await stripe.handleCardAction(
+		} else if (response.requiresAction) {
+			const cardAction = await stripe.handleCardAction(
 				response.paymentIntentClientSecret
 			);
 
-			if (result.error) {
-				stripeClientError.show(result.error.message);
-				return;
+			if (cardAction.error) {
+				stripeClientError.show(cardAction.error.message);
+			} else {
+				const paymentResponse = await finalizePayment({
+					paymentIntentId: cardAction.paymentIntent.id
+				});
+
+				handleServerResponse(paymentResponse);
 			}
-
-			const paymentResponse = await finalizePayment({
-				paymentIntentId: result.paymentIntent.id,
-				form
-			});
-
-			handleServerResponse(paymentResponse);
 		} else {
 			location.replace('/orders');
 		}
-	};
-
-	class StripeElement {
-		constructor(elementType, elementSelector) {
-			this.error = new ErrorElement();
-			this.element = elements.create(elementType, {
-				classes: elementClasses,
-				style: elementStyles
-			});
-
-			this.element.mount(elementSelector);
-			this._listenForErrors();
-		}
-
-		_listenForErrors() {
-			this.element.on('change', event => {
-				event.error ? this.error.show(event.error.message) : this.error.hide();
-			});
-		}
 	}
-
-	const cardNumber = new StripeElement('cardNumber', '#card-number');
-	const cardExpiry = new StripeElement('cardExpiry', '#card-expiry');
-	const cardCvc = new StripeElement('cardCvc', '#card-cvc');
-
-	const form = document.querySelector('#payment');
-	const stripeClientError = new ErrorElement();
-
-	form.addEventListener('submit', async event => {
-		event.preventDefault();
-		stripeClientError.hide();
-
-		const paymentMethod = await stripe.createPaymentMethod({
-			type: 'card',
-			card: cardNumber.element
-		});
-
-		handlePayment(paymentMethod, form);
-	});
 })();
