@@ -77,7 +77,9 @@
 		});
 
 		if (payment.error) {
-			stripeClientError.show(payment.error.message);
+			if (payment.error.type !== 'validation_error') {
+				stripeClientError.show(payment.error.message);
+			}
 		} else {
 			const paymentResponse = await finalizePayment({
 				paymentMethodId: payment.paymentMethod.id
