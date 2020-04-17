@@ -1,0 +1,110 @@
+:root {
+	--loader-animation-time: 1.8s;
+	--loader-color: var(--main-medium);
+	--loader-size: 6rem;
+	--loader-square-size: calc(var(--loader-size) / 3);
+	--loader-square-size-negative: calc(-1 * var(--loader-square-size));
+	--loader-shadow: calc(var(--loader-square-size) * 2);
+	--loader-shadow-negative: calc(-1 * var(--loader-shadow));
+}
+
+.loader {
+	display: none;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 999;
+}
+
+.loader-inner {
+	height: var(--loader-size);
+	position: relative;
+	width: var(--loader-size);
+}
+
+.loader-inner::before,
+.loader-inner::after {
+	background: var(--loader-color);
+	bottom: 0;
+	content: '';
+	height: var(--loader-square-size);
+	left: 0;
+	margin: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transform-origin: 50% 50%;
+	width: var(--loader-square-size);
+}
+
+.loader-inner::before {
+	animation: spin-before var(--loader-animation-time) ease infinite;
+}
+
+.loader-inner::after {
+	animation: spin-after var(--loader-animation-time) ease infinite;
+}
+
+@keyframes spin-before {
+	0% {
+		transform: translate(0, 0);
+		box-shadow: 0 0 0 var(--loader-color);
+	}
+	25% {
+		transform: translate(
+			var(--loader-square-size),
+			var(--loader-square-size-negative)
+		);
+		box-shadow: var(--loader-shadow-negative) var(--loader-shadow) 0
+			var(--loader-color);
+	}
+	50% {
+		transform: translate(var(--loader-square-size), var(--loader-square-size));
+		box-shadow: var(--loader-shadow-negative) var(--loader-shadow-negative) 0
+			var(--loader-color);
+	}
+	75% {
+		transform: translate(
+			var(--loader-square-size-negative),
+			var(--loader-square-size)
+		);
+		box-shadow: var(--loader-shadow) var(--loader-shadow-negative) 0
+			var(--loader-color);
+	}
+	100% {
+		transform: translate(0, 0);
+		box-shadow: 0 0 0 var(--loader-color);
+	}
+}
+
+@keyframes spin-after {
+	0% {
+		transform: translate(0, 0);
+		box-shadow: 0 0 0 var(--loader-color);
+	}
+	25% {
+		transform: translate(var(--loader-square-size), var(--loader-square-size));
+		box-shadow: var(--loader-shadow-negative) var(--loader-shadow-negative) 0
+			var(--loader-color);
+	}
+	50% {
+		transform: translate(
+			var(--loader-square-size-negative),
+			var(--loader-square-size)
+		);
+		box-shadow: var(--loader-shadow) var(--loader-shadow-negative) 0
+			var(--loader-color);
+	}
+	75% {
+		transform: translate(
+			var(--loader-square-size-negative),
+			var(--loader-square-size-negative)
+		);
+		box-shadow: var(--loader-shadow) var(--loader-shadow) 0 var(--loader-color);
+	}
+	100% {
+		transform: translate(0, 0);
+		box-shadow: 0 0 0 var(--loader-color);
+	}
+}
