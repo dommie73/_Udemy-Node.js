@@ -1,7 +1,7 @@
 		</main>
 		<% if (locals.scripts) { %>
 			<% for (const script of scripts) { %>
-				<script src="<%= `/js/${script}.js` %>"></script>
+				<script src="<%= /^https?\:\/{2}/i.test(script) ? script : `/js/${script}.js` %>"></script>
 			<% } %>
 		<% } %>
 	</body>

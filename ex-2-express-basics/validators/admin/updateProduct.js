@@ -17,7 +17,8 @@ const updateProduct = [
 		.not()
 		.isEmpty()
 		.withMessage('Product price is required.')
-		.isFloat({ min: 0.0 })
+		.isFloat({ min: 0.5 })
+		.withMessage('Minimum product price: $ 0.50.')
 		.isDecimal({ decimal_digits: '0,2' })
 		.withMessage('Invalid product price.')
 		.toFloat(),

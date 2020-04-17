@@ -18,6 +18,7 @@ app.set('view engine', 'ejs');
 app.set('views', dest.views);
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(express.static(dest.public));
 app.use(cookieParser());
 app.use(middlewares.mongoSession);
