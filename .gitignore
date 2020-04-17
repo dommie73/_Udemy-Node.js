@@ -6,3 +6,4 @@ ex-2-express-basics/public/uploads
 **/config
 **/node_modules
 **/tmp
+**/.vscode
