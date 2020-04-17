@@ -1,4 +1,4 @@
-(function() {
+(async function() {
 	/* Stripe initialization */
 	const stripe = Stripe(publishableKey);
 
@@ -33,11 +33,14 @@
 	const cardExpiry = createStripeElement('cardExpiry', '#card-expiry');
 	const cardCvc = createStripeElement('cardCvc', '#card-cvc');
 
+	const [card] = await Promise.all([cardNumber, cardExpiry, cardCvc]);
+
 	/* Form containing the Stripe elements & CSRF token */
 	const form = document.querySelector('#payment');
 	const stripeClientError = new ErrorElement();
 
 	form.addEventListener('submit', handlePayment);
+	hideLoader();
 
 	/* Helper functions */
 	function createStripeElement(type, selector) {
@@ -52,16 +55,25 @@
 			event.error ? error.show(event.error.message) : error.hide()
 		);
 
-		return element;
+		return new Promise(resolve => element.on('ready', () => resolve(element)));
+	}
+
+	function showLoader() {
+		form.classList.add('form--loading');
+	}
+
+	function hideLoader() {
+		form.classList.remove('form--loading');
 	}
 
 	async function handlePayment(event) {
 		event.preventDefault();
 		stripeClientError.hide();
+		showLoader();
 
 		const payment = await stripe.createPaymentMethod({
 			type: 'card',
-			card: cardNumber
+			card
 		});
 
 		if (payment.error) {
@@ -71,8 +83,10 @@
 				paymentMethodId: payment.paymentMethod.id
 			});
 
-			handleServerResponse(paymentResponse);
+			await handleServerResponse(paymentResponse);
 		}
+
+		hideLoader();
 	}
 
 	async function finalizePayment(body) {

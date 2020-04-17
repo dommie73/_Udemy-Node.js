@@ -31,10 +31,22 @@
 
 .checkout__payment {
 	flex: 2;
+	position: relative;
 }
 
 .checkout__payment .form {
 	height: calc(100% + 2 * 1.25rem);
+	opacity: 1;
+	transition: opacity 0.5s linear;
+}
+
+.checkout__payment .form--loading {
+	opacity: 0.1;
+	pointer-events: none;
+}
+
+.checkout__payment .form--loading ~ .loader {
+	display: block;
 }
 
 .checkout__price {

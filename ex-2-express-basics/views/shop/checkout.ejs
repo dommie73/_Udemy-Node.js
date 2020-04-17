@@ -1,11 +1,11 @@
-<%- include('../partials/head', { styles: ['checkout', 'form', 'orders'] }); -%>
+<%- include('../partials/head', { styles: ['checkout', 'form', 'loader', 'orders'] }); -%>
 
 <section class="checkout-wrapper w-100">
   <h1 class="main-heading">Checkout</h1>
   <div class="checkout">
     <div class="checkout__payment">
       <noscript>You need to enable JavaScript to pay.</noscript>
-      <form class="form form--horizontal form--no-max-width" id="payment">
+      <form class="form form--horizontal form--no-max-width form--loading" id="payment">
         <h2 class="checkout__heading">Payment</h2>
         <div class="form-group stripe">
           <div class="form-group__input" id="card-number"></div>
@@ -26,6 +26,7 @@
         <%- include('../partials/csrf'); -%>
         <button class="button" type="submit">Submit payment</button>
       </form>
+      <%- include('../partials/loader'); -%>
     </div>
     <div class="checkout__order order">
       <h2 class="checkout__heading">
