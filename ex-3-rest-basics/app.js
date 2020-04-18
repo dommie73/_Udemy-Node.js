@@ -8,6 +8,8 @@ const app = express();
 
 app.use(express.json());
 
+app.use(middlewares.cors);
+
 app.use('/feed', routes.feed);
 
 app.use(middlewares.notFoundHandler);
