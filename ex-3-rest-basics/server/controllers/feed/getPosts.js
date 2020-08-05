@@ -1,17 +1,10 @@
-const getPosts = (req, res, next) => {
+const { Post } = require('../../models');
+
+const getPosts = async (req, res, next) => {
 	try {
-		res.status(200).send({ posts: [
-			{
-				_id: 1,
-				title: 'A dummy post',
-				content: 'What do you expect from the dummy post?',
-				image: '',
-				creator: {
-					name: 'John Doe'
-				},
-				createdAt: new Date()
-			}
-		] });
+		const posts = await Post.find({});
+
+		res.status(200).send({ posts });
 	} catch (err) {
 		next(err);
 	}
