@@ -1,6 +1,7 @@
 const debug = require('debug')('app:main');
 const express = require('express');
 
+const connectToDb = require('./database');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
 
@@ -15,6 +16,8 @@ app.use('/feed', routes.feed);
 app.use(middlewares.notFoundHandler);
 app.use(middlewares.errorHandler);
 
-const listener = app.listen(process.env.PORT, () => {
-	debug('listening on port %d', listener.address().port);
+connectToDb().then(() => {
+	const listener = app.listen(process.env.PORT, () => {
+		debug('listening on port %d', listener.address().port);
+	});
 });
