@@ -116,7 +116,8 @@ class Feed extends Component {
     let method = 'POST';
     
     if (this.state.editPost) {
-      url = 'URL';
+      url = `${feedUrl}/posts/${this.state.editPost._id}`;
+      method = 'PUT';
     }
 
     fetch(url, {

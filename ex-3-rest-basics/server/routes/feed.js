@@ -8,6 +8,11 @@ const router = Router();
 
 router.get('/posts', feedControllers.getPosts);
 router.get('/posts/:id', feedControllers.getPost);
+router.put(
+	'/posts/:id',
+	[imageUpload('image'), feedValidators.createPost, validationErrors],
+	feedControllers.updatePost
+);
 router.post(
 	'/posts',
 	[imageUpload('image'), feedValidators.createPost, validationErrors],
