@@ -3,6 +3,8 @@ ex-1-pure-node-basics/users.txt
 ex-2-express-basics/data
 ex-2-express-basics/public/uploads
 
+ex-3-rest-basics/server/public
+
 **/config
 **/node_modules
 **/tmp
