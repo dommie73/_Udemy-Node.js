@@ -8,7 +8,10 @@ const createPost = [
 	body('content')
 		.trim()
 		.isLength({ min: 5 })
-		.withMessage('Please write something more!')
+		.withMessage('Please write something more!'),
+	body('image')
+		.custom((value, { req }) => req.file !== void 0)
+		.withMessage('No image provided.')
 ];
 
 module.exports = createPost;
