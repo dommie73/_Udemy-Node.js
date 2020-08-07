@@ -1,7 +1,9 @@
-const createPost = require('./createPost');
+const image = require('./image');
+const post = require('./post');
 
 const validators = {
-	createPost
+	image,
+	post
 };
 
 module.exports = validators;
