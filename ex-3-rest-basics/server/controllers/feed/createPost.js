@@ -2,11 +2,12 @@ const Post = require('../../models/Post');
 
 const createPost = async (req, res, next) => {
 	try {
+		const { file } = req;
 		const { title, content } = req.body;
 		const post = await Post.create({
 			title,
 			content,
-			image: '/images/placeholder.jpg',
+			image: file.filename,
 			creator: {
 				name: 'Anonymous Guy'
 			}
