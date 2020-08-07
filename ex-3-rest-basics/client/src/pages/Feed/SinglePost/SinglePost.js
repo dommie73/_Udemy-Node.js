@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Image from '../../../components/Image/Image';
-import { baseUrl, feedUrl } from '../../../util/api';
+import { feedUrl, imagesUrl } from '../../../util/api';
 import './SinglePost.css';
 
 class SinglePost extends Component {
@@ -26,7 +26,7 @@ class SinglePost extends Component {
         this.setState({
           title: resData.post.title,
           author: resData.post.creator.name,
-          image: baseUrl + resData.post.image,
+          image: `${imagesUrl}/${resData.post.image}`,
           date: new Date(resData.post.createdAt).toLocaleDateString('en-US'),
           content: resData.post.content
         });

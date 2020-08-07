@@ -102,11 +102,16 @@ class Feed extends Component {
     this.setState({ isEditing: false, editPost: null });
   };
 
-  finishEditHandler = ({ title, content }) => {
+  finishEditHandler = ({ title, content, image }) => {
     this.setState({
       editLoading: true
     });
-    // Set up data (with image!)
+    
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('image', image);
+
     let url = `${feedUrl}/posts`;
     let method = 'POST';
     
@@ -115,10 +120,7 @@ class Feed extends Component {
     }
 
     fetch(url, {
-      body: JSON.stringify({ title, content }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      body: formData,
       method
     })
       .then(res => {
