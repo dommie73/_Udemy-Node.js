@@ -1,6 +1,7 @@
 const { model, Schema } = require('mongoose');
 
 const { deleteImage } = require('../utils/imageUpload');
+const { paginate } = require('../utils/mongoosePlugins');
 
 const postSchema = new Schema(
 	{
@@ -23,6 +24,8 @@ const postSchema = new Schema(
 	},
 	{ timestamps: true }
 );
+
+postSchema.plugin(paginate, 'posts');
 
 /*
 	In the following middlewares `this` refers to the `query` object so calling `isModified` 
