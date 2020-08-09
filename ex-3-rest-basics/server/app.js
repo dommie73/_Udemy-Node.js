@@ -12,6 +12,7 @@ app.use(express.static('public'));
 
 app.use(middlewares.cors);
 
+app.use('/auth', routes.auth);
 app.use('/feed', routes.feed);
 
 app.use(middlewares.notFoundHandler);
