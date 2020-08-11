@@ -1,5 +1,5 @@
 const { model, Schema, Types } = require('mongoose');
-const { hash } = require('bcryptjs');
+const { compare, hash } = require('bcryptjs');
 
 const userSchema = new Schema(
 	{
@@ -38,6 +38,10 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.set('toJSON', { useProjection: true });
+
+userSchema.method('passwordMatch', async function (password) {
+	return await compare(password, this.password);
+});
 
 const User = model('User', userSchema);
 

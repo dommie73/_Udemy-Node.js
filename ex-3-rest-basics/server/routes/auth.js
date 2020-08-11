@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const authControllers = require('../controllers/auth');
 const authValidators = require('../validators/auth');
-const { validationErrors } = require('../middlewares');
+const { authLocal, validationErrors } = require('../middlewares');
 
 const router = Router();
 
@@ -11,5 +11,6 @@ router.post(
 	[authValidators.user, validationErrors],
 	authControllers.createUser
 );
+router.post('/login', [authLocal], authControllers.login);
 
 module.exports = router;
