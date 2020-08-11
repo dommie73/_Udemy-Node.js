@@ -1,5 +1,6 @@
 const { model, Schema, Types } = require('mongoose');
 const { compare, hash } = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema(
 	{
@@ -41,6 +42,13 @@ userSchema.set('toJSON', { useProjection: true });
 
 userSchema.method('passwordMatch', async function (password) {
 	return await compare(password, this.password);
+});
+
+userSchema.method('generateToken', function () {
+	const { _id, email } = this;
+	const payload = { userId: _id.toString(), email };
+
+	return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 });
 
 const User = model('User', userSchema);

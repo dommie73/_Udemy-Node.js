@@ -57,10 +57,16 @@ class App extends Component {
     localStorage.removeItem('userId');
   };
 
-  loginHandler = (event, authData) => {
+  loginHandler = (event, { email, password }) => {
     event.preventDefault();
-    this.setState({ authLoading: true });
-    fetch('URL')
+    this.setState({ authLoading: true });    
+    fetch(`${authUrl}/login`, {
+      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
       .then(res => {
         if (res.status === 422) {
           throw new Error('Validation failed.');
