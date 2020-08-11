@@ -5,6 +5,10 @@ const setCorsHeaders = (req, res, next) => {
 		'Access-Control-Allow-Methods': 'DELETE, GET, HEAD, PATCH, POST, PUT'
 	});
 
+	if (req.method === 'OPTIONS') {
+		return res.status(204).end();
+	}
+
 	next();
 };
 

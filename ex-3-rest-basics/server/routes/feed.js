@@ -2,9 +2,11 @@ const { Router } = require('express');
 
 const feedControllers = require('../controllers/feed');
 const feedValidators = require('../validators/feed');
-const { imageUpload, validationErrors } = require('../middlewares');
+const { authJwt, imageUpload, validationErrors } = require('../middlewares');
 
 const router = Router();
+
+router.all('*', authJwt);
 
 router.get('/posts', feedControllers.getPosts);
 router.get('/posts/:id', feedControllers.getPost);
