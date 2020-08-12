@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema, Types } = require('mongoose');
 
 const { deleteImage } = require('../utils/imageUpload');
 const { paginate } = require('../utils/mongoosePlugins');
@@ -18,7 +18,8 @@ const postSchema = new Schema(
 			required: true
 		},
 		creator: {
-			type: Object,
+			type: Types.ObjectId,
+			ref: 'User',
 			required: true
 		}
 	},
@@ -26,6 +27,11 @@ const postSchema = new Schema(
 );
 
 postSchema.plugin(paginate, 'posts');
+
+postSchema.pre(/^find/, function (next) {
+	this.populate('creator');
+	next();
+});
 
 /*
 	In the following middlewares `this` refers to the `query` object so calling `isModified` 

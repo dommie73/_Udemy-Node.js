@@ -1,4 +1,4 @@
-const { model, Schema, Types } = require('mongoose');
+const { model, Schema } = require('mongoose');
 const { compare, hash } = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -20,16 +20,16 @@ const userSchema = new Schema(
 		status: {
 			type: String,
 			default: 'I am new!'
-		},
-		posts: [
-			{
-				type: Types.ObjectId,
-				ref: 'Post'
-			}
-		]
+		}
 	},
 	{ timestamps: true }
 );
+
+userSchema.virtual('posts', {
+	ref: 'Post',
+	localField: '_id',
+	foreignField: 'creator'
+});
 
 userSchema.pre('save', async function (next) {
 	if (this.isModified('password')) {
