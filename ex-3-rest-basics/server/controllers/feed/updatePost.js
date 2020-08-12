@@ -3,21 +3,18 @@ const ErrorHandler = require('../../utils/ErrorHandler');
 
 const updatePost = async (req, res, next) => {
 	try {
-		const { file } = req;
+		const { file, userId } = req;
 		const { title, content } = req.body;
-		const { id } = req.params;
-		const post = await Post.findByIdAndUpdate(
-			id,
+		const { id: postId } = req.params;
+		const post = await Post.findOneAndUpdate(
+			{ _id: postId, creator: userId },
 			{
 				title,
 				content,
-				creator: {
-					name: 'Anonymous Guy'
-				},
 				...(file && { image: file.filename })
 			},
 			{ new: true, runValidators: true }
-		).orFail(new ErrorHandler(404, 'No document found.'));
+		).orFail(new ErrorHandler(403, 'Unauthorized user.'));
 
 		res.status(200).send({
 			message: 'The post has been successfully updated.',
