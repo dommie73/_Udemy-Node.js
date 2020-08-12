@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Image from '../../../components/Image/Image';
+import { feedUrl, imagesUrl } from '../../../util/api';
 import './SinglePost.css';
 
 class SinglePost extends Component {
@@ -14,7 +15,11 @@ class SinglePost extends Component {
 
   componentDidMount() {
     const postId = this.props.match.params.postId;
-    fetch('URL')
+    fetch(`${feedUrl}/posts/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${this.props.token}`
+      },
+    })
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch status');
@@ -25,6 +30,7 @@ class SinglePost extends Component {
         this.setState({
           title: resData.post.title,
           author: resData.post.creator.name,
+          image: `${imagesUrl}/${resData.post.image}`,
           date: new Date(resData.post.createdAt).toLocaleDateString('en-US'),
           content: resData.post.content
         });

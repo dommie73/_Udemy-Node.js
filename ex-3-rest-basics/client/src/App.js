@@ -11,13 +11,14 @@ import FeedPage from './pages/Feed/Feed';
 import SinglePostPage from './pages/Feed/SinglePost/SinglePost';
 import LoginPage from './pages/Auth/Login';
 import SignupPage from './pages/Auth/Signup';
+import { authUrl } from './util/api';
 import './App.css';
 
 class App extends Component {
   state = {
     showBackdrop: false,
     showMobileNav: false,
-    isAuth: true,
+    isAuth: false,
     token: null,
     userId: null,
     authLoading: false,
@@ -56,10 +57,16 @@ class App extends Component {
     localStorage.removeItem('userId');
   };
 
-  loginHandler = (event, authData) => {
+  loginHandler = (event, { email, password }) => {
     event.preventDefault();
-    this.setState({ authLoading: true });
-    fetch('URL')
+    this.setState({ authLoading: true });    
+    fetch(`${authUrl}/login`, {
+      body: JSON.stringify({ email, password }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
       .then(res => {
         if (res.status === 422) {
           throw new Error('Validation failed.');
@@ -100,7 +107,18 @@ class App extends Component {
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('URL')
+
+    const formValues = Object.fromEntries(
+      Object.entries(authData).map(([field, data]) => [field, data.value])
+    );
+
+    fetch(`${authUrl}/signup`, {
+      body: JSON.stringify(formValues),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
       .then(res => {
         if (res.status === 422) {
           throw new Error(

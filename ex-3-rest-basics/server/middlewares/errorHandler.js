@@ -1,4 +1,5 @@
 const debug = require('debug')('app:middleware:errorHandler');
+const { MulterError } = require('multer');
 
 const ErrorHandler = require('../utils/ErrorHandler');
 
@@ -13,7 +14,10 @@ const handleError = (err, req, res, next) => {
 
 	res.status(statusCode).send({
 		error: true,
-		message: err instanceof ErrorHandler ? message : 'Internal server error.'
+		message:
+			err instanceof ErrorHandler || err instanceof MulterError
+				? message
+				: 'Internal server error.'
 	});
 };
 
