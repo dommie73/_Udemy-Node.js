@@ -3,9 +3,9 @@ const ErrorHandler = require('../../utils/ErrorHandler');
 
 const deletePost = async (req, res, next) => {
 	try {
-		const { userId } = req;
+		const { user } = req;
 		const { id: postId } = req.params;
-		await Post.findOneAndRemove({ _id: postId, creator: userId }).orFail(
+		await Post.findOneAndRemove({ _id: postId, creator: user._id }).orFail(
 			new ErrorHandler(403, 'Unauthorized user.')
 		);
 

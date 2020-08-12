@@ -3,11 +3,11 @@ const ErrorHandler = require('../../utils/ErrorHandler');
 
 const updatePost = async (req, res, next) => {
 	try {
-		const { file, userId } = req;
+		const { file, user } = req;
 		const { title, content } = req.body;
 		const { id: postId } = req.params;
 		const post = await Post.findOneAndUpdate(
-			{ _id: postId, creator: userId },
+			{ _id: postId, creator: user._id },
 			{
 				title,
 				content,
