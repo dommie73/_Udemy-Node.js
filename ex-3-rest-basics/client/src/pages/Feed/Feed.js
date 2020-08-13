@@ -7,7 +7,8 @@ import Input from '../../components/Form/Input/Input';
 import Paginator from '../../components/Paginator/Paginator';
 import Loader from '../../components/Loader/Loader';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
-import { authUrl, feedUrl } from '../../util/api';
+import { authUrl, baseUrl, feedUrl } from '../../util/api';
+import connectIO from 'socket.io-client';
 import './Feed.css';
 
 class Feed extends Component {
@@ -40,6 +41,7 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
+    connectIO(baseUrl);
   }
 
   loadPosts = direction => {
