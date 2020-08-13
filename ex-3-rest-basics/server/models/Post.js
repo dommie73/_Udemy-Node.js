@@ -29,6 +29,7 @@ const postSchema = new Schema(
 postSchema.plugin(paginate, 'posts');
 
 postSchema.pre(/^find/, function (next) {
+	this.sort({ createdAt: 'desc' });
 	this.populate('creator');
 	next();
 });
