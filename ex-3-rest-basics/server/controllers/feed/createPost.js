@@ -1,4 +1,5 @@
 const Post = require('../../models/Post');
+const io = require('../../websocket');
 
 const createPost = async (req, res, next) => {
 	try {
@@ -8,7 +9,12 @@ const createPost = async (req, res, next) => {
 			title,
 			content,
 			image: file.filename,
-			creator: user._id
+			creator: user
+		});
+
+		io.instance.emit('posts', {
+			action: 'create',
+			post
 		});
 
 		res.status(201).send({

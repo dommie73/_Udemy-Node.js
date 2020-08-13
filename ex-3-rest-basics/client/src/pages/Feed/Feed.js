@@ -7,7 +7,8 @@ import Input from '../../components/Form/Input/Input';
 import Paginator from '../../components/Paginator/Paginator';
 import Loader from '../../components/Loader/Loader';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
-import { authUrl, feedUrl } from '../../util/api';
+import { authUrl, baseUrl, feedUrl } from '../../util/api';
+import connectIO from 'socket.io-client';
 import './Feed.css';
 
 class Feed extends Component {
@@ -40,6 +41,48 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
+
+    const socket = connectIO(baseUrl);
+    socket.on('posts', ({ action, ...data }) => {
+      if (action === 'create') {
+        this.addPost(data.post);
+      } else if (action === 'update') {
+        this.updatePost(data.post);
+      } else if (action === 'delete') {
+        this.loadPosts();
+      }
+    });
+  }
+
+  addPost = post => {
+    this.setState(prevState => {
+      const updatedPosts = [...prevState.posts];
+      if (prevState.postPage === 1) {
+        if (prevState.posts.length >= 2) {
+          updatedPosts.pop();
+        }
+        updatedPosts.unshift(post);
+      }
+      return {
+        posts: updatedPosts,
+        totalPosts: prevState.totalPosts + 1
+      };
+    });
+  }
+
+  updatePost = post => {
+    this.setState(prevState => {
+      const updatedPosts = [...prevState.posts];
+      const updatedPostIndex = updatedPosts.findIndex(
+        p => p._id === post._id
+      );
+      if (updatedPostIndex > -1) {
+        updatedPosts[updatedPostIndex] = post;
+      }
+      return {
+        posts: updatedPosts
+      };
+    });
   }
 
   loadPosts = direction => {
@@ -148,30 +191,11 @@ class Feed extends Component {
         }
         return res.json();
       })
-      .then(resData => {
-        const post = {
-          _id: resData.post._id,
-          title: resData.post.title,
-          content: resData.post.content,
-          creator: resData.post.creator,
-          createdAt: resData.post.createdAt
-        };
-        this.setState(prevState => {
-          let updatedPosts = [...prevState.posts];
-          if (prevState.editPost) {
-            const postIndex = prevState.posts.findIndex(
-              p => p._id === prevState.editPost._id
-            );
-            updatedPosts[postIndex] = post;
-          } else if (prevState.posts.length < 2) {
-            updatedPosts = prevState.posts.concat(post);
-          }
-          return {
-            posts: updatedPosts,
-            isEditing: false,
-            editPost: null,
-            editLoading: false
-          };
+      .then(() => {
+        this.setState({
+          isEditing: false,
+          editPost: null,
+          editLoading: false
         });
       })
       .catch(err => {
@@ -203,12 +227,8 @@ class Feed extends Component {
         }
         return res.json();
       })
-      .then(resData => {
-        console.log(resData);
-        this.setState(prevState => {
-          const updatedPosts = prevState.posts.filter(p => p._id !== postId);
-          return { posts: updatedPosts, postsLoading: false };
-        });
+      .then(() => {
+        this.loadPosts();
       })
       .catch(err => {
         console.log(err);
