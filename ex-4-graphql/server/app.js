@@ -1,10 +1,12 @@
 const debug = require('debug')('app:main');
 const express = require('express');
+const { graphqlHTTP } = require('express-graphql');
 
 const connectToDb = require('./database');
 const io = require('./websocket');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
+const schema = require('./graphql/schema');
 
 const app = express();
 
@@ -13,6 +15,13 @@ app.use(express.static('public'));
 
 app.use(middlewares.cors);
 
+app.use(
+	'/graphql',
+	graphqlHTTP({
+		graphiql: true,
+		schema
+	})
+);
 app.use('/auth', routes.auth);
 app.use('/feed', routes.feed);
 
