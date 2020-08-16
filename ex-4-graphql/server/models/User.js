@@ -1,6 +1,7 @@
 const { model, Schema } = require('mongoose');
 const { compare, hash } = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { normalizeEmail } = require('validator');
 
 const userSchema = new Schema(
 	{
@@ -32,8 +33,14 @@ userSchema.virtual('posts', {
 });
 
 userSchema.pre('save', async function (next) {
+	if (this.isModified('email')) {
+		this.email = normalizeEmail(this.email);
+	}
 	if (this.isModified('password')) {
 		this.password = await hash(this.password, 12);
+	}
+	if (this.isModified('status')) {
+		this.status = this.status.trim();
 	}
 	next();
 });

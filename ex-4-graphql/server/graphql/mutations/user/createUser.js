@@ -2,6 +2,7 @@ const { GraphQLString } = require('graphql');
 
 const { User: UserModel } = require('../../../models');
 const { User: UserType } = require('../../types');
+const { user: validateUser } = require('../../../validators/auth');
 
 const createUser = {
 	type: UserType,
@@ -10,8 +11,10 @@ const createUser = {
 		name: { type: GraphQLString },
 		password: { type: GraphQLString }
 	},
-	resolve: async function (source, { email, name, password }) {
-		const user = await UserModel.create({ email, name, password });
+	resolve: async function (source, args) {
+		await validateUser(args);
+
+		const user = await UserModel.create(args);
 
 		return user.toJSON();
 	}
