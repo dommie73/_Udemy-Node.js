@@ -8,9 +8,9 @@ const getUser = {
 		id: { type: MongoDBObjectId }
 	},
 	resolve: async function (source, { id }) {
-		return await UserModel.findById(id).orFail(
-			new ErrorHandler(404, 'User not found.')
-		);
+		return await UserModel.findById(id)
+			.populate('posts')
+			.orFail(new ErrorHandler(404, 'User not found.'));
 	}
 };
 
