@@ -7,6 +7,7 @@ const io = require('./websocket');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
 const schema = require('./graphql');
+const customFormatErrorFn = require('./utils/formatError');
 
 const app = express();
 
@@ -19,7 +20,8 @@ app.use(
 	'/graphql',
 	graphqlHTTP({
 		graphiql: true,
-		schema
+		schema,
+		customFormatErrorFn
 	})
 );
 app.use('/auth', routes.auth);

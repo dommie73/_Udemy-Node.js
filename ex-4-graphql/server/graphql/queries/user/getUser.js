@@ -1,5 +1,6 @@
 const { User: UserModel } = require('../../../models');
 const { MongoDBObjectId, User: UserType } = require('../../types');
+const ErrorHandler = require('../../../utils/ErrorHandler');
 
 const getUser = {
 	type: UserType,
@@ -7,7 +8,9 @@ const getUser = {
 		id: { type: MongoDBObjectId }
 	},
 	resolve: async function (source, { id }) {
-		return await UserModel.findById(id).orFail();
+		return await UserModel.findById(id).orFail(
+			new ErrorHandler(404, 'User not found.')
+		);
 	}
 };
 
