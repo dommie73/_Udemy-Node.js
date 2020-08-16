@@ -6,7 +6,7 @@ const connectToDb = require('./database');
 const io = require('./websocket');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
-const schema = require('./graphql/schema');
+const schema = require('./graphql');
 
 const app = express();
 
