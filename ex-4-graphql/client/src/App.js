@@ -57,30 +57,52 @@ class App extends Component {
     localStorage.removeItem('userId');
   };
 
-  loginHandler = (event, authData) => {
+  loginHandler = (event, { email, password }) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('URL')
+
+    const graphQLQuery = {
+      query: `
+        {
+          login (
+            email: "${email}",
+            password: "${password}"
+          ) {
+            userId
+            token
+          }
+        }
+      `
+    };
+
+    fetch(baseUrl, {
+      body: JSON.stringify(graphQLQuery),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
       .then(res => {
-        if (res.status === 422) {
-          throw new Error('Validation failed.');
-        }
-        if (res.status !== 200 && res.status !== 201) {
-          console.log('Error!');
-          throw new Error('Could not authenticate you!');
-        }
         return res.json();
       })
       .then(resData => {
+        if (resData.errors) {
+          if (resData.errors[0].statusCode === 401) {
+            throw new Error('Invalid email or password.');
+          } else {
+            throw new Error('Could not authenticate you!');
+          }
+        }
         console.log(resData);
+        const { token, userId } = resData.data.login;
         this.setState({
           isAuth: true,
-          token: resData.token,
+          token: token,
           authLoading: false,
-          userId: resData.userId
+          userId: userId
         });
-        localStorage.setItem('token', resData.token);
-        localStorage.setItem('userId', resData.userId);
+        localStorage.setItem('token', token);
+        localStorage.setItem('userId', userId);
         const remainingMilliseconds = 60 * 60 * 1000;
         const expiryDate = new Date(
           new Date().getTime() + remainingMilliseconds
