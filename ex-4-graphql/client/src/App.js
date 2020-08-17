@@ -11,13 +11,14 @@ import FeedPage from './pages/Feed/Feed';
 import SinglePostPage from './pages/Feed/SinglePost/SinglePost';
 import LoginPage from './pages/Auth/Login';
 import SignupPage from './pages/Auth/Signup';
+import { baseUrl } from './util/api';
 import './App.css';
 
 class App extends Component {
   state = {
     showBackdrop: false,
     showMobileNav: false,
-    isAuth: true,
+    isAuth: false,
     token: null,
     userId: null,
     authLoading: false,
@@ -100,20 +101,45 @@ class App extends Component {
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('URL')
+
+    const { email, name, password } = Object.fromEntries(
+      Object.entries(authData).map(([field, data]) => [field, data.value])
+    );
+    const graphQLQuery = {
+      query: `
+        mutation {
+          createUser(
+            email: "${email}",
+            name: "${name}",
+            password: "${password}"
+          ) {
+            _id
+            email
+          }
+        }
+      `
+    };
+
+    fetch(baseUrl, {
+      body: JSON.stringify(graphQLQuery),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
       .then(res => {
-        if (res.status === 422) {
-          throw new Error(
-            "Validation failed. Make sure the email address isn't used yet!"
-          );
-        }
-        if (res.status !== 200 && res.status !== 201) {
-          console.log('Error!');
-          throw new Error('Creating a user failed!');
-        }
         return res.json();
       })
       .then(resData => {
+        if (resData.errors) {
+          if (resData.errors[0].statusCode === 422) {
+            throw new Error(
+              "Validation failed. Make sure the email address isn't used yet!"
+            );
+          } else {
+            throw new Error('Creating a user failed!');
+          }
+        }
         console.log(resData);
         this.setState({ isAuth: false, authLoading: false });
         this.props.history.replace('/');
