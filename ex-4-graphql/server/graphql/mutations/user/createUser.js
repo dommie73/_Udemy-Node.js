@@ -1,5 +1,6 @@
 const { GraphQLString } = require('graphql');
 
+const ErrorHandler = require('../../../utils/ErrorHandler');
 const { User: UserModel } = require('../../../models');
 const { User: UserType } = require('../../types');
 const { user: validateUser } = require('../../../validators/auth');
@@ -12,7 +13,11 @@ const createUser = {
 		password: { type: GraphQLString }
 	},
 	resolve: async function (source, args) {
-		await validateUser(args);
+		const errors = await validateUser(args);
+
+		if (errors.length > 0) {
+			throw new ErrorHandler(422, 'User validation failed.', errors);
+		}
 
 		const user = await UserModel.create(args);
 

@@ -1,7 +1,6 @@
 const { isLength } = require('validator');
 
-const ErrorHandler = require('../../utils/ErrorHandler');
-const validateValue = require('../../utils/validateValue');
+const { combineValidations, validateValue } = require('../../utils/validation');
 
 const validateTitle = title =>
 	validateValue(title.trim(), [
@@ -21,16 +20,7 @@ const validateContent = content =>
 		}
 	]);
 
-const validatePost = async ({ title, content }) => {
-	const validationResults = await Promise.all([
-		validateTitle(title),
-		validateContent(content)
-	]);
-	const errors = validationResults.flat();
-
-	if (errors.length > 0) {
-		throw new ErrorHandler(422, 'Post validation failed.', errors);
-	}
-};
+const validatePost = async ({ title, content }) =>
+	await combineValidations(validateTitle(title), validateContent(content));
 
 module.exports = validatePost;

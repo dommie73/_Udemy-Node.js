@@ -32,4 +32,17 @@ const validateValue = async (value, validators, onlyFirstError = true) => {
 	return errors;
 };
 
-module.exports = validateValue;
+/* 
+	This function simply merges arrays of validation errors and then flattens the resulting array.
+	Should be used in conjunction with `validateValue` function.
+*/
+const combineValidations = async (...validations) => {
+	const validationResults = await Promise.all(validations);
+
+	return validationResults.flat();
+};
+
+module.exports = {
+	combineValidations,
+	validateValue
+};

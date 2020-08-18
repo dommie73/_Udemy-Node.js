@@ -1,8 +1,7 @@
 const { isEmail, isEmpty, isLength } = require('validator');
 
 const { User } = require('../../models');
-const ErrorHandler = require('../../utils/ErrorHandler');
-const validateValue = require('../../utils/validateValue');
+const { combineValidations, validateValue } = require('../../utils/validation');
 
 const userExists = async email => {
 	return await User.exists({ email });
@@ -39,17 +38,11 @@ const validatePassword = password =>
 		}
 	]);
 
-const validateUser = async ({ email, name, password }) => {
-	const validationResults = await Promise.all([
+const validateUser = async ({ email, name, password }) =>
+	await combineValidations(
 		validateEmail(email),
 		validateName(name),
 		validatePassword(password)
-	]);
-	const errors = validationResults.flat();
-
-	if (errors.length > 0) {
-		throw new ErrorHandler(422, 'User validation failed.', errors);
-	}
-};
+	);
 
 module.exports = validateUser;
