@@ -28,6 +28,16 @@ const postSchema = new Schema(
 
 postSchema.plugin(paginate, 'posts');
 
+postSchema.pre('save', function (next) {
+	if (this.isModified('title')) {
+		this.title = this.title.trim();
+	}
+	if (this.isModified('content')) {
+		this.content = this.content.trim();
+	}
+	next();
+});
+
 postSchema.pre(/^find/, function (next) {
 	this.sort({ createdAt: 'desc' });
 	next();

@@ -1,5 +1,6 @@
 const { GraphQLObjectType, GraphQLSchema } = require('graphql');
 
+const postMutations = require('./mutations/post');
 const userMutations = require('./mutations/user');
 const userQueries = require('./queries/user');
 
@@ -13,6 +14,7 @@ const rootQuery = new GraphQLObjectType({
 const rootMutation = new GraphQLObjectType({
 	name: 'Mutation',
 	fields: {
+		...postMutations,
 		...userMutations
 	}
 });
