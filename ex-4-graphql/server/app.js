@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use(middlewares.cors);
+app.use(middlewares.authJwt);
 
 app.use(
 	'/graphql',
