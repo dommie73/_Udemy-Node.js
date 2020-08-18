@@ -11,7 +11,7 @@ import FeedPage from './pages/Feed/Feed';
 import SinglePostPage from './pages/Feed/SinglePost/SinglePost';
 import LoginPage from './pages/Auth/Login';
 import SignupPage from './pages/Auth/Signup';
-import { baseUrl } from './util/api';
+import { graphQLFetch } from './util/api';
 import './App.css';
 
 class App extends Component {
@@ -75,13 +75,7 @@ class App extends Component {
       `
     };
 
-    fetch(baseUrl, {
-      body: JSON.stringify(graphQLQuery),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
-    })
+    graphQLFetch(graphQLQuery, this.state.token)
       .then(res => {
         return res.json();
       })
@@ -142,13 +136,7 @@ class App extends Component {
       `
     };
 
-    fetch(baseUrl, {
-      body: JSON.stringify(graphQLQuery),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
-    })
+    graphQLFetch(graphQLQuery, this.state.token)
       .then(res => {
         return res.json();
       })
