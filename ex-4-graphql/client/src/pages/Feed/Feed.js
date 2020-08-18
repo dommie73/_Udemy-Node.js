@@ -7,6 +7,7 @@ import Input from '../../components/Form/Input/Input';
 import Paginator from '../../components/Paginator/Paginator';
 import Loader from '../../components/Loader/Loader';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
+import { graphQLFetch } from '../../util/api';
 import './Feed.css';
 
 class Feed extends Component {
@@ -101,31 +102,42 @@ class Feed extends Component {
     this.setState({ isEditing: false, editPost: null });
   };
 
-  finishEditHandler = postData => {
+  finishEditHandler = ({ title, content }) => {
     this.setState({
       editLoading: true
     });
+
     // Set up data (with image!)
-    let url = 'URL';
-    if (this.state.editPost) {
-      url = 'URL';
+    const action = this.state.editPost ? 'updatePost' : 'createPost';
+    const graphQLQuery = {
+      query: `
+        mutation {
+          ${action} (
+            title: "${title}",
+            content: "${content}"
+          ) {
+            _id
+            title
+            image
+            content
+            creator {
+              name
+            }
+            createdAt
+          }
+        }
+      `
     }
 
-    fetch(url)
+    graphQLFetch(graphQLQuery, this.props.token)
       .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error('Creating or editing a post failed!');
-        }
         return res.json();
       })
       .then(resData => {
-        const post = {
-          _id: resData.post._id,
-          title: resData.post.title,
-          content: resData.post.content,
-          creator: resData.post.creator,
-          createdAt: resData.post.createdAt
-        };
+        if (resData.errors) {
+          throw new Error('Creating or editing a post failed!');
+        }
+        const post = resData.data[action];
         this.setState(prevState => {
           let updatedPosts = [...prevState.posts];
           if (prevState.editPost) {
