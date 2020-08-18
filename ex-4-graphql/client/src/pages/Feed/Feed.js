@@ -51,17 +51,40 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch('URL')
-      .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Failed to fetch posts.');
+    
+    const graphQLQuery = {
+      query: `
+        {
+          getPosts(page: ${page}) {
+            posts {
+              _id
+              title
+              content
+              creator {
+                name
+              }
+              createdAt
+            }
+            totalItems
+          }
         }
+      `
+    };
+
+    graphQLFetch(graphQLQuery, this.props.token)
+      .then(res => {
         return res.json();
       })
-      .then(resData => {
+      .then(({ data, errors }) => {
+        if (errors) {
+          throw new Error('Failed to fetch posts.');
+        }
+
+        const {posts, totalItems: totalPosts} = data.getPosts;
+ 
         this.setState({
-          posts: resData.posts,
-          totalPosts: resData.totalItems,
+          posts,
+          totalPosts,
           postsLoading: false
         });
       })
@@ -145,8 +168,9 @@ class Feed extends Component {
               p => p._id === prevState.editPost._id
             );
             updatedPosts[postIndex] = post;
-          } else if (prevState.posts.length < 2) {
-            updatedPosts = prevState.posts.concat(post);
+          } else {
+            updatedPosts.pop();
+            updatedPosts.unshift(post);
           }
           return {
             posts: updatedPosts,
