@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Image from '../../../components/Image/Image';
+import { baseUrl, graphQLFetch } from '../../../util/api';
 import './SinglePost.css';
 
 class SinglePost extends Component {
@@ -14,19 +15,45 @@ class SinglePost extends Component {
 
   componentDidMount() {
     const postId = this.props.match.params.postId;
-    fetch('URL')
-      .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Failed to fetch status');
+    const graphQLQuery = {
+      query: `
+        {
+          getPost(id: "${postId}") {
+            title,
+            content
+            image
+            creator {
+              name
+            }
+            createdAt
+          }
         }
+      `
+    }
+
+    graphQLFetch(graphQLQuery, this.props.token)
+      .then(res => {
         return res.json();
       })
-      .then(resData => {
+      .then(({ errors, data }) => {
+        if (errors) {
+          throw new Error('Failed to fetch post');
+        }
+ 
+        const {
+          title, 
+          content, 
+          image, 
+          creator, 
+          createdAt
+        } = data.getPost;
+
         this.setState({
-          title: resData.post.title,
-          author: resData.post.creator.name,
-          date: new Date(resData.post.createdAt).toLocaleDateString('en-US'),
-          content: resData.post.content
+          title,
+          content,
+          image: `${baseUrl}/images/${image}`,
+          author: creator.name,
+          date: new Date(createdAt).toLocaleDateString('en-US'),
         });
       })
       .catch(err => {
