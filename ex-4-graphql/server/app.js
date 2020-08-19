@@ -25,6 +25,7 @@ app.use(
 		customFormatErrorFn
 	})
 );
+app.post('/image-upload', middlewares.imageUpload('image'));
 app.use('/auth', routes.auth);
 app.use('/feed', routes.feed);
 

@@ -1,6 +1,9 @@
-export const baseUrl = 'http://localhost:3301/graphql';
+export const baseUrl = 'http://localhost:3301';
+export const graphQLUrl = `${baseUrl}/graphql`;
+export const imageUrl = `${baseUrl}/image-upload`;
+
 export const graphQLFetch = (query, token) => 
-  fetch(baseUrl, {
+  fetch(graphQLUrl, {
     body: JSON.stringify(query), 
     headers: {
       Authorization: `Bearer ${token}`, 
@@ -8,4 +11,3 @@ export const graphQLFetch = (query, token) =>
     }, 
     method: 'POST'
   });
-  

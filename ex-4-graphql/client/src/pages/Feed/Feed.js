@@ -7,7 +7,7 @@ import Input from '../../components/Form/Input/Input';
 import Paginator from '../../components/Paginator/Paginator';
 import Loader from '../../components/Loader/Loader';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
-import { graphQLFetch } from '../../util/api';
+import { graphQLFetch, imageUrl } from '../../util/api';
 import './Feed.css';
 
 class Feed extends Component {
@@ -125,70 +125,95 @@ class Feed extends Component {
     this.setState({ isEditing: false, editPost: null });
   };
 
-  finishEditHandler = ({ title, content }) => {
+  finishEditHandler = ({ title, content, image }) => {
     this.setState({
       editLoading: true
     });
 
-    // Set up data (with image!)
     const action = this.state.editPost ? 'updatePost' : 'createPost';
-    const graphQLQuery = {
-      query: `
-        mutation {
-          ${action} (
-            title: "${title}",
-            content: "${content}"
-          ) {
-            _id
-            title
-            image
-            content
-            creator {
-              name
-            }
-            createdAt
-          }
-        }
-      `
-    }
+    const formData = new FormData();
 
-    graphQLFetch(graphQLQuery, this.props.token)
-      .then(res => {
-        return res.json();
-      })
-      .then(resData => {
-        if (resData.errors) {
-          throw new Error('Creating or editing a post failed!');
-        }
-        const post = resData.data[action];
-        this.setState(prevState => {
-          let updatedPosts = [...prevState.posts];
-          if (prevState.editPost) {
-            const postIndex = prevState.posts.findIndex(
-              p => p._id === prevState.editPost._id
-            );
-            updatedPosts[postIndex] = post;
-          } else {
-            updatedPosts.pop();
-            updatedPosts.unshift(post);
+    formData.append('image', image);
+    fetch(imageUrl, {
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${this.props.token}`
+      },
+      method: 'POST'
+    })
+    .then(res => {
+      return res.json();
+    })
+    .then(({ error, message, image }) => {
+      if (error) {
+        throw new Error(message);
+      }
+      const graphQLQuery = {
+        query: `
+          mutation {
+            ${action} (
+              title: "${title}",
+              content: "${content}",
+              image: "${image}"
+            ) {
+              _id
+              title
+              image
+              content
+              creator {
+                name
+              }
+              createdAt
+            }
           }
-          return {
-            posts: updatedPosts,
+        `
+      };
+      return graphQLFetch(graphQLQuery, this.props.token)
+        .then(res => {
+          return res.json();
+        })
+        .then(resData => {
+          if (resData.errors) {
+            throw new Error('Creating or editing a post failed!');
+          }
+          const post = resData.data[action];
+          this.setState(prevState => {
+            let updatedPosts = [...prevState.posts];
+            if (prevState.editPost) {
+              const postIndex = prevState.posts.findIndex(
+                p => p._id === prevState.editPost._id
+              );
+              updatedPosts[postIndex] = post;
+            } else {
+              updatedPosts.pop();
+              updatedPosts.unshift(post);
+            }
+            return {
+              posts: updatedPosts,
+              isEditing: false,
+              editPost: null,
+              editLoading: false
+            };
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({
             isEditing: false,
             editPost: null,
-            editLoading: false
-          };
+            editLoading: false,
+            error: err
+          });
         });
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({
-          isEditing: false,
-          editPost: null,
-          editLoading: false,
-          error: err
-        });
+     })
+     .catch(err => {
+       this.setState({
+         isEditing: false,
+         editPost: null,
+         editLoading: false,
+         error: err
       });
+    }); 
   };
 
   statusInputChangeHandler = (input, value) => {
