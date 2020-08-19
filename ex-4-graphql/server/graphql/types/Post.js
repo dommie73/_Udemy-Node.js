@@ -5,6 +5,7 @@ const {
 } = require('graphql');
 
 const DateTime = require('./DateTime');
+const ImageName = require('./ImageName');
 const MongoDBObjectId = require('./MongoDBObjectId');
 
 const Post = new GraphQLObjectType({
@@ -15,7 +16,7 @@ const Post = new GraphQLObjectType({
 		return {
 			_id: { type: new NonNull(MongoDBObjectId) },
 			title: { type: new NonNull(GraphQLString) },
-			image: { type: new NonNull(GraphQLString) },
+			image: { type: new NonNull(ImageName) },
 			content: { type: new NonNull(GraphQLString) },
 			creator: { type: new NonNull(User) },
 			createdAt: { type: new NonNull(DateTime) },
