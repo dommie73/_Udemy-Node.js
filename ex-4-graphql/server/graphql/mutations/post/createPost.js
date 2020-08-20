@@ -13,11 +13,7 @@ const createPost = {
 		content: { type: GraphQLString },
 		image: { type: GraphQLString }
 	},
-	resolve: async function (source, args, { isAuthenticated, user }) {
-		if (!isAuthenticated) {
-			throw new ErrorHandler(401, 'Invalid credentials.');
-		}
-
+	resolve: async function (source, args, { user }) {
 		const errors = await validatePost(args);
 
 		if (errors.length > 0) {

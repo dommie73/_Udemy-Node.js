@@ -7,7 +7,7 @@ const io = require('./websocket');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
 const schema = require('./graphql');
-const customFormatErrorFn = require('./utils/formatError');
+const { formatError: customFormatErrorFn } = require('./utils/graphql');
 
 const app = express();
 
@@ -17,13 +17,16 @@ app.use(express.static('public'));
 app.use(middlewares.cors);
 app.use(middlewares.authJwt);
 
-app.use(
-	'/graphql',
+app.use('/graphql', (req, res) =>
 	graphqlHTTP({
 		graphiql: true,
 		schema,
-		customFormatErrorFn
-	})
+		customFormatErrorFn,
+		context: {
+			isAuthenticated: req.isAuthenticated,
+			user: req.user
+		}
+	})(req, res)
 );
 app.post('/image-upload', middlewares.imageUpload('image'));
 app.use('/auth', routes.auth);

@@ -7,11 +7,7 @@ const getPost = {
 	args: {
 		id: { type: MongoDBObjectId }
 	},
-	resolve: async function (source, { id }, { isAuthenticated }) {
-		if (!isAuthenticated) {
-			throw new ErrorHandler(401, 'Not authenticated');
-		}
-
+	resolve: async function (source, { id }) {
 		return await PostModel.findById(id)
 			.populate('creator')
 			.orFail(new ErrorHandler(404, 'Post not found.'));
