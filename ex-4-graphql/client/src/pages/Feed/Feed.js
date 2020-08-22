@@ -213,11 +213,14 @@ class Feed extends Component {
             );
             updatedPosts[postIndex] = post;
           } else {
-            updatedPosts.pop();
+            if (prevState.posts.length >= 2) {
+              updatedPosts.pop();
+            }
             updatedPosts.unshift(post);
           }
           return {
             posts: updatedPosts,
+            totalPosts: prevState.totalPosts + (prevState.editPost ? 0 : 1),
             isEditing: false,
             editPost: null,
             editLoading: false
