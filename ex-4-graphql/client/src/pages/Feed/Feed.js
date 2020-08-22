@@ -241,22 +241,28 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
-    fetch('URL')
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error('Deleting a post failed!');
+    
+    const graphQLQuery = {
+      query: `
+        mutation {
+          deletePost(id: "${postId}")
         }
+      `
+    };
+ 
+    graphQLFetch(graphQLQuery, this.props.token)
+      .then(res => {
         return res.json();
       })
-      .then(resData => {
-        console.log(resData);
-        this.setState(prevState => {
-          const updatedPosts = prevState.posts.filter(p => p._id !== postId);
-          return { posts: updatedPosts, postsLoading: false };
-        });
+      .then(({ errors }) => {
+        if (errors) {
+          throw new Error(errors[0].message);
+        }
+
+        this.loadPosts();
       })
       .catch(err => {
-        console.log(err);
+        this.catchError(err);
         this.setState({ postsLoading: false });
       });
   };
