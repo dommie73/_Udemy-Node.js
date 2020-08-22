@@ -60,6 +60,7 @@ class Feed extends Component {
               _id
               title
               content
+              image
               creator {
                 name
               }
@@ -89,6 +90,33 @@ class Feed extends Component {
         });
       })
       .catch(this.catchError);
+  };
+
+  uploadImage = image => {
+    if (image) {
+      const formData = new FormData();
+  
+      formData.append('image', image);
+      
+      return fetch(imageUrl, {
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${this.props.token}`
+        },
+        method: 'POST'
+      })
+      .then(res => {
+        return res.json();
+      })
+      .then(({ error, message, image }) => {
+        if (error) {
+          throw new Error(message);
+        }
+        return image;
+      });
+    } else {
+      return Promise.resolve();
+    }
   };
 
   statusUpdateHandler = event => {
@@ -131,89 +159,80 @@ class Feed extends Component {
     });
 
     const action = this.state.editPost ? 'updatePost' : 'createPost';
-    const formData = new FormData();
+    
+    this.uploadImage(image)
+      .then(image => {
+        let mutationArgs = `
+          title: "${title}",
+          content: "${content}",
+          image: "${image}"
+        `;
 
-    formData.append('image', image);
-    fetch(imageUrl, {
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${this.props.token}`
-      },
-      method: 'POST'
-    })
-    .then(res => {
-      return res.json();
-    })
-    .then(({ error, message, image }) => {
-      if (error) {
-        throw new Error(message);
-      }
-      const graphQLQuery = {
-        query: `
-          mutation {
-            ${action} (
-              title: "${title}",
-              content: "${content}",
-              image: "${image}"
-            ) {
-              _id
-              title
-              image
-              content
-              creator {
-                name
+        if (this.state.editPost) {
+          mutationArgs = `
+            id: "${this.state.editPost._id}",
+            title: "${title}",
+            content: "${content}",
+            image: "${image || this.state.editPost.image}"
+          `;
+        }
+
+        const graphQLQuery = {
+          query: `
+            mutation {
+              ${action} (
+                ${mutationArgs}
+              ) {
+                _id
+                title
+                image
+                content
+                creator {
+                  name
+                }
+                createdAt
               }
-              createdAt
             }
+          `
+        };
+        return graphQLFetch(graphQLQuery, this.props.token);
+      })
+      .then(res => {
+        return res.json();
+      })
+      .then(resData => {
+        if (resData.errors) {
+          throw new Error('Creating or editing a post failed!');
+        }
+        const post = resData.data[action];
+        this.setState(prevState => {
+          let updatedPosts = [...prevState.posts];
+          if (prevState.editPost) {
+            const postIndex = prevState.posts.findIndex(
+              p => p._id === prevState.editPost._id
+            );
+            updatedPosts[postIndex] = post;
+          } else {
+            updatedPosts.pop();
+            updatedPosts.unshift(post);
           }
-        `
-      };
-      return graphQLFetch(graphQLQuery, this.props.token)
-        .then(res => {
-          return res.json();
-        })
-        .then(resData => {
-          if (resData.errors) {
-            throw new Error('Creating or editing a post failed!');
-          }
-          const post = resData.data[action];
-          this.setState(prevState => {
-            let updatedPosts = [...prevState.posts];
-            if (prevState.editPost) {
-              const postIndex = prevState.posts.findIndex(
-                p => p._id === prevState.editPost._id
-              );
-              updatedPosts[postIndex] = post;
-            } else {
-              updatedPosts.pop();
-              updatedPosts.unshift(post);
-            }
-            return {
-              posts: updatedPosts,
-              isEditing: false,
-              editPost: null,
-              editLoading: false
-            };
-          });
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({
+          return {
+            posts: updatedPosts,
             isEditing: false,
             editPost: null,
-            editLoading: false,
-            error: err
-          });
+            editLoading: false
+          };
         });
-     })
-     .catch(err => {
-       this.setState({
-         isEditing: false,
-         editPost: null,
-         editLoading: false,
-         error: err
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          isEditing: false,
+          editPost: null,
+          editLoading: false,
+          error: err
+        });
       });
-    }); 
   };
 
   statusInputChangeHandler = (input, value) => {
