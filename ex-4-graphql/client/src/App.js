@@ -63,16 +63,17 @@ class App extends Component {
 
     const graphQLQuery = {
       query: `
-        {
+        query Login($email: String!, $password: String!) {
           login (
-            email: "${email}",
-            password: "${password}"
+            email: $email
+            password: $password
           ) {
             userId
             token
           }
         }
-      `
+      `,
+      variables: { email, password }
     };
 
     graphQLFetch(graphQLQuery, this.state.token)
@@ -123,17 +124,22 @@ class App extends Component {
     );
     const graphQLQuery = {
       query: `
-        mutation {
+        mutation CreateUser(
+          $email: String,
+          $name: String,
+          $password: String
+        ) {
           createUser(
-            email: "${email}",
-            name: "${name}",
-            password: "${password}"
+            email: $email,
+            name: $name,
+            password: $password
           ) {
             _id
             email
           }
         }
-      `
+      `,
+      variables: { email, name, password }
     };
 
     graphQLFetch(graphQLQuery, this.state.token)

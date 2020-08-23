@@ -17,8 +17,8 @@ class SinglePost extends Component {
     const postId = this.props.match.params.postId;
     const graphQLQuery = {
       query: `
-        {
-          getPost(id: "${postId}") {
+        query GetPost($id: MongoDBObjectId) {
+          getPost(id: $id) {
             title,
             content
             image
@@ -28,7 +28,8 @@ class SinglePost extends Component {
             createdAt
           }
         }
-      `
+      `,
+      variables: { id: postId }
     }
 
     graphQLFetch(graphQLQuery, this.props.token)

@@ -25,12 +25,13 @@ class Feed extends Component {
   componentDidMount() {
     const graphQLQuery = {
       query: ` 
-        {
-          getUser(id: "${this.props.userId}") {
+        query GetUser($id: MongoDBObjectId) {
+          getUser(id: $id) {
             status
           }
         }
-      `
+      `,
+      variables: { id: this.props.userId }
     };
 
     graphQLFetch(graphQLQuery, this.props.token)
@@ -65,8 +66,8 @@ class Feed extends Component {
     
     const graphQLQuery = {
       query: `
-        {
-          getPosts(page: ${page}) {
+        query GetPosts($page: Int) {
+          getPosts(page: $page) {
             posts {
               _id
               title
@@ -80,7 +81,8 @@ class Feed extends Component {
             totalItems
           }
         }
-      `
+      `,
+      variables: { page }
     };
 
     graphQLFetch(graphQLQuery, this.props.token)
@@ -126,7 +128,7 @@ class Feed extends Component {
         return image;
       });
     } else {
-      return Promise.resolve();
+      return Promise.resolve(this.state.editPost && this.state.editPost.image);
     }
   };
 
@@ -135,12 +137,13 @@ class Feed extends Component {
 
     const graphQLQuery = {
       query: `
-        mutation {
-          updateUser(status: "${this.state.status}") {
+        mutation UpdateUserStatus($status: String) {
+          updateUser(status: $status) {
             status
           }
         }
-      `
+      `,
+      variables: { status: this.state.status }
     };
 
     graphQLFetch(graphQLQuery, this.props.token)
@@ -184,38 +187,59 @@ class Feed extends Component {
     
     this.uploadImage(image)
       .then(image => {
-        let mutationArgs = `
-          title: "${title}",
-          content: "${content}",
-          image: "${image}"
+        const fields = `
+          fragment fields on Post {
+            _id
+            title
+            image
+            content
+            creator {
+              name
+            }
+            createdAt
+          }
         `;
-
-        if (this.state.editPost) {
-          mutationArgs = `
-            id: "${this.state.editPost._id}",
-            title: "${title}",
-            content: "${content}",
-            image: "${image || this.state.editPost.image}"
-          `;
-        }
-
-        const graphQLQuery = {
-          query: `
-            mutation {
-              ${action} (
-                ${mutationArgs}
+        const query = this.state.editPost ?
+          `
+            mutation UpdatePost(
+              $id: MongoDBObjectId, 
+              $title: String,
+              $content: String,
+              $image: String
+            ) {
+              updatePost(
+                id: $id,
+                title: $title,
+                content: $content,
+                image: $image
               ) {
-                _id
-                title
-                image
-                content
-                creator {
-                  name
-                }
-                createdAt
+                ...fields
               }
             }
+          ` :
           `
+            mutation CreatePost(
+              $title: String,
+              $content: String,
+              $image: String
+            ) {
+              createPost(
+                title: $title, 
+                content: $content, 
+                image: $image
+              ) {
+                ...fields
+              }
+            }
+          `;
+        const graphQLQuery = {
+          query: query + fields,
+          variables: {
+              title,
+              content,
+              image,
+              ...(this.state.editPost && { id: this.state.editPost._id })
+          },
         };
         return graphQLFetch(graphQLQuery, this.props.token);
       })
