@@ -23,15 +23,26 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    fetch('URL')
-      .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Failed to fetch user status.');
+    const graphQLQuery = {
+      query: ` 
+        {
+          getUser(id: "${this.props.userId}") {
+            status
+          }
         }
+      `
+    };
+
+    graphQLFetch(graphQLQuery, this.props.token)
+      .then(res => {
         return res.json();
       })
-      .then(resData => {
-        this.setState({ status: resData.status });
+      .then(({ errors, data }) => {
+        if (errors) {
+          throw new Error('Failed to fetch user status.');
+        }
+ 
+        this.setState({ status: data.getUser.status });
       })
       .catch(this.catchError);
 
@@ -121,15 +132,26 @@ class Feed extends Component {
 
   statusUpdateHandler = event => {
     event.preventDefault();
-    fetch('URL')
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Can't update status!");
+
+    const graphQLQuery = {
+      query: `
+        mutation {
+          updateUser(status: "${this.state.status}") {
+            status
+          }
         }
+      `
+    };
+
+    graphQLFetch(graphQLQuery, this.props.token)
+      .then(res => {
         return res.json();
       })
-      .then(resData => {
-        console.log(resData);
+      .then(({ errors, data }) => {
+        if (errors) {
+          throw new Error("Can't update status!");
+        }
+        console.log(data.updateUser.status);
       })
       .catch(this.catchError);
   };

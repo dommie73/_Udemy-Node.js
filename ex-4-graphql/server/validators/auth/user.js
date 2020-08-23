@@ -38,7 +38,16 @@ const validatePassword = password =>
 		}
 	]);
 
-const validateUser = async ({ email, name, password }) =>
+const validateStatus = status =>
+	validateValue(status.trim(), [
+		{
+			validationFn: isEmpty,
+			not: true,
+			errorMessage: 'Status cannot be blank.'
+		}
+	]);
+
+const validateUser = async ({ email, name, password, status }) =>
 	await combineValidations(
 		validateEmail(email),
 		validateName(name),
@@ -46,3 +55,4 @@ const validateUser = async ({ email, name, password }) =>
 	);
 
 module.exports = validateUser;
+module.exports.status = validateStatus;
