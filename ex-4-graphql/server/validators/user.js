@@ -1,11 +1,10 @@
 const { isEmail, isEmpty, isLength } = require('validator');
 
-const { User } = require('../../models');
-const { combineValidations, validateValue } = require('../../utils/validation');
-
-const userExists = async email => {
-	return await User.exists({ email });
-};
+const {
+	combineValidations,
+	customValidators,
+	validateValue
+} = require('../utils/validation');
 
 const validateEmail = async email =>
 	await validateValue(email, [
@@ -14,7 +13,7 @@ const validateEmail = async email =>
 			errorMessage: 'Invalid email.'
 		},
 		{
-			validationFn: userExists,
+			validationFn: customValidators.userExists,
 			not: true,
 			errorMessage: 'Email already in use.'
 		}

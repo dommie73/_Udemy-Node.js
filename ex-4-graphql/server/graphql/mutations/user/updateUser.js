@@ -2,7 +2,7 @@ const { GraphQLString } = require('graphql');
 
 const ErrorHandler = require('../../../utils/ErrorHandler');
 const { User: UserType } = require('../../types');
-const { user: validateUser } = require('../../../validators/auth');
+const validateUser = require('../../../validators/user');
 
 const updateUser = {
 	type: UserType,

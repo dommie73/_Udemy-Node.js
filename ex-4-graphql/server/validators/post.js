@@ -1,6 +1,6 @@
 const { isLength } = require('validator');
 
-const { combineValidations, validateValue } = require('../../utils/validation');
+const { combineValidations, validateValue } = require('../utils/validation');
 
 const validateTitle = title =>
 	validateValue(title.trim(), [

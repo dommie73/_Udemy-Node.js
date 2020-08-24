@@ -1,3 +1,21 @@
+const { validate: uuidValidate } = require('uuid');
+
+const { User } = require('../models');
+
+/*
+	Custom validators.
+*/
+
+const isImageName = value => {
+	const [filename, extname] = value.trim().split('.');
+
+	return uuidValidate(filename) && ['jpeg', 'jpg', 'png'].includes(extname);
+};
+
+const userExists = async email => {
+	return await User.exists({ email });
+};
+
 /* 
   This function performs validity checks against the provided string value.
   Each validator can be an object of the following shape:
@@ -44,5 +62,9 @@ const combineValidations = async (...validations) => {
 
 module.exports = {
 	combineValidations,
+	customValidators: {
+		isImageName,
+		userExists
+	},
 	validateValue
 };

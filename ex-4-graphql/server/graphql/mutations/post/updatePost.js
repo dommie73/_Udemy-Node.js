@@ -4,7 +4,7 @@ const ErrorHandler = require('../../../utils/ErrorHandler');
 const { deleteImage } = require('../../../utils/imageUpload');
 const { Post: PostModel } = require('../../../models');
 const { MongoDBObjectId, Post: PostType } = require('../../types');
-const { post: validatePost } = require('../../../validators/feed');
+const validatePost = require('../../../validators/post');
 
 const updatePost = {
 	type: PostType,

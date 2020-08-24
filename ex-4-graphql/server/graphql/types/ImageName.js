@@ -1,10 +1,8 @@
 const { GraphQLError, GraphQLScalarType, Kind } = require('graphql');
-const { validate: uuidValidate } = require('uuid');
+const { customValidators } = require('../../utils/validation');
 
 const validateImageName = value => {
-	const [filename, extname] = value.trim().split('.');
-
-	if (!(uuidValidate(filename) && ['jpeg', 'jpg', 'png'].includes(extname))) {
+	if (!customValidators.isImageName(value)) {
 		throw new GraphQLError(`Cannot parse value ${value} to ImageName`);
 	}
 
