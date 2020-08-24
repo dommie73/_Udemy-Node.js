@@ -1,1 +1,3 @@
 *.ejs
+ex-3-rest-basics/client/*
+ex-4-graphql/client/*
