@@ -12,6 +12,7 @@ const connect = () =>
 		})
 		.then(mongoose => {
 			debug('%s', `connected to ${mongoose.connection.host}`);
+			mongoose.connection.once('close', () => debug('disconnected'));
 			return mongoose;
 		})
 		.catch(error => {

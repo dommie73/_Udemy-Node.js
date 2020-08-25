@@ -2,10 +2,10 @@
 	"name": "ex-3-rest-basics",
 	"version": "1.0.0",
 	"description": "",
-	"main": "app.js",
+	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon -r dotenv/config app.js dotenv_config_path=./config/dev.env",
-		"dev-debug": "nodemon --inspect -r dotenv/config app.js dotenv_config_path=./config/dev.env"
+		"dev": "nodemon -r dotenv/config index.js dotenv_config_path=./config/dev.env",
+		"dev-debug": "nodemon --inspect -r dotenv/config index.js dotenv_config_path=./config/dev.env"
 	},
 	"keywords": [],
 	"author": "",
