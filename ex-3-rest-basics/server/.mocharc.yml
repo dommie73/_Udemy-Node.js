@@ -1,0 +1,12 @@
+allow-uncaught: false
+async-only: true
+bail: true
+color: true
+diff: true
+exit: true
+recursive: true
+reporter: 'spec'
+spec: 'tests/{,!(helpers)/**}/*.js'
+timeout: 5000
+ui: 'bdd'
+watch: false

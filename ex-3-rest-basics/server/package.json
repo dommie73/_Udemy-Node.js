@@ -4,8 +4,9 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon -r dotenv/config index.js dotenv_config_path=./config/dev.env",
-		"dev-debug": "nodemon --inspect -r dotenv/config index.js dotenv_config_path=./config/dev.env"
+		"dev": "env-cmd --file ./config/dev.env nodemon index.js --ignore tests",
+		"dev-debug": "env-cmd --file ./config/dev.env nodemon --inspect index.js --ignore tests",
+		"test": "env-cmd --file ./config/test.env mocha"
 	},
 	"keywords": [],
 	"author": "",
@@ -13,7 +14,6 @@
 	"dependencies": {
 		"bcryptjs": "2.4.3",
 		"debug": "4.1.1",
-		"dotenv": "8.2.0",
 		"express": "4.17.1",
 		"express-validator": "6.6.1",
 		"jsonwebtoken": "8.5.1",
@@ -25,6 +25,7 @@
 	"devDependencies": {
 		"chai": "4.2.0",
 		"chai-http": "4.3.0",
+		"env-cmd": "10.1.0",
 		"mocha": "8.2.1",
 		"nodemon": "2.0.3"
 	}
