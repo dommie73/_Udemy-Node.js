@@ -7,7 +7,7 @@ const handleValidationErrors = (req, res, next) => {
 		return res.status(422).send({
 			error: true,
 			message: 'Validation failed.',
-			validationErrors: errors.array()
+			validationErrors: errors.mapped()
 		});
 	}
 
