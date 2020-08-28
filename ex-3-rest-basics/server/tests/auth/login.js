@@ -1,4 +1,4 @@
-const useTestServer = require('../helpers/useTestServer');
+const { useTestServer } = require('../helpers');
 
 const login = (mochaContext, { email, password } = {}) => {
 	return chai
