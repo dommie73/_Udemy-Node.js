@@ -6,7 +6,7 @@ diff: true
 exit: true
 recursive: true
 reporter: 'spec'
-spec: 'tests/{,!(helpers)/**}/*.js'
+spec: 'tests/{,!(helpers|tmp)/**}/*.js'
 timeout: 5000
 ui: 'bdd'
 watch: false
