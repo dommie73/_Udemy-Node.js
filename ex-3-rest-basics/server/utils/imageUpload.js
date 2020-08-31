@@ -6,11 +6,15 @@ const path = require('path');
 
 const ErrorHandler = require('./ErrorHandler');
 
-const destination = path.join(
-	path.dirname(process.mainModule.filename),
+const testPath = path.resolve('tests', 'tmp');
+
+const publicPath = path.join(
+	path.dirname(require.main.filename),
 	'public',
 	'images'
 );
+
+const destination = process.env.NODE_ENV === 'test' ? testPath : publicPath;
 
 const fileFilter = (req, file, cb) => {
 	if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
@@ -45,6 +49,7 @@ const deleteImage = async file => {
 
 module.exports = {
 	deleteImage,
+	destination,
 	fileFilter,
 	limits,
 	storage
