@@ -4,6 +4,8 @@ ex-2-express-basics/data
 
 ex-3-rest-basics/server/tests/tmp
 
+ex-5-typescript/dist
+
 **/public
 **/config
 **/node_modules
